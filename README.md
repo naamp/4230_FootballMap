@@ -27,7 +27,7 @@ Das Hauptziel dieses Projekts besteht darin, Fußballdaten sowohl räumlich als 
 - APIs zur Datenerfassung (z. B. Sportdaten-APIs)
 
 ## Autor
-Max Mustermann
+Nando Amport, Silvan Baumeler, Stefan Sidler
 
 ## Lizenz
 Dieses Projekt ist unter der MIT-Lizenz lizenziert. Weitere Informationen finden Sie in der `LICENSE` Datei.
