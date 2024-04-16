@@ -1,0 +1,367 @@
+[
+    {
+        "liga_nr": "GB1",
+        "name": "Premier League",
+        "land": "England"
+    },
+    {
+        "liga_nr": "GB2",
+        "name": "Championship",
+        "land": "England"
+    },
+    {
+        "liga_nr": "GB3",
+        "name": "League One",
+        "land": "England"
+    },
+    {
+        "liga_nr": "ES1",
+        "name": "LaLiga",
+        "land": "Spain"
+    },
+    {
+        "liga_nr": "ES2",
+        "name": "LaLiga2",
+        "land": "Spain"
+    },
+    {
+        "liga_nr": "E4G1",
+        "name": "Segunda División B - Grupo I",
+        "land": "Spain"
+    },
+    {
+        "liga_nr": "E4G2",
+        "name": "Segunda División B - Grupo II",
+        "land": "Spain"
+    },
+    {
+        "liga_nr": "E4G3",
+        "name": "Segunda División B - Grupo III",
+        "land": "Spain"
+    },
+    {
+        "liga_nr": "E4G4",
+        "name": "Segunda División B - Grupo IV",
+        "land": "Spain"
+    },
+    {
+        "liga_nr": "E4G5",
+        "name": "Segunda División B - Grupo V",
+        "land": "Spain"
+    },
+    {
+        "liga_nr": "IT1",
+        "name": "Serie A",
+        "land": "Italy"
+    },
+    {
+        "liga_nr": "IT2",
+        "name": "Serie B",
+        "land": "Italy"
+    },
+    {
+        "liga_nr": "IT3A",
+        "name": "Serie C - Girone A",
+        "land": "Italy"
+    },
+    {
+        "liga_nr": "IT3B",
+        "name": "Serie C - Girone B",
+        "land": "Italy"
+    },
+    {
+        "liga_nr": "IT3C",
+        "name": "Serie C - Girone C",
+        "land": "Italy"
+    },
+    {
+        "liga_nr": "L1",
+        "name": "Bundesliga",
+        "land": "Germany"
+    },
+    {
+        "liga_nr": "L2",
+        "name": "2. Bundesliga",
+        "land": "Germany"
+    },
+    {
+        "liga_nr": "L3",
+        "name": "3. Liga",
+        "land": "Germany"
+    },
+    {
+        "liga_nr": "FR1",
+        "name": "Ligue 1",
+        "land": "France"
+    },
+    {
+        "liga_nr": "FR2",
+        "name": "Ligue 2",
+        "land": "France"
+    },
+    {
+        "liga_nr": "FR3",
+        "name": "National",
+        "land": "France"
+    },
+    {
+        "liga_nr": "C1",
+        "name": "Super League",
+        "land": "Switzerland"
+    },
+    {
+        "liga_nr": "C2",
+        "name": "Challenge League",
+        "land": "Switzerland"
+    },
+    {
+        "liga_nr": "CHPR",
+        "name": "1. Liga Promotion",
+        "land": "Switzerland"
+    },
+    {
+        "liga_nr": "CHC1",
+        "name": "1. Liga Classic Gruppe 1",
+        "land": "Switzerland"
+    },
+    {
+        "liga_nr": "CHC2",
+        "name": "1. Liga Classic Gruppe 2",
+        "land": "Switzerland"
+    },
+    {
+        "liga_nr": "CHC3",
+        "name": "1. Liga Classic Gruppe 3",
+        "land": "Switzerland"
+    },
+    {
+        "liga_nr": "NL1",
+        "name": "Eredivisie",
+        "land": "Netherlands"
+    },
+    {
+        "liga_nr": "NL2",
+        "name": "Eerste Divisie",
+        "land": "Netherlands"
+    },
+    {
+        "liga_nr": "PO1",
+        "name": "Primeira Liga",
+        "land": "Portugal"
+    },
+    {
+        "liga_nr": "PO2",
+        "name": "Liga Portugal 2",
+        "land": "Portugal"
+    },
+    {
+        "liga_nr": "BE1",
+        "name": "Jupiler Pro League",
+        "land": "Belgium"
+    },
+    {
+        "liga_nr": "BE2",
+        "name": "Proximus League",
+        "land": "Belgium"
+    },
+    {
+        "liga_nr": "TR1",
+        "name": "Süper Lig",
+        "land": "Turkey"
+    },
+    {
+        "liga_nr": "TR2",
+        "name": "TFF 1. Lig",
+        "land": "Turkey"
+    },
+    {
+        "liga_nr": "SC1",
+        "name": "Premiership",
+        "land": "Scotland"
+    },
+    {
+        "liga_nr": "SC2",
+        "name": "Championship",
+        "land": "Scotland"
+    },
+    {
+        "liga_nr": "TS1",
+        "name": "Fortuna Liga",
+        "land": "Czech Republic"
+    },
+    {
+        "liga_nr": "TS2",
+        "name": "FNL",
+        "land": "Czech Republic"
+    },
+    {
+        "liga_nr": "A1",
+        "name": "Bundesliga",
+        "land": "Austria"
+    },
+    {
+        "liga_nr": "A2",
+        "name": "2. Liga",
+        "land": "Austria"
+    },
+    {
+        "liga_nr": "DK1",
+        "name": "Superligaen",
+        "land": "Denmark"
+    },
+    {
+        "liga_nr": "DK2",
+        "name": "NordicBet Liga",
+        "land": "Denmark"
+    },
+    {
+        "liga_nr": "NO1",
+        "name": "Eliteserien",
+        "land": "Norway"
+    },
+    {
+        "liga_nr": "NO2",
+        "name": "OBOS-ligaen",
+        "land": "Norway"
+    },
+    {
+        "liga_nr": "ISR1",
+        "name": "Ligat ha'Al",
+        "land": "Israel"
+    },
+    {
+        "liga_nr": "ISR2",
+        "name": "Liga Leumit",
+        "land": "Israel"
+    },
+    {
+        "liga_nr": "GR1",
+        "name": "Super League 1",
+        "land": "Greece"
+    },
+    {
+        "liga_nr": "GR2",
+        "name": "Super League 2",
+        "land": "Greece"
+    },
+    {
+        "liga_nr": "UKR1",
+        "name": "Premier Liga",
+        "land": "Ukraine"
+    },
+    {
+        "liga_nr": "UKR2",
+        "name": "Persha Liga",
+        "land": "Ukraine"
+    },
+    {
+        "liga_nr": "SER1",
+        "name": "Super liga Srbije",
+        "land": "Serbia"
+    },
+    {
+        "liga_nr": "SER2",
+        "name": "Prva Liga",
+        "land": "Serbia"
+    },
+    {
+        "liga_nr": "PL1",
+        "name": "Ekstraklasa",
+        "land": "Poland"
+    },
+    {
+        "liga_nr": "PL2",
+        "name": "1. Liga",
+        "land": "Poland"
+    },
+    {
+        "liga_nr": "KR1",
+        "name": "1. HNL",
+        "land": "Croatia"
+    },
+    {
+        "liga_nr": "KR2",
+        "name": "2. HNL",
+        "land": "Croatia"
+    },
+    {
+        "liga_nr": "ZYP1",
+        "name": "Protathlima Cyta",
+        "land": "Cyprus"
+    },
+    {
+        "liga_nr": "UNG1",
+        "name": "NB I",
+        "land": "Hungary"
+    },
+    {
+        "liga_nr": "SE1",
+        "name": "Allsvenskan",
+        "land": "Sweden"
+    },
+    {
+        "liga_nr": "RO1",
+        "name": "Liga 1",
+        "land": "Romania"
+    },
+    {
+        "liga_nr": "BU1",
+        "name": "First Professional Football League",
+        "land": "Bulgaria"
+    },
+    {
+        "liga_nr": "AZ1",
+        "name": "Premier League",
+        "land": "Azerbaijan"
+    },
+    {
+        "liga_nr": "SLO1",
+        "name": "Fortuna Liga",
+        "land": "Slovakia"
+    },
+    {
+        "liga_nr": "RU1",
+        "name": "Premjer-Liga",
+        "land": "Russia"
+    },
+    {
+        "liga_nr": "F1",
+        "name": "veikkausliiga",
+        "land": "Finland"
+    },
+    {
+        "liga_nr": "JAP1",
+        "name": "j1-league",
+        "land": "Japan"
+    },
+    {
+        "liga_nr": "KAS1",
+        "name": "Premier Liga",
+        "land": "Kazakhstan"
+    },
+    {
+        "liga_nr": "COLP",
+        "name": "Liga Dimayor I",
+        "land": "Colombia"
+    },
+    {
+        "liga_nr": "KO1",
+        "name": "Albi Mall Superliga",
+        "land": "Kosovo"
+    },
+    {
+        "liga_nr": "MO1N",
+        "name": "Divizia Nationala",
+        "land": "Moldova"
+    },
+    {
+        "liga_nr": "SL1",
+        "name": "Prva Liga",
+        "land": "Slovenia"
+    },
+    {
+        "liga_nr": "MLS1",
+        "name": "Major League Soccer",
+        "land": "United States"
+    }
+]
