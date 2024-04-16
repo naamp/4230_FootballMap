@@ -1,0 +1,7 @@
+fastapi
+geopandas
+pandas
+uvicorn
+orjson
+psycopg2
+pydantic

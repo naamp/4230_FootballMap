@@ -1,0 +1,88 @@
+/* CSS für die Karte */
+.map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70%;
+  height: 100%;
+}
+
+/* CSS für das Popup */
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  max-width: 300px;
+}
+
+/* Schließen-Schaltfläche des Popups */
+.ol-popup-closer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Inhalt des Popups */
+#popup-content {
+  font-size: 16px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #333;
+}
+
+/* CSS für die Tabellenzeilen */
+.table-container-custom {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* CSS für die Tabellenüberschrift */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* CSS für Hover-Effekt */
+tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* CSS für die markierte Tabellenzeile */
+.highlighted {
+  background-color: yellow; /* Ändern Sie die Hintergrundfarbe nach Ihren Wünschen */
+}
+
+/* CSS für den Reset-Button */
+#button-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+/* CSS, um Karte links und Tabelle rechts anzuordnen */
+.map-container {
+  left: 0;
+}
+
+.table-container-custom {
+  right: 0;
+  left: auto;
+}
