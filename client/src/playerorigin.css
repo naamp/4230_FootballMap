@@ -1,0 +1,32 @@
+.map-container {
+    position: absolute;
+    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+    left: 0;
+    width: 98%;
+    height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+    padding: 20px;
+}
+
+.legend {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.legend h3 {
+    margin-top: 0;
+}
+
+.legend ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.legend ul li {
+    margin-bottom: 5px;
+}
