@@ -25,8 +25,10 @@ import InputLabel from '@mui/material/InputLabel';
 import HomeIcon from '@mui/icons-material/Home';
 import OutlinedInput from '@mui/material/OutlinedInput';
 
-import './App.css';
+import './startpage.css';
 import appbarstyle from './appbarstyle.js'; 
+
+import { useNavigate } from "react-router-dom";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -45,15 +47,27 @@ const Startpage = () => {
     const [vectorLayer, setVectorLayer] = useState(null);
     const [map, setMap] = useState(null);
 
-
     const [country, setCountry] = useState('Switzerland');
     const [league, setLeague] = useState(['Super League']); 
-
-
 
     const [selectedItems, setSelectedItems] = useState([]);
     const [leftAnchorEl, setLeftAnchorEl] = useState(null);
     const [rightAnchorEl, setRightAnchorEl] = useState(null);
+
+    const navigate = useNavigate();
+
+    const handleButtonClick = (page) => {
+      switch(page) {
+          case 'squadoverview':
+              navigate('/squadoverview');
+              break;
+          case 'playerorigin':
+              navigate('/playerorigin');
+              break;
+          default:
+              console.error('Unbekannte Seite');
+      }
+  };
 
     const handleChange = (event) => {
         setCountry(event.target.value);
@@ -79,8 +93,6 @@ const Startpage = () => {
         }
     };
     
-
-
 
     const handleClose = () => {
         setLeftAnchorEl(null);
@@ -197,12 +209,12 @@ if (feature) {
     
     button1.addEventListener('click', () => {
       console.log('Schaltfläche 1 wurde geklickt!');
-      // Hier können Sie die gewünschte Aktion für Schaltfläche 1 hinzufügen
+      handleButtonClick('squadoverview');
     });
     
     button2.addEventListener('click', () => {
       console.log('Schaltfläche 2 wurde geklickt!');
-      // Hier können Sie die gewünschte Aktion für Schaltfläche 2 hinzufügen
+      handleButtonClick('playerorigin');
     });
     
 } else {
@@ -267,74 +279,79 @@ if (feature) {
     }
    
     return (
-        <div>
-            <div className="standardAppBar"> 
-                <AppBar position="static" style={appbarstyle.appBar}> 
-                    <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}> 
-                    <Button 
-                        style={appbarstyle.button}  
-                        startIcon={<HomeIcon style={{ color: '#f7da00' }} />}  
-                        aria-controls="left-menu"
-                        onClick={handleLeftClick} // Füge diesen Klick-Handler hinzu
-                    >
-                        FootballMap
-                    </Button>
+      <div>
+          <div className="standardAppBar"> 
+              <AppBar position="static" style={appbarstyle.appBar}> 
+                  <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}> 
+                      <Button 
+                          style={appbarstyle.button}  
+                          startIcon={<HomeIcon style={{ color: '#f7da00' }} />}  
+                          aria-controls="left-menu"
+                          onClick={handleLeftClick} 
+                      >
+                          FootballMap
+                      </Button>
+  
+                      <div>
+                          <FormControl sx={{ m: 1, minWidth: 120 }} >  
+                              <InputLabel id="country-label" style={{ color: '#f7da00' }}>Country</InputLabel>
+                              <Select
+                                  labelId="country-label"
+                                  id="country-select"
+                                  value={country}
+                                  onChange={handleChange}
+                                  style={{ color: 'white'}}
+                              >
+                                  <MenuItem value="Switzerland">Switzerland</MenuItem>
+                                  <MenuItem value="Germany">Germany</MenuItem>
+                              </Select>
+                          </FormControl>
+  
+                          <FormControl sx={{ m: 1, minWidth: 120 }}>  
+                              <InputLabel id="leagues-label" style={{ color: '#f7da00' }}>Leagues</InputLabel>
+                              <Select
+                                  labelId="leagues-label"
+                                  id="leagues-select"
+                                  multiple
+                                  value={league}
+                                  onChange={handleMultiLeagueChange}
+                                  input={<OutlinedInput label="Choose Leagues" />}
+                                  renderValue={(selected) => selected.join(', ')}
+                                  MenuProps={MenuProps}
+                                  style={{ color: 'white' }}
+                              >
+                                  <MenuItem value="Bundesliga">
+                                      <Checkbox checked={league.includes('Bundesliga')} />
+                                      Bundesliga
+                                  </MenuItem>
+                                  <MenuItem value="Premier League">
+                                      <Checkbox checked={league.includes('Premier League')} />
+                                      Premier League
+                                  </MenuItem>
+                                  <MenuItem value="Super League">
+                                      <Checkbox checked={league.includes('Super League')} />
+                                      Super League
+                                  </MenuItem>
+                              </Select>
+                          </FormControl>
+                      </div>
+                  </Toolbar>
+              </AppBar>
+          </div>
+  
+          <div id="popup" className="ol-popup">
+              <a href="#" id="popup-closer" className="ol-popup-closer">×</a>
+              <div id="popup-content"></div>
+          </div>
+  
+          <div id="table-container" className="table-container-custom" onClick={handleTableRowClick}>
+              <table id="table-body"></table>
+          </div>
+  
+          <div id="map" className="map-container"></div>
+      </div>
+  );
 
-
-
-                        <div>
-                            <FormControl sx={{ m: 1, minWidth: 120 }} >  
-                            <InputLabel id="country-label" style={{ color: '#f7da00' }}>Country</InputLabel>
-
-                                <Select
-                                    labelId="country-label"
-                                    id="country-select"
-                                    value={country}
-                                    onChange={handleChange}
-                                    style={{ color: 'white'}}
-                                >
-                                    <MenuItem value="Switzerland">Switzerland</MenuItem>
-                                    <MenuItem value="Germany">Germany</MenuItem>
-                                </Select>
-                            </FormControl>
-
-                            <FormControl sx={{ m: 1, minWidth: 120 }}>  
-                                <InputLabel id="leagues-label" style={{ color: '#f7da00' }}>Leagues</InputLabel>
-                                <Select
-                                    labelId="leagues-label"
-                                    id="leagues-select"
-                                    multiple
-                                    value={league}
-                                    onChange={handleMultiLeagueChange}
-                                    input={<OutlinedInput label="Choose Leagues" />}
-                                    renderValue={(selected) => selected.join(', ')}
-                                    MenuProps={MenuProps}
-                                    style={{ color: 'white' }}
-                                >
-                                    <MenuItem value="Bundesliga">
-                                        <Checkbox checked={league.includes('Bundesliga')} />
-                                        Bundesliga
-                                    </MenuItem>
-                                    <MenuItem value="Premier League">
-                                        <Checkbox checked={league.includes('Premier League')} />
-                                        Premier League
-                                    </MenuItem>
-                                    <MenuItem value="Super League">
-                                        <Checkbox checked={league.includes('Super League')} />
-                                        Super League
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-                    </Toolbar>
-                </AppBar>           
-                <div id="table-container" className="table-container-custom" onClick={handleTableRowClick}>
-                    <table id="table-body"></table>
-                </div>
-                <div id="map" className="map-container"></div>
-            </div>
-        </div>
-    );
 };
 
 export default Startpage;

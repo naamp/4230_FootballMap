@@ -1,27 +1,22 @@
-import React from 'react';
-
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Startpage from './startpage.js';
 import Squadoverview from './squadoverview.js';
 import Playerorigin from './playerorigin.js';
 import Transferhistory from './transferhistory.js';
 
-
-
-const MainApp = () => {
+const App = () => {
   return (
-    <div>
-
-<div id="popup" className="ol-popup">
-    <a href="#" id="popup-closer" className="ol-popup-closer">×</a>
-    <div id="popup-content"></div>
-</div>
-      <Startpage />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Startpage/>}/>
+        <Route path="/playerorigin" element={<Playerorigin/>}/>
+        <Route path="/squadoverview" element={<Squadoverview/>}/>
+        <Route path="/transferhistory" element={<Transferhistory/>}/>
+      </Routes>
+    </Router>
   );
 };
 
-export default MainApp;
-
-
-
+export default App;

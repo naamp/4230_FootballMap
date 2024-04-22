@@ -10,17 +10,22 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 
-import './App.css';
+import './squadoverview.css';
 import appbarstyle from './appbarstyle.js'; 
 
+import { useNavigate } from "react-router-dom";
 
-
-const Squadoverview = () => {
+const Squadoverview = (props) => {
   const [club, setClub] = React.useState('FC Luzern');
+  
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setClub(event.target.value);
   };
+
+
+  const credentials = props.credentials;
 
   return (
     <div>
@@ -28,7 +33,13 @@ const Squadoverview = () => {
         <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}>
           <Button 
             style={appbarstyle.button}  
-            startIcon={<HomeIcon style={{ color: '#f7da00' }} />}  
+            startIcon={<HomeIcon style={{ color: '#f7da00' }} />}
+            onClick={() => {
+              if (credentials) {
+                props.setUser(credentials);
+              }
+              navigate("/");
+            }}  
           >
             FootballMap
           </Button>
@@ -49,7 +60,7 @@ const Squadoverview = () => {
               </FormControl>
             </div>
             <div className="Title" style={appbarstyle.title}>
-            Squad Overview
+              Squad Overview
             </div>
           </div>
         </Toolbar>
