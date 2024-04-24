@@ -15,8 +15,11 @@ import appbarstyle from './appbarstyle.js';
 
 import { useNavigate } from "react-router-dom";
 
+import Startpage from './startpage.js';
+
 const Squadoverview = (props) => {
   const [club, setClub] = React.useState('FC Luzern');
+  const { map } = Startpage();  
   
   const navigate = useNavigate();
 
@@ -65,8 +68,9 @@ const Squadoverview = (props) => {
           </div>
         </Toolbar>
       </AppBar>
+      <div id="map" className="map-container"></div>
     </div>
   );
-};
+};  
 
 export default Squadoverview;

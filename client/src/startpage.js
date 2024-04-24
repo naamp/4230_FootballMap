@@ -1,8 +1,8 @@
 // Verantwortlich: Stefan
 // ToDo: Tabelle nur bei CH, ansonsten Karte ganze breite
-// möglichkeit, ganz Europa zu zeigen
-// suchfunktion in dropdown country
-// karte verschönern inkl. luftbild
+// Möglichkeit, ganz Europa zu zeigen
+// Karte verschönern inkl. luftbild
+// Button für Tabelle, Liste bei ausländischen Ligen
 
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map.js';
@@ -32,6 +32,7 @@ import './startpage.css';
 import appbarstyle from './appbarstyle.js';
 import { useNavigate } from "react-router-dom";
 
+// Konstanten für Menü-Styles
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -44,6 +45,7 @@ const MenuProps = {
 };
 
 const Startpage = () => {
+    // Zustandsvariablen der Komponenten
     const [popup, setPopup] = useState(null);
     const [vectorSource, setVectorSource] = useState(null);
     const [vectorLayer, setVectorLayer] = useState(null);
@@ -58,6 +60,7 @@ const Startpage = () => {
 
     const navigate = useNavigate();
 
+    // Funktion zum Zoomen auf sichtbare Features (Bounding Box um die Club-Icons)
     const zoomToVisibleFeatures = (source) => {
       if (!map || !source) {
           return;
@@ -84,43 +87,36 @@ const Startpage = () => {
           maxY = Math.max(maxY, extent[3]);
       });
   
-      // Zusätzlicher Rand
+      // Zusätzlicher Rand von 200px
       const padding = [200, 200, 200, 200];
   
       const extent = [minX, minY, maxX, maxY];
       map.getView().fit(extent, { padding, maxZoom: 16 });
   };
   
-  
-  
-
+  // Funktion zum Aktualisieren der gefilterten Ligen (gemäss Dropdown "leagues")
   const updateFilteredFeatures = (selectedLeagues) => {
     const features = vectorSource.getFeatures();
     const filteredFeatures = filterFeaturesByLeagues(features, selectedLeagues, country);
-
-    // Erstelle eine neue VectorSource mit den gefilterten Features
+    
     const newVectorSource = new VectorSource({
         format: new GeoJSON(),
         features: filteredFeatures
     });
-
-    // Aktualisiere den vectorLayer mit der neuen VectorSource
+    
     vectorLayer.setSource(newVectorSource);
-
-    // Rufe die zoomToVisibleFeatures Funktion auf, nachdem der vectorLayer aktualisiert wurde
     zoomToVisibleFeatures(newVectorSource);
 };
 
-  
-  
+  // Aufruf der Fetch-Funktion für Länder bei Änderungen in league und availableLeagues 
   useEffect(() => {
     if (vectorLayer && availableLeagues.length > 0) {
         updateFilteredFeatures(league);
-        zoomToVisibleFeatures();  // Zoom zur Bounding Box der sichtbaren Features
+        zoomToVisibleFeatures(); 
     }
-}, [league, availableLeagues]);  // Hier auch availableLeagues hinzufügen
+}, [league, availableLeagues]);  
 
-
+    // Funktion für die Buttons innerhalb des Pop-Ups
     const handleButtonClick = (page) => {
         switch(page) {
             case 'squadoverview':
@@ -134,63 +130,39 @@ const Startpage = () => {
         }
     };
 
+    // Funktion beim Wechseln des Drop-Downs "country"
     const handleChange = (event) => {
       const selectedCountry = event.target.value;
       setCountry(selectedCountry);
       fetchLeagues(selectedCountry);
     };
     
+    // Funktion beim Wechseln des Drop-Downs "leagues"
     const handleMultiLeagueChange = (event) => {
       const selectedLeagues = event.target.value;
       setLeague(selectedLeagues);
       updateFilteredFeatures(selectedLeagues);
-      zoomToVisibleFeatures();  // Zoom zur Bounding Box der sichtbaren Features
+      zoomToVisibleFeatures();  
   };
   
-  
-
-    const handleLeftClick = (event) => {
-        setLeftAnchorEl(event.currentTarget);
-        const startCenter = fromLonLat([8.1, 46.9]);
-        const startZoom = 8;
-        if (map) {
-            map.getView().setCenter(startCenter);
-            map.getView().setZoom(startZoom);
-        } else {
-            console.error('Map is not initialized yet');
-        }
-    };
-
+    // Schliessen des Pop-Ups
     const handleClose = () => {
         setLeftAnchorEl(null);
         setRightAnchorEl(null);
     };
 
-    const handleMenuItemClick = (event, item) => {
-        setSelectedItems([item]);
-        handleClose();
-    };
-
-    const handleCheckboxChange = (event, item) => {
-        if (event.target.checked) {
-            setSelectedItems([...selectedItems, item]);
-        } else {
-            setSelectedItems(selectedItems.filter(i => i !== item));
-        }
-    };
-
+    // Funktion zum Filtern der Club-Icons gemäss gewählter Ligen beim Drop-Down "leagues"
     const filterFeaturesByLeagues = (features, selectedLeagues, selectedCountry) => {
       return features.filter(feature => {
-          const featureLeagues = feature.getProperties().liga.split(','); // Wenn liga eine kommagetrennte Liste ist
+          const featureLeagues = feature.getProperties().liga.split(',');
           const featureCountry = feature.getProperties().land;
   
           return featureLeagues.some(league => selectedLeagues.includes(league.trim())) &&
                  featureCountry === selectedCountry;
       });
   };
-  
-  
-
+    
+    // Fetch der Länder (Verbindung zum Geoserver)
     const fetchCountries = () => {
         const geoserverWFSPointLayer = 'footballmap:vw_club_all';
 
@@ -207,6 +179,7 @@ const Startpage = () => {
             });
     };
 
+    // Fetch der Ligen (Verbindung zum Geoserver)
     const fetchLeagues = (selectedCountry) => {
       const geoserverWFSPointLayer = 'footballmap:vw_club_all';
     
@@ -227,11 +200,11 @@ const Startpage = () => {
                       }
                       return acc;
                   }, [])
-                  .map(item => item.league); // Nur die Liga-Namen extrahieren
+                  .map(item => item.league); 
     
-              setAvailableLeagues(leaguesWithWeight);  // Setze die verfügbaren Ligen
+              setAvailableLeagues(leaguesWithWeight);  
     
-              // Standardmäßig Liga mit Gewichtung = 1 auswählen
+              // Standardmässig Liga mit Gewichtung = 1 im Drop-Down "leagues" auswählen
               const defaultLeague = leaguesWithWeight.find(league => {
                   const weight = data.features.find(feature => feature.properties.liga === league)?.properties.gewichtung;
                   return weight === 1;
@@ -240,7 +213,6 @@ const Startpage = () => {
               if (defaultLeague) {
                   setLeague([defaultLeague]);
               } else {
-                  // Wenn keine Liga mit Gewichtung = 1 gefunden wurde, die ausgewählte Liga zurücksetzen
                   setLeague([]);
               }
           })
@@ -249,12 +221,7 @@ const Startpage = () => {
           });
     };
     
-  
-  
-  
-  
-  
-
+    // Initialisierung der Komponente: Einrichtung der Karte, Vektorlayer, Pop-up usw.
     useEffect(() => {
         fetchCountries();
 
@@ -273,6 +240,7 @@ const Startpage = () => {
   
         const newIconMap = {};
   
+        // Darstellen der Club-Icons
         const newVectorLayer = new VectorLayer({
             source: newVectorSource,
             style: function(feature) {
@@ -290,6 +258,7 @@ const Startpage = () => {
             }
         });
   
+        // Darstellen des Pop-Ups
         const newPopup = new Overlay({
             element: document.getElementById('popup'),
             autoPan: true,
@@ -298,10 +267,12 @@ const Startpage = () => {
             }
         });
   
+        // Darstellen der OSM-Karte
         const osmLayer = new TileLayer({
             source: new OSM()
         });
   
+        // Darstellen der Karte
         const newMap = new Map({
             layers: [
                 osmLayer,
@@ -320,6 +291,7 @@ const Startpage = () => {
   
         newMap.addOverlay(newPopup);
   
+        // Darstellen der Pop-Up inklusive Content und Buttons
         newMap.on('click', function(evt) {
             const feature = newMap.forEachFeatureAtPixel(evt.pixel, function(feature) {
                 return feature;
@@ -364,6 +336,7 @@ const Startpage = () => {
             }
         });
   
+        // Abfragen der Tabellen-Daten vom Geoserver
         fetch('http://localhost:8080/geoserver/wfs?service=WFS&' +
             'version=1.1.0&request=GetFeature&typename=' + geoserverWFSTableLayer +
             '&outputFormat=application/json')
@@ -393,12 +366,14 @@ const Startpage = () => {
         setMap(newMap);
     }, []);
 
+    // Fetchen der Ligen basierend auf dem gewählten Land ("Switzerland" = default)
     useEffect(() => {
       if (countries.length > 0 && countries.includes('Switzerland')) {
           fetchLeagues('Switzerland');
       }
     }, [countries]);
 
+    // Erstellung des HTML-Codes für die Tabelle basierend auf den Daten
     const createTableHtml = (data) => {
         let html = '<table>';
         html += '<tr><th>Name</th><th>Rank</th><th>Games</th><th>Won</th><th>Drawn</th><th>Lost</th><th>Goals For</th><th>Goals Against</th><th>Points</th></tr>';
@@ -409,6 +384,7 @@ const Startpage = () => {
         return html;
     };
 
+    // Zoom auf Club-Icon beim Klick auf die Tabelle
     const zoomToFeature = (name) => {
         const feature = vectorSource.getFeatures().find(feature => feature.get('name') === name);
         if (feature) {
@@ -416,23 +392,23 @@ const Startpage = () => {
             map.getView().fit(extent, { size: map.getSize(), maxZoom: 16});
         }
     };
-
     const handleTableRowClick = (event) => {
         const clickedRow = event.target.closest('tr');
         const name = clickedRow.dataset.name;
         zoomToFeature(name);
     };
 
+    // Return Hauptkomponente
     return (
         <div>
             <div className="standardAppBar"> 
-                <AppBar position="static" style={appbarstyle.appBar}> 
+                <AppBar position="static" style={appbarstyle.appBar}>
                     <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}> 
                     <Button 
                         style={appbarstyle.button}  
                         startIcon={<HomeIcon style={{ color: '#f7da00' }} />}  
                         aria-controls="left-menu"
-                        onClick={() => window.location.reload()}  // Seite neu laden beim Klicken
+                        onClick={() => window.location.reload()}  
                     >
                         FootballMap
                     </Button>
@@ -452,44 +428,38 @@ const Startpage = () => {
                                 </Select>
                             </FormControl>
                             <FormControl sx={{ m: 1, minWidth: 120 }}>  
-        <InputLabel id="leagues-label" style={{ color: '#f7da00' }}>Leagues</InputLabel>
-        <Select
-    labelId="leagues-label"
-    id="leagues-select"
-    multiple
-    value={league}
-    onChange={handleMultiLeagueChange}
-    input={<OutlinedInput label="Choose Leagues" />}
-    renderValue={(selected) => selected.join(', ')}
-    MenuProps={MenuProps}
-    style={{ color: 'white' }}
->
-    {availableLeagues.map(l => (
-        <MenuItem key={l} value={l}>
-            <Checkbox checked={league.includes(l)} />
-            {l}
-        </MenuItem>
-    ))}
-</Select>
-
-
-
-    </FormControl>
+                                <InputLabel id="leagues-label" style={{ color: '#f7da00' }}>Leagues</InputLabel>
+                                <Select
+                                    labelId="leagues-label"
+                                    id="leagues-select"
+                                    multiple
+                                    value={league}
+                                    onChange={handleMultiLeagueChange}
+                                    input={<OutlinedInput label="Choose Leagues" />}
+                                    renderValue={(selected) => selected.join(', ')}
+                                    MenuProps={MenuProps}
+                                    style={{ color: 'white' }}
+                                >
+                                    {availableLeagues.map(l => (
+                                        <MenuItem key={l} value={l}>
+                                            <Checkbox checked={league.includes(l)} />
+                                            {l}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </div>
                     </Toolbar>
                 </AppBar>
             </div>
-  
-            <div id="popup" className="ol-popup">
+              <div id="popup" className="ol-popup">
                 <a href="#" id="popup-closer" className="ol-popup-closer">×</a>
                 <div id="popup-content"></div>
-            </div>
-  
-            <div id="table-container" className="table-container-custom" onClick={handleTableRowClick}>
-                <table id="table-body"></table>
-            </div>
-  
-            <div id="map" className="map-container"></div>
+                </div>
+                <div id="table-container" className="table-container-custom" onClick={handleTableRowClick}>
+                    <table id="table-body"></table>
+                </div>
+              <div id="map" className="map-container"></div>
         </div>
     );
 };
