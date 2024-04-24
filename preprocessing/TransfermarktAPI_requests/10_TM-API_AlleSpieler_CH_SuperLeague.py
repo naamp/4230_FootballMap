@@ -29,7 +29,7 @@ def get_all_players(club_ids):
 all_players = get_all_players(club_ids)
 
 # Speichern der Spielerdaten in einer JSON-Datei
-with open("AlleSpieler_SuperLeague.json", "w", encoding="utf-8") as f:
+with open("AlleSpieler_SuperLeague.json", "w", encoding="utf-8") as f:                          # Filname kann angepasst werden #WARNING
     json.dump(all_players, f, ensure_ascii=False, indent=4)
 
-print("Alle Spielerdaten wurden erfolgreich abgerufen und in 'all_players.json' gespeichert.")
+print("Alle Spielerdaten wurden erfolgreich abgerufen und gespeichert.")

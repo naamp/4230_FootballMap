@@ -1,20 +1,21 @@
 import json
 
-grundlagen_file = "AlleLigenAlleClubs_formatiert.json"
-ziel_file = "AlleLigenAlleClubs_formatiert_v2.json"
+# Definition Filename
+grundlagen_file = "AlleLigenAlleClubs.json"             #Filename kann angepasst werden # WARNING
+ziel_file = "AlleLigenAlleClubs_formatiert.json"        #Filename kann angepasst werden # WARNING
 
 # Funktion zur Konvertierung eines Vereins
 def convert_club(club, stadium_id):
-    official_name = club.get("officialName", "")  # Überprüfen, ob das Feld vorhanden ist
-    stadium_name = club.get("stadiumName", "")  # Überprüfen, ob das Feld vorhanden ist
-    liga_id_tm = club["league"]["id"] if "league" in club and "id" in club["league"] else ""  # Überprüfen, ob das Feld vorhanden ist
+    official_name = club.get("officialName", "")
+    stadium_name = club.get("stadiumName", "")
+    liga_id_tm = club["league"]["id"] if "league" in club and "id" in club["league"] else ""
     return {
         "club_id_tm": club["id"],
         "name": club["name"],
         "officialName": official_name,
         "logo": club["image"],
-        "ort": club.get("addressLine2", ""),  # Überprüfen, ob das Feld vorhanden ist
-        "land": club.get("addressLine3", ""),  # Überprüfen, ob das Feld vorhanden ist
+        "ort": club.get("addressLine2", ""),
+        "land": club.get("addressLine3", ""),
         "liga_id_tm": liga_id_tm,
         "stadium_name": stadium_name,
         "kapazität": club.get("stadiumSeats", ""),
@@ -40,7 +41,7 @@ grundlagen_data = load_data(grundlagen_file)
 
 # Konvertierung der Daten in das Ziel-Format
 ziel_data = []
-stadium_id = 1001  # Startnummer für das Stadion-ID
+stadium_id = 1001                                      # Startnummer kann angepasst werden! # WARNING 
 for club in grundlagen_data:
     converted_club = convert_club(club, stadium_id)
     ziel_data.append(converted_club)

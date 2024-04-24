@@ -16,8 +16,8 @@ def write_to_csv(data, csv_file):
 
 # Hauptfunktion zum Ausführen des Programms
 def main():
-    json_file = "AlleLigenAlleClubs_formatiert.json"
-    csv_file = "AlleLigenAlleClubs_formatiert.csv"
+    json_file = "AlleLigenAlleClubs_formatiert.json"            #Filname kann angepasst werden #WARNING
+    csv_file = "AlleLigenAlleClubs_formatiert.csv"              #Filname kann angepasst werden #WARNING
 
     # Laden der Daten aus der JSON-Datei
     data = load_data(json_file)

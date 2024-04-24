@@ -2,21 +2,21 @@ import json
 import requests
 
 def get_coordinates(city, club_name):
-    url = f'https://nominatim.openstreetmap.org/search.php?q={club_name}&format=json'
+    url = f'https://nominatim.openstreetmap.org/search.php?q={club_name}&format=json'                               # Suche mit Nominatim Openstreetmap nach Clubnamen
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
         stadium_entry = None
         # Suche nach dem Stadion in den Ergebnissen
         for result in data:
-            if 'type' in result and result['type'] == 'stadium':
+            if 'type' in result and result['type'] == 'stadium':                                                    # Filtern der Resultate -> Ergebnis mit Typ = Stadion
                 latitude = float(result['lat'])
                 longitude = float(result['lon'])
                 print(f"Koordinaten gefunden für Club '{club_name}': Lat {latitude}, Lon {longitude}")
                 return latitude, longitude
             elif 'name' in result and result['name'] == club_name:
                 stadium_entry = result
-        if stadium_entry:
+        if stadium_entry:                                                                                           # Filtern der Resultate -> Ergebnis mit Typ = Unbekannt
             latitude = float(stadium_entry['lat'])
             longitude = float(stadium_entry['lon'])
             print(f"Koordinaten gefunden für Stadion '{club_name}' (mit Typ '{stadium_entry.get('type', 'unbekannt')}'): Lat {latitude}, Lon {longitude}")
@@ -30,7 +30,7 @@ def get_coordinates(city, club_name):
         return None
 
 # Laden der Daten aus der JSON-Datei
-with open('AlleLigenAlleClubs_1.json', 'r') as file:
+with open('Clubs_Coordinates_not_found.json', 'r') as file:                                                         # Filname kann angepasst werden #WARNING
     data = json.load(file)
 
 # Iteration über die Klubs
@@ -46,7 +46,7 @@ for club in data:
             club["stadium_coordinates"] = coordinates
 
 # Aktualisierte Daten speichern
-with open('AlleLigenAlleClubs_updated.json', 'w') as file:
+with open('Clubs_updated.json', 'w') as file:                                                                       # Filname kann angepasst werden #WARNING
     json.dump(data, file, indent=4)
 
 print("Das Programm wurde erfolgreich ausgeführt und die Daten wurden aktualisiert.")
