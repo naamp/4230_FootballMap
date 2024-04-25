@@ -1,6 +1,4 @@
-// verantwortlich: Stefan
-
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -9,26 +7,18 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
+import { useNavigate } from "react-router-dom";
 
 import './squadoverview.css';
 import appbarstyle from './appbarstyle.js'; 
 
-import { useNavigate } from "react-router-dom";
-
-import Startpage from './startpage.js';
-
-const Squadoverview = (props) => {
-  const [club, setClub] = React.useState('FC Luzern');
-  const { map } = Startpage();  
-  
+const Squadoverview = ({ countries, country, league, availableLeagues, setCountry, setLeague }) => {
+  const [club, setClub] = useState('FC Luzern');
   const navigate = useNavigate();
 
   const handleChange = (event) => {
     setClub(event.target.value);
   };
-
-
-  const credentials = props.credentials;
 
   return (
     <div>
@@ -38,9 +28,6 @@ const Squadoverview = (props) => {
             style={appbarstyle.button}  
             startIcon={<HomeIcon style={{ color: '#f7da00' }} />}
             onClick={() => {
-              if (credentials) {
-                props.setUser(credentials);
-              }
               navigate("/");
             }}  
           >

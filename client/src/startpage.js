@@ -32,6 +32,8 @@ import './startpage.css';
 import appbarstyle from './appbarstyle.js';
 import { useNavigate } from "react-router-dom";
 
+
+
 // Konstanten für Menü-Styles
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -57,6 +59,7 @@ const Startpage = () => {
     const [leftAnchorEl, setLeftAnchorEl] = useState(null);
     const [rightAnchorEl, setRightAnchorEl] = useState(null);
     const [availableLeagues, setAvailableLeagues] = useState([]);
+    
 
     const navigate = useNavigate();
 
@@ -374,29 +377,68 @@ const Startpage = () => {
     }, [countries]);
 
     // Erstellung des HTML-Codes für die Tabelle basierend auf den Daten
-    const createTableHtml = (data) => {
-        let html = '<table>';
-        html += '<tr><th>Name</th><th>Rank</th><th>Games</th><th>Won</th><th>Drawn</th><th>Lost</th><th>Goals For</th><th>Goals Against</th><th>Points</th></tr>';
-        data.forEach(row => {
-            html += `<tr class="table-row" data-name="${row.name}"><td class="name">${row.name}</td><td>${row.rank}</td><td>${row.games}</td><td>${row.won}</td><td>${row.drawn}</td><td>${row.lost}</td><td>${row.goalsFor}</td><td>${row.goalsAgainst}</td><td>${row.points}</td></tr>`;
+        const createTableHtml = (data) => {
+            // Sortieren des Datenarrays nach dem Rang
+            const sortedData = data.sort((a, b) => a.rank - b.rank);
+            
+            let html = '<table>';
+            html += '<tr><th>Rank</th><th>Club</th><th>G</th><th>W</th><th>D</th><th>L</th><th>Goals</th><th>Points</th></tr>';
+            sortedData.forEach(row => {
+                // Zusammenfassen der Goals For und Goals Against in einem String
+                const goals = `${row.goalsFor}:${row.goalsAgainst}`;
+                
+                // Setzen der Hintergrundfarbe und fett darstellen der Zahlen in der "Rank"-Spalte
+                let rankStyle = '';
+                if (row.rank >= 1 && row.rank <= 6) {
+                    rankStyle = 'background-color: #d0ffd0;';  // Hellgrün
+                } else if (row.rank >= 7 && row.rank <= 12) {
+                    rankStyle = 'background-color: #ffd0d0;';  // Hellrot
+                }
+                
+                html += `<tr class="table-row" data-name="${row.name}"><td style="font-weight: bold; ${rankStyle}">${row.rank}</td><td><button class="zoom-button" data-name="${row.name}" style="margin-left: 10px;">${row.name}</button></td><td>${row.games}</td><td>${row.won}</td><td>${row.drawn}</td><td>${row.lost}</td><td>${goals}</td><td>${row.points}</td></tr>`;
         });
+        
         html += '</table>';
         return html;
     };
 
-    // Zoom auf Club-Icon beim Klick auf die Tabelle
-    const zoomToFeature = (name) => {
-        const feature = vectorSource.getFeatures().find(feature => feature.get('name') === name);
-        if (feature) {
-            const extent = feature.getGeometry().getExtent();
-            map.getView().fit(extent, { size: map.getSize(), maxZoom: 16});
-        }
-    };
-    const handleTableRowClick = (event) => {
-        const clickedRow = event.target.closest('tr');
-        const name = clickedRow.dataset.name;
-        zoomToFeature(name);
-    };
+    useEffect(() => {
+        // Zoom auf Club-Icon beim Klick auf die Tabelle
+        const zoomToFeature = (name) => {
+            if (!vectorSource) {
+                console.error('vectorSource is not initialized');
+                return;
+            }
+    
+            const feature = vectorSource.getFeatures().find(feature => feature.get('name') === name);
+            if (feature) {
+                const extent = feature.getGeometry().getExtent();
+                map.getView().fit(extent, { size: map.getSize(), maxZoom: 16 });
+            } else {
+                console.error('Feature not found for name:', name);
+            }
+        };
+    
+        // Event Delegation für Tabellencontainer
+        const handleTableClick = (event) => {
+            const clickedButton = event.target.closest('.zoom-button');
+            if (clickedButton) {
+                const name = clickedButton.getAttribute('data-name');
+                zoomToFeature(name);
+            }
+        };
+    
+        const tableContainer = document.getElementById('table-container');
+        tableContainer.addEventListener('click', handleTableClick);
+    
+        // Cleanup des Event Listeners
+        return () => {
+            tableContainer.removeEventListener('click', handleTableClick);
+        };
+    }, [vectorSource, map]); // Abhängigkeiten für den useEffect hinzugefügt
+    
+    
+    
 
     // Return Hauptkomponente
     return (
@@ -456,7 +498,7 @@ const Startpage = () => {
                 <a href="#" id="popup-closer" className="ol-popup-closer">×</a>
                 <div id="popup-content"></div>
                 </div>
-                <div id="table-container" className="table-container-custom" onClick={handleTableRowClick}>
+                <div id="table-container" className="table-container-custom">
                     <table id="table-body"></table>
                 </div>
               <div id="map" className="map-container"></div>
