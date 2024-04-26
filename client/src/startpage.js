@@ -59,6 +59,9 @@ const Startpage = () => {
     const [leftAnchorEl, setLeftAnchorEl] = useState(null);
     const [rightAnchorEl, setRightAnchorEl] = useState(null);
     const [availableLeagues, setAvailableLeagues] = useState([]);
+
+    const [clickedName, setClickedName] = useState(null); 
+
     
 
     const navigate = useNavigate();
@@ -119,11 +122,13 @@ const Startpage = () => {
     }
 }, [league, availableLeagues]);  
 
+    
+
     // Funktion für die Buttons innerhalb des Pop-Ups
     const handleButtonClick = (page) => {
         switch(page) {
             case 'squadoverview':
-                navigate('/squadoverview');
+                navigate(`/squadoverview?club=${encodeURIComponent(clickedName)}`); // Club-Namen als Parameter hinzufügen
                 break;
             case 'playerorigin':
                 navigate('/playerorigin');
@@ -305,6 +310,8 @@ const Startpage = () => {
                 const name = feature.get('name');
                 const stadiumname = feature.get('stadium_name');
                 const kapazität = feature.get('kapazität');
+
+                setClickedName(name); // Speichere den geklickten Namen
     
                 const popupContent = `
                     <strong>${name}</strong><br>
@@ -501,6 +508,10 @@ const Startpage = () => {
                 <div id="table-container" className="table-container-custom">
                     <table id="table-body"></table>
                 </div>
+                    <div style={{ position: 'fixed', bottom: '10px', right: '10px', backgroundColor: 'white', padding: '10px', border: '1px solid black' }}>
+                    {clickedName && <p>Geklickter Name: {clickedName}</p>}
+                </div>
+
               <div id="map" className="map-container"></div>
         </div>
     );
