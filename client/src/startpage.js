@@ -512,7 +512,7 @@ const Startpage = () => {
                     {clickedName && <p>Geklickter Name: {clickedName}</p>}
                 </div>
 
-              <div id="map" className="map-container"></div>
+              <div id="map" className="map_startpage"></div>
         </div>
     );
 };

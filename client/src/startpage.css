@@ -1,7 +1,7 @@
 /* CSS für startpage.js ------------------------------------------------------------------------- */
 
 /* CSS für die Karte */
-.map-container {
+.map_startpage {
   position: absolute;
   top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
   left: 0;

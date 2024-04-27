@@ -1,0 +1,42 @@
+/* CSS für die Karte */
+.map_squadoverview {
+    position: absolute;
+    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+    left: 0;
+    width: 50%;
+    height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+    padding: 20px
+  }
+  
+/* CSS für die Spieler-Tabelle */
+.player-table {
+    position: absolute;
+    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+    right: 0;
+    width: 50%;
+    height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto; /* Scrollen, falls die Tabelle zu groß wird */
+  }
+  
+  .player-table h2 {
+    margin-bottom: 10px;
+  }
+  
+  .player-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .player-table th,
+  .player-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .player-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
