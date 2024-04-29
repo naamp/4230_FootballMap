@@ -1,9 +1,3 @@
-// Verantwortlich: Stefan
-// ToDo: Tabelle nur bei CH, ansonsten Karte ganze breite
-// Möglichkeit, ganz Europa zu zeigen
-// Karte verschönern inkl. luftbild
-// Button für Tabelle, Liste bei ausländischen Ligen
-
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map.js';
 import TileLayer from 'ol/layer/Tile.js';
@@ -32,8 +26,6 @@ import './startpage.css';
 import appbarstyle from './appbarstyle.js';
 import { useNavigate } from "react-router-dom";
 
-
-
 // Konstanten für Menü-Styles
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -59,11 +51,7 @@ const Startpage = () => {
     const [leftAnchorEl, setLeftAnchorEl] = useState(null);
     const [rightAnchorEl, setRightAnchorEl] = useState(null);
     const [availableLeagues, setAvailableLeagues] = useState([]);
-
-    const [clickedName, setClickedName] = useState(null); 
-
-    
-
+    const [clickedName, setClickedName] = useState(null);
     const navigate = useNavigate();
 
     // Funktion zum Zoomen auf sichtbare Features (Bounding Box um die Club-Icons)
@@ -122,22 +110,22 @@ const Startpage = () => {
     }
 }, [league, availableLeagues]);  
 
-    
-
     // Funktion für die Buttons innerhalb des Pop-Ups
-    const handleButtonClick = (page) => {
-    switch(page) {
-        case 'squadoverview':
-            // Club-Namen als Parameter hinzufügen und auf die Seite "Squad Overview" weiterleiten
-            navigate(`/squadoverview?club=${encodeURIComponent(clickedName)}`);
-            break;
-        case 'playerorigin':
-            navigate('/playerorigin');
-            break;
-        default:
-            console.error('Unbekannte Seite');
-    }
-};
+    const handleButtonClick = (page, clubName) => {
+        switch(page) {
+            case 'squadoverview':
+                // Club-Namen als Parameter hinzufügen und auf die Seite "Squad Overview" weiterleiten
+                navigate(`/squadoverview?club=${encodeURIComponent(clubName)}`);
+                break;
+            case 'playerorigin':
+                // Club-Namen als Parameter hinzufügen und auf die Seite "Player Origin" weiterleiten
+                navigate(`/playerorigin?club=${encodeURIComponent(clubName)}`);
+                break;
+            default:
+                console.error('Unbekannte Seite');
+        }
+    };
+    
 
     // Funktion beim Wechseln des Drop-Downs "country"
     const handleChange = (event) => {
@@ -305,15 +293,16 @@ const Startpage = () => {
             const feature = newMap.forEachFeatureAtPixel(evt.pixel, function(feature) {
                 return feature;
             });
-
+        
             if (feature) {
                 const coordinates = feature.getGeometry().getCoordinates();
                 const name = feature.get('name');
                 const stadiumname = feature.get('stadium_name');
                 const kapazität = feature.get('kapazität');
-
-                setClickedName(name); // Speichere den geklickten Namen
-    
+        
+                // Setze den geklickten Namen hier
+                setClickedName(name);
+        
                 const popupContent = `
                     <strong>${name}</strong><br>
                     <strong>Stadion:</strong> ${stadiumname}<br>
@@ -321,32 +310,32 @@ const Startpage = () => {
                     <button id="button1" style="margin-right: 10px;">Squad Overview</button>
                     <button id="button2">Player Origin</button>
                 `;
-    
+        
                 newPopup.setPosition(coordinates);
                 const popupElement = newPopup.getElement();
                 popupElement.innerHTML = popupContent;
-    
+        
                 popupElement.style.fontSize = '16px';
                 popupElement.style.fontFamily = 'Arial, sans-serif';
                 popupElement.style.color = '#311313';
-  
+        
                 const button1 = popupElement.querySelector('#button1');
                 const button2 = popupElement.querySelector('#button2');
-    
+        
                 button1.addEventListener('click', () => {
                     console.log('Schaltfläche 1 wurde geklickt!');
-                    handleButtonClick('squadoverview');
+                    handleButtonClick('squadoverview', name);
                 });
-    
+        
                 button2.addEventListener('click', () => {
                     console.log('Schaltfläche 2 wurde geklickt!');
-                    handleButtonClick('playerorigin');
+                    handleButtonClick('playerorigin', name);
                 });
             } else {
                 newPopup.setPosition(undefined);
             }
         });
-  
+        
         // Abfragen der Tabellen-Daten vom Geoserver
         fetch('http://localhost:8080/geoserver/wfs?service=WFS&' +
             'version=1.1.0&request=GetFeature&typename=' + geoserverWFSTableLayer +
@@ -509,9 +498,7 @@ const Startpage = () => {
                 <div id="table-container" className="table-container-custom">
                     <table id="table-body"></table>
                 </div>
-                    <div style={{ position: 'fixed', bottom: '10px', right: '10px', backgroundColor: 'white', padding: '10px', border: '1px solid black' }}>
-                    {clickedName && <p>Geklickter Name: {clickedName}</p>}
-                </div>
+
 
               <div id="map" className="map_startpage"></div>
         </div>
