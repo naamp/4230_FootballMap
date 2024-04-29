@@ -1,6 +1,5 @@
 // transferhistory (verantwortlich: Nando)
 // Inhalt: historymap, toolbar, ...
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Map from 'ol/Map.js';
@@ -26,7 +25,7 @@ import appbarstyle from './appbarstyle.js';
 import { useNavigate } from "react-router-dom";
 
 const Transferhistory = () => {
-  const [player, setPlayer] = useState();
+  const [player, setPlayer] = useState(); // Player state initialized with empty string
   const [players, setPlayers] = useState([]);
   const [transferLines, setTransferLines] = useState([]);
   const [map, setMap] = useState(null);
@@ -39,10 +38,12 @@ const Transferhistory = () => {
   const fetchPlayers = async () => {
     try {
       const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json');
+      console.log('Fetched player data:', response.data);
 
       if (response && response.data && response.data.features) {
         const playerData = response.data.features.map(feature => feature.properties.spieler_name);
         setPlayers(playerData);
+        setPlayer(playerData[0]); // Set the first player as default value
       } else {
         console.error('No player data found in the response:', response);
       }
@@ -52,12 +53,13 @@ const Transferhistory = () => {
   };
 
   const handleChange = (event) => {
-    setPlayer(event.target.value);
+    setPlayer(event.target.value); // Set the selected player
   };
 
   const fetchTransferLines = async () => {
     try {
       const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_transferlinien&outputFormat=application/json');
+      console.log('Fetched transfer lines data:', response.data);
 
       if (response && response.data && response.data.features) {
         const transferLinesData = response.data.features.map(feature => ({

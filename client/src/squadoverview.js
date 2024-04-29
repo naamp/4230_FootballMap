@@ -69,7 +69,6 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
     }
   }, [map, clubs, selectedClub]);
 
-  
 
   const handleChange = (event) => {
     const newClub = event.target.value;
