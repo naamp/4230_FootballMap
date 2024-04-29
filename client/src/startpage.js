@@ -126,17 +126,18 @@ const Startpage = () => {
 
     // Funktion für die Buttons innerhalb des Pop-Ups
     const handleButtonClick = (page) => {
-        switch(page) {
-            case 'squadoverview':
-                navigate(`/squadoverview?club=${encodeURIComponent(clickedName)}`); // Club-Namen als Parameter hinzufügen
-                break;
-            case 'playerorigin':
-                navigate('/playerorigin');
-                break;
-            default:
-                console.error('Unbekannte Seite');
-        }
-    };
+    switch(page) {
+        case 'squadoverview':
+            // Club-Namen als Parameter hinzufügen und auf die Seite "Squad Overview" weiterleiten
+            navigate(`/squadoverview?club=${encodeURIComponent(clickedName)}`);
+            break;
+        case 'playerorigin':
+            navigate('/playerorigin');
+            break;
+        default:
+            console.error('Unbekannte Seite');
+    }
+};
 
     // Funktion beim Wechseln des Drop-Downs "country"
     const handleChange = (event) => {
