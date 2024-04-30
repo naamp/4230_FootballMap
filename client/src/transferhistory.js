@@ -1,3 +1,4 @@
+// Transferhistory Nando funktionierende Version
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Map from 'ol/Map.js';
@@ -11,8 +12,8 @@ import GeoJSON from 'ol/format/GeoJSON.js';
 import Icon from 'ol/style/Icon.js';
 import Style from 'ol/style/Style.js';
 import Feature from 'ol/Feature.js';
-import Point from 'ol/geom/Point.js'; // Import Point class
-import { useNavigate } from 'react-router-dom';
+import Point from 'ol/geom/Point.js';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -33,26 +34,46 @@ const Transferhistory = () => {
   const [clubIcons, setClubIcons] = useState([]);
   const [map, setMap] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json');
+
+        if (response && response.data && response.data.features) {
+          const playerData = response.data.features.map(feature => feature.properties.name);
+          setPlayers(playerData);
+          setPlayer(playerData[0]);
+        } else {
+          console.error('No player data found in the response:', response);
+        }
+      } catch (error) {
+        console.error('Error fetching players:', error);
+      }
+    };
+
     fetchPlayers();
   }, []);
 
-  const fetchPlayers = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json');
+  useEffect(() => {
+    const getPlayerFromUrl = () => {
+      const params = new URLSearchParams(location.search);
+      return params.get('player') || '';
+    };
 
-      if (response && response.data && response.data.features) {
-        const playerData = response.data.features.map(feature => feature.properties.spieler_name);
-        setPlayers(playerData);
-        setPlayer(playerData[0]);
-      } else {
-        console.error('No player data found in the response:', response);
-      }
-    } catch (error) {
-      console.error('Error fetching players:', error);
-    }
-  };
+    setPlayer(getPlayerFromUrl());
+
+    const handleUrlChange = () => {
+      setPlayer(getPlayerFromUrl());
+    };
+
+    window.addEventListener('popstate', handleUrlChange);
+
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+    };
+  }, [location]);
 
   const handleChange = (event) => {
     setPlayer(event.target.value);
