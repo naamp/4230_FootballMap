@@ -7,12 +7,10 @@ import OSM from 'ol/source/OSM.js';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import { fromLonLat } from 'ol/proj';
-import GeoJSON from 'ol/format/GeoJSON.js';
 import Icon from 'ol/style/Icon.js';
-import Style from 'ol/style/Style.js';
 import Feature from 'ol/Feature.js';
 import Point from 'ol/geom/Point.js';
-import { useNavigate, useLocation } from 'react-router-dom'; // Importiere useLocation
+import { useNavigate, useLocation } from 'react-router-dom'; 
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,45 +24,61 @@ import HomeIcon from '@mui/icons-material/Home';
 import './transferhistory.css';
 import appbarstyle from './appbarstyle.js';
 
+import Style from 'ol/style/Style.js';
+
+
 const Transferhistory = () => {
-  const [player, setPlayer] = useState();
+  const [player, setPlayer] = useState('');
   const [players, setPlayers] = useState([]);
-  const [transferLines, setTransferLines] = useState([]);
   const [clubIcons, setClubIcons] = useState([]);
   const [map, setMap] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Verwende useLocation-Hook, um die URL zu erhalten
+  const location = useLocation(); 
 
-  const getPlayerFromUrl = () => {
-    const params = new URLSearchParams(location.search); // Verwende location.search
-    return params.get('player') || '';
+  const getParameterByName = (name, url) => {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
   };
 
   useEffect(() => {
-    const handleUrlChange = () => {
-      setPlayer(getPlayerFromUrl());
-    };
+    const club = getParameterByName('club');
+    const playerFromUrl = getParameterByName('player');
 
-    window.addEventListener('popstate', handleUrlChange);
+    if (club) {
+      fetchPlayers(club);
+    } else {
+      console.error('No club provided in URL');
+    }
 
-    fetchPlayers();
+    if (playerFromUrl) {
+      setPlayer(playerFromUrl);
+    }
 
-    return () => {
-      window.removeEventListener('popstate', handleUrlChange);
-    };
+    fetchClubIcons();
+
   }, []);
 
-  const fetchPlayers = async () => {
+  useEffect(() => {
+    if (players.length > 0) {
+      const sortedPlayers = [...players].sort((a, b) => a.localeCompare(b));
+      setPlayers(sortedPlayers);
+    }
+  }, [players]);
+
+  const fetchPlayers = async (club) => {
     try {
-      const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json');
+      const response = await axios.get(`http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json&cql_filter=club='${club}'`);
 
       if (response && response.data && response.data.features) {
         const playerData = response.data.features.map(feature => feature.properties.name);
         setPlayers(playerData);
-        const playerFromUrl = getPlayerFromUrl();
-        setPlayer(playerFromUrl || playerData[0]);
       } else {
-        console.error('No player data found in the response:', response);
+        console.error('No player data found for club:', club);
       }
     } catch (error) {
       console.error('Error fetching players:', error);
@@ -72,32 +86,13 @@ const Transferhistory = () => {
   };
 
   const handleChange = (event) => {
-    setPlayer(event.target.value);
+    const selectedPlayer = event.target.value;
+    setPlayer(selectedPlayer);
+    const urlSearchParams = new URLSearchParams(location.search);
+    urlSearchParams.set('player', selectedPlayer);
+    navigate(`${location.pathname}?club=${encodeURIComponent(getParameterByName('club'))}&${urlSearchParams.toString()}`);
   };
-
-  const fetchTransferLines = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_transferlinien&outputFormat=application/json');
-
-      if (response && response.data && response.data.features) {
-        const transferLinesData = response.data.features.map(feature => ({
-          id: feature.properties.id,
-          vonClubName: feature.properties.von_club_name,
-          nachClubName: feature.properties.nach_club_name,
-          spielerName: feature.properties.spieler_name,
-          vonClub: feature.properties.von_club,
-          nachClub: feature.properties.nach_club,
-          linie: feature.geometry
-        }));
-        setTransferLines(transferLinesData);
-      } else {
-        console.error('No transfer lines data found in the response:', response);
-      }
-    } catch (error) {
-      console.error('Error fetching transfer lines:', error);
-    }
-  };
-
+  
   const fetchClubIcons = async () => {
     try {
       const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_club_all&outputFormat=application/json');
@@ -128,16 +123,10 @@ const Transferhistory = () => {
   const initializeMap = () => {
     const vectorLayer = new VectorLayer({
       source: new VectorSource({
-        features: [
-          ...transferLines.map(transferLine => {
-            const geojsonFormat = new GeoJSON();
-            return geojsonFormat.readFeature(transferLine.linie);
-          }),
-          ...clubIcons
-        ]
+        features: clubIcons
       })
     });
-
+  
     const newMap = new Map({
       layers: [
         new TileLayer({
@@ -151,20 +140,15 @@ const Transferhistory = () => {
       }),
       target: 'map'
     });
-
+  
     setMap(newMap);
   };
-
+  
   useEffect(() => {
-    fetchTransferLines();
-    fetchClubIcons();
-  }, []);
-
-  useEffect(() => {
-    if (transferLines.length > 0 && clubIcons.length > 0) {
+    if (clubIcons.length > 0) {
       initializeMap();
     }
-  }, [transferLines, clubIcons]);
+  }, [clubIcons]);
 
   return (
     <div>
@@ -193,8 +177,6 @@ const Transferhistory = () => {
                   {players.map(player => (
                     <MenuItem key={player} value={player}>
                       <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {/* Hier kannst du das Bild des Spielers einfügen, falls verfügbar */}
-                        { /* <img src={player.image} alt={player} style={{ width: '20px', height: '20px', marginRight: '5px' }} /> */ }
                         {player}
                       </div>
                     </MenuItem>

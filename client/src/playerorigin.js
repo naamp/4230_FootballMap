@@ -1,3 +1,5 @@
+// ToDo: Zoom-Funktion verbessern (besser auf zentrum), Legende, Hover-Funktion, Klasseneinteilung
+
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -7,7 +9,6 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import VectorLayer from 'ol/layer/Vector';
 import { Stroke, Style, Fill } from 'ol/style';
-import Overlay from 'ol/Overlay';
 import './playerorigin.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -24,8 +25,9 @@ import axios from 'axios';
 const Playerorigin = (props) => {
     const [clubs, setClubs] = useState([]);
     const [club, setClub] = useState('');
-    const [highlightedFeature, setHighlightedFeature] = useState(null);
-    const [playerCounts, setPlayerCounts] = useState({}); 
+    const [playerCounts, setPlayerCounts] = useState({});
+    const [mapInstance, setMapInstance] = useState(null);
+    const [selectedCountry, setSelectedCountry] = useState(null);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -41,9 +43,67 @@ const Playerorigin = (props) => {
 
     useEffect(() => {
         if (club) {
-            fetchPlayerCounts(club); 
+            fetchPlayerCounts(club);
         }
     }, [club]);
+
+    useEffect(() => {
+        const geoserverLandLayer = 'footballmap:land';
+        const landVectorSource = new VectorSource({
+            format: new GeoJSON(),
+            url: function(extent) {
+                return `http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=${geoserverLandLayer}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
+            },
+            strategy: bboxStrategy
+        });
+
+        const landVectorLayer = new VectorLayer({
+            source: landVectorSource,
+            style: function(feature) {
+                const nationalität = feature.get('name');
+                const playerCount = playerCounts[nationalität] || 0;
+                let color;
+                if (playerCount >= 5) {
+                    color = 'rgba(0, 0, 0, 0.8)';
+                } else if (playerCount === 4) {
+                    color = 'rgba(51, 51, 51, 0.8)';
+                } else if (playerCount === 3) {
+                    color = 'rgba(102, 102, 102, 0.8)';
+                } else if (playerCount === 2) {
+                    color = 'rgba(153, 153, 153, 0.8)';
+                } else if (playerCount === 1) {
+                    color = 'rgba(204, 204, 204, 0.8)';
+                } else {
+                    color = 'rgba(255, 255, 255, 0.8)';
+                }
+                return new Style({
+                    fill: new Fill({
+                        color: color
+                    }),
+                    stroke: new Stroke({
+                        color: selectedCountry === nationalität ? 'yellow' : '#000000',
+                        width: selectedCountry === nationalität ? 2 : 1
+                    })
+                });
+            }
+        });
+
+        const newMap = new Map({
+            layers: [landVectorLayer],
+            view: new View({
+                center: fromLonLat([8.1, 46.9]),
+                zoom: 5,
+                projection: 'EPSG:3857'
+            }),
+            target: 'map'
+        });
+
+        setMapInstance(newMap);
+
+        return () => {
+            newMap.setTarget(undefined);
+        };
+    }, [playerCounts, selectedCountry]);
 
     const handleChange = (event) => {
         const newClub = event.target.value;
@@ -92,107 +152,19 @@ const Playerorigin = (props) => {
         }
     };
 
-    useEffect(() => {
-        const geoserverLandLayer = 'footballmap:land';
-        const landVectorSource = new VectorSource({
-            format: new GeoJSON(),
-            url: function(extent) {
-                return `http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=${geoserverLandLayer}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
-            },
-            strategy: bboxStrategy
-        });
-
-        const landVectorLayer = new VectorLayer({
-            source: landVectorSource,
-            style: function(feature) {
-                const nationalität = feature.get('name'); 
-                const playerCount = playerCounts[nationalität] || 0; 
-                let color;
-                if (playerCount >= 5) {
-                    color = 'rgba(0, 0, 0, 0.8)';
-                } else if (playerCount === 4) {
-                    color = 'rgba(51, 51, 51, 0.8)';
-                } else if (playerCount === 3) {
-                    color = 'rgba(102, 102, 102, 0.8)';
-                } else if (playerCount === 2) {
-                    color = 'rgba(153, 153, 153, 0.8)';
-                } else if (playerCount === 1) {
-                    color = 'rgba(204, 204, 204, 0.8)';
-                } else {
-                    color = 'rgba(255, 255, 255, 0.8)';
-                }
-                return new Style({
-                    fill: new Fill({
-                        color: color
-                    }),
-                    stroke: new Stroke({
-                        color: '#000000',
-                        width: 1
-                    })
-                });
-            }
-        });
-
-        const newMap = new Map({
-            layers: [landVectorLayer],
-            view: new View({
-                center: fromLonLat([8.1, 46.9]),
-                zoom: 5,
-                projection: 'EPSG:3857'
-            }),
-            target: 'map'
-        });
-
-        const highlightStyle = new Style({
-            stroke: new Stroke({
-                color: '#f7da00',
-                width: 4
-            }),
-            fill: null
-        });
-
-        const highlightVectorLayer = new VectorLayer({
-            source: new VectorSource(),
-            style: highlightStyle
-        });
-
-        newMap.addLayer(highlightVectorLayer);
-
-        newMap.on('singleclick', function (event) {
-            const clickedCoord = event.coordinate;
-            const extent = [clickedCoord[0] - 1, clickedCoord[1] - 1, clickedCoord[0] + 1, clickedCoord[1] + 1];
-            let name = '';
-            let clickedFeature = null;
-            
-            landVectorSource.forEachFeatureIntersectingExtent(extent, function (feature) {
-                name = feature.get('name');
-                clickedFeature = feature;
-            });
-        
-            if (name) {
-                const overlay = new Overlay({
-                    element: document.getElementById('popup-content'),
-                    positioning: 'center-center',
-                    offset: [0, -15],
-                    stopEvent: false
-                });
-                newMap.addOverlay(overlay);
-                overlay.setPosition(clickedCoord);
-                document.getElementById('popup-content').innerText = name;
-
-                if (clickedFeature) {
-                    setHighlightedFeature(clickedFeature);
-                    const highlightSource = highlightVectorLayer.getSource();
-                    highlightSource.clear();
-                    highlightSource.addFeature(clickedFeature);
+    const handleTableRowClick = (nationalität) => {
+        const landVectorSource = mapInstance.getLayers().item(0).getSource();
+        landVectorSource.forEachFeature((feature) => {
+            if (feature.get('name') === nationalität) {
+                const mapView = mapInstance.getView();
+                const geometry = feature.getGeometry();
+                if (geometry) {
+                    mapView.fit(geometry, { padding: [200, 200, 200, 200], duration: 500 });
+                    setSelectedCountry(nationalität);
                 }
             }
         });
-
-        return () => {
-            newMap.setTarget(undefined);
-        };
-    }, [playerCounts]);
+    };
 
     return (
         <div>
@@ -232,7 +204,6 @@ const Playerorigin = (props) => {
                 </Toolbar>
             </AppBar>
             <div id="map" className="map-c"></div>
-            <div id="popup-content" className="popup-content"></div>
             <div id="legend" className="legend">
                 <h3>Legend</h3>
                 <ul>
@@ -258,7 +229,7 @@ const Playerorigin = (props) => {
                         {Object.entries(playerCounts)
                             .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
                             .map(([nationalität, playerCount]) => (
-                                <tr key={nationalität}>
+                                <tr key={nationalität} onClick={() => handleTableRowClick(nationalität)} style={{ backgroundColor: selectedCountry === nationalität ? 'yellow' : 'transparent' }}>
                                     <td><img src={`URL_ZUR_FLAGGE_${nationalität}.png`} alt={nationalität} className="club-logo" /></td>
                                     <td>{nationalität}</td>
                                     <td>{playerCount}</td>
@@ -270,6 +241,5 @@ const Playerorigin = (props) => {
         </div>
     );
 };
-
 
 export default Playerorigin;
