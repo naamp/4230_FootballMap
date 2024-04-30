@@ -7,3 +7,10 @@ Das ist die Projekt Website des *GDI Projekts*. Das GDI enthält eine Server und
 GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a/GDI_Project)
 
 ![GDI Projekt Screenshot](screenshot.png)
+
+## Inhaltsverzeichnis
+- [Dokumentation](./dokumentation)
+- [Startseite](./index)
+- [Spielerdaten](./spielerdaten)
+- [Spielerherkunft](./spielerherkunft)
+- [Spielertransfer](./spielertransfer)

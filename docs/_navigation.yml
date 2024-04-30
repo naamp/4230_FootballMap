@@ -1,0 +1,11 @@
+main:
+  - title: "Dokumentation"
+    url: /dokumentation.html
+  - title: "Startseite"
+    url: /index.html
+  - title: "Team"
+    url: /team.html
+  - title: "Spielerherkunft"
+    url: /spielerherkunft.html
+  - title: "Transferhistorie"
+    url: /transferhistorie.html
