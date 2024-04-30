@@ -1,4 +1,3 @@
-// Transferhistory Nando funktionierende Version
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Map from 'ol/Map.js';
@@ -13,7 +12,7 @@ import Icon from 'ol/style/Icon.js';
 import Style from 'ol/style/Style.js';
 import Feature from 'ol/Feature.js';
 import Point from 'ol/geom/Point.js';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // Importiere useLocation
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -34,46 +33,43 @@ const Transferhistory = () => {
   const [clubIcons, setClubIcons] = useState([]);
   const [map, setMap] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation(); // Verwende useLocation-Hook, um die URL zu erhalten
+
+  const getPlayerFromUrl = () => {
+    const params = new URLSearchParams(location.search); // Verwende location.search
+    return params.get('player') || '';
+  };
 
   useEffect(() => {
-    const fetchPlayers = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json');
-
-        if (response && response.data && response.data.features) {
-          const playerData = response.data.features.map(feature => feature.properties.name);
-          setPlayers(playerData);
-          setPlayer(playerData[0]);
-        } else {
-          console.error('No player data found in the response:', response);
-        }
-      } catch (error) {
-        console.error('Error fetching players:', error);
-      }
-    };
-
-    fetchPlayers();
-  }, []);
-
-  useEffect(() => {
-    const getPlayerFromUrl = () => {
-      const params = new URLSearchParams(location.search);
-      return params.get('player') || '';
-    };
-
-    setPlayer(getPlayerFromUrl());
-
     const handleUrlChange = () => {
       setPlayer(getPlayerFromUrl());
     };
 
     window.addEventListener('popstate', handleUrlChange);
 
+    fetchPlayers();
+
     return () => {
       window.removeEventListener('popstate', handleUrlChange);
     };
-  }, [location]);
+  }, []);
+
+  const fetchPlayers = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json');
+
+      if (response && response.data && response.data.features) {
+        const playerData = response.data.features.map(feature => feature.properties.name);
+        setPlayers(playerData);
+        const playerFromUrl = getPlayerFromUrl();
+        setPlayer(playerFromUrl || playerData[0]);
+      } else {
+        console.error('No player data found in the response:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching players:', error);
+    }
+  };
 
   const handleChange = (event) => {
     setPlayer(event.target.value);
@@ -195,7 +191,13 @@ const Transferhistory = () => {
                   style={{ color: 'white' }}
                 >
                   {players.map(player => (
-                    <MenuItem key={player} value={player}>{player}</MenuItem>
+                    <MenuItem key={player} value={player}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {/* Hier kannst du das Bild des Spielers einfügen, falls verfügbar */}
+                        { /* <img src={player.image} alt={player} style={{ width: '20px', height: '20px', marginRight: '5px' }} /> */ }
+                        {player}
+                      </div>
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
