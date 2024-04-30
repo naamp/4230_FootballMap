@@ -252,7 +252,12 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  
+  const handlePlayerClick = (playerName) => {
+    const selectedPlayer = players.find(player => player.name === playerName);
+    if (selectedPlayer) {
+      navigate(`/transferhistory?club=${encodeURIComponent(selectedClub)}&player=${encodeURIComponent(selectedPlayer.name)}`);
+    }
+  };
 
   return (
     <div>
@@ -313,7 +318,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
             </thead>
             <tbody>
               {players.map((player, index) => (
-                <tr key={index}>
+                <tr key={index} onClick={() => handlePlayerClick(player.name)}>
                   <td>
                     <img src={player.playerimage} alt={player.name} style={{ width: '50px', height: '50px' }} />
                   </td>

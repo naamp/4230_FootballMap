@@ -54,6 +54,9 @@ const Startpage = () => {
     const [clickedName, setClickedName] = useState(null);
     const navigate = useNavigate();
 
+    // Zustandsvariablen für Club-Positionen
+    const [clubPositions, setClubPositions] = useState({});
+
     // Funktion zum Zoomen auf sichtbare Features (Bounding Box um die Club-Icons)
     const zoomToVisibleFeatures = (source) => {
       if (!map || !source) {
@@ -82,7 +85,7 @@ const Startpage = () => {
       });
   
       // Zusätzlicher Rand von 200px
-      const padding = [200, 200, 200, 200];
+      const padding = [100, 100, 100, 100];
   
       const extent = [minX, minY, maxX, maxY];
       map.getView().fit(extent, { padding, maxZoom: 16 });
@@ -100,6 +103,39 @@ const Startpage = () => {
     
     vectorLayer.setSource(newVectorSource);
     zoomToVisibleFeatures(newVectorSource);
+    updateSelectedItems(filteredFeatures); // Update der ausgewählten Elemente für die Tabelle
+};
+
+// Funktion zum Aktualisieren der ausgewählten Elemente für die Tabelle
+const updateSelectedItems = (features) => {
+    const items = features.map(feature => ({
+        name: feature.getProperties().name,
+        logo_link: feature.getProperties().logo_link,
+        kapazität: feature.getProperties().kapazität,
+        position: feature.getGeometry().getCoordinates() // Hinzufügen der Club-Position
+    }));
+
+    // Sortiere die Elemente zuerst nach Stadionkapazität und dann nach Namen
+    items.sort((a, b) => {
+        if (a.kapazität !== b.kapazität) return b.kapazität - a.kapazität;
+        return a.name.localeCompare(b.name); // Sortiere nach Namen
+    });
+
+    setSelectedItems(items);
+    // Aktualisieren der Club-Positionen im Zustand
+    const positions = {};
+    items.forEach(item => {
+        positions[item.name] = item.position;
+    });
+    setClubPositions(positions);
+};
+
+// Funktion zum Zoomen auf einen Club auf der Karte
+const zoomToClub = (clubName) => {
+    const position = clubPositions[clubName];
+    if (position) {
+        map.getView().animate({ center: position, duration: 1, zoom: 16 });
+    }
 };
 
   // Aufruf der Fetch-Funktion für Länder bei Änderungen in league und availableLeagues 
@@ -109,7 +145,6 @@ const Startpage = () => {
         zoomToVisibleFeatures(); 
     }
 }, [league, availableLeagues]);  
-
     // Funktion für die Buttons innerhalb des Pop-Ups
     const handleButtonClick = (page, clubName) => {
         switch(page) {
@@ -223,7 +258,6 @@ const Startpage = () => {
         fetchCountries();
 
         const geoserverWFSPointLayer = 'vw_club_all';
-        const geoserverWFSTableLayer = 'footballmap:vw_tabelle';
   
         const newVectorSource = new VectorSource({
             format: new GeoJSON(),
@@ -335,30 +369,6 @@ const Startpage = () => {
                 newPopup.setPosition(undefined);
             }
         });
-        
-        // Abfragen der Tabellen-Daten vom Geoserver
-        fetch('http://localhost:8080/geoserver/wfs?service=WFS&' +
-            'version=1.1.0&request=GetFeature&typename=' + geoserverWFSTableLayer +
-            '&outputFormat=application/json')
-            .then(response => response.json())
-            .then(data => {
-                const tableData = data.features.map(feature => {
-                    return {
-                        name: feature.properties.name,
-                        rank: feature.properties.rang,
-                        games: feature.properties.spiele,
-                        won: feature.properties.gewonnen,
-                        drawn: feature.properties.unentschieden,
-                        lost: feature.properties.verloren,
-                        goalsFor: feature.properties.tore_geschossen,
-                        goalsAgainst: feature.properties.tore_bekommen,
-                        points: feature.properties.punkte
-                    };
-                });
-  
-                const tableHtml = createTableHtml(tableData);
-                document.getElementById('table-body').innerHTML = tableHtml;
-            });
 
         setPopup(newPopup);
         setVectorSource(newVectorSource);
@@ -373,84 +383,20 @@ const Startpage = () => {
       }
     }, [countries]);
 
-    // Erstellung des HTML-Codes für die Tabelle basierend auf den Daten
-        const createTableHtml = (data) => {
-            // Sortieren des Datenarrays nach dem Rang
-            const sortedData = data.sort((a, b) => a.rank - b.rank);
-            
-            let html = '<table>';
-            html += '<tr><th>Rank</th><th>Club</th><th>G</th><th>W</th><th>D</th><th>L</th><th>Goals</th><th>Points</th></tr>';
-            sortedData.forEach(row => {
-                // Zusammenfassen der Goals For und Goals Against in einem String
-                const goals = `${row.goalsFor}:${row.goalsAgainst}`;
-                
-                // Setzen der Hintergrundfarbe und fett darstellen der Zahlen in der "Rank"-Spalte
-                let rankStyle = '';
-                if (row.rank >= 1 && row.rank <= 6) {
-                    rankStyle = 'background-color: #d0ffd0;';  // Hellgrün
-                } else if (row.rank >= 7 && row.rank <= 12) {
-                    rankStyle = 'background-color: #ffd0d0;';  // Hellrot
-                }
-                
-                html += `<tr class="table-row" data-name="${row.name}"><td style="font-weight: bold; ${rankStyle}">${row.rank}</td><td><button class="zoom-button" data-name="${row.name}" style="margin-left: 10px;">${row.name}</button></td><td>${row.games}</td><td>${row.won}</td><td>${row.drawn}</td><td>${row.lost}</td><td>${goals}</td><td>${row.points}</td></tr>`;
-        });
-        
-        html += '</table>';
-        return html;
-    };
-
-    useEffect(() => {
-        // Zoom auf Club-Icon beim Klick auf die Tabelle
-        const zoomToFeature = (name) => {
-            if (!vectorSource) {
-                console.error('vectorSource is not initialized');
-                return;
-            }
-    
-            const feature = vectorSource.getFeatures().find(feature => feature.get('name') === name);
-            if (feature) {
-                const extent = feature.getGeometry().getExtent();
-                map.getView().fit(extent, { size: map.getSize(), maxZoom: 16 });
-            } else {
-                console.error('Feature not found for name:', name);
-            }
-        };
-    
-        // Event Delegation für Tabellencontainer
-        const handleTableClick = (event) => {
-            const clickedButton = event.target.closest('.zoom-button');
-            if (clickedButton) {
-                const name = clickedButton.getAttribute('data-name');
-                zoomToFeature(name);
-            }
-        };
-    
-        const tableContainer = document.getElementById('table-container');
-        tableContainer.addEventListener('click', handleTableClick);
-    
-        // Cleanup des Event Listeners
-        return () => {
-            tableContainer.removeEventListener('click', handleTableClick);
-        };
-    }, [vectorSource, map]); // Abhängigkeiten für den useEffect hinzugefügt
-    
-    
-    
-
     // Return Hauptkomponente
     return (
         <div>
             <div className="standardAppBar"> 
                 <AppBar position="static" style={appbarstyle.appBar}>
                     <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}> 
-                    <Button 
-                        style={appbarstyle.button}  
-                        startIcon={<HomeIcon style={{ color: '#f7da00' }} />}  
-                        aria-controls="left-menu"
-                        onClick={() => window.location.reload()}  
-                    >
-                        FootballMap
-                    </Button>
+                        <Button 
+                            style={appbarstyle.button}  
+                            startIcon={<HomeIcon style={{ color: '#f7da00' }} />}  
+                            aria-controls="left-menu"
+                            onClick={() => window.location.reload()}  
+                        >
+                            FootballMap
+                        </Button>
                         <div>
                             <FormControl sx={{ m: 1, minWidth: 120 }} >  
                                 <InputLabel id="country-label" style={{ color: '#f7da00' }}>Country</InputLabel>
@@ -491,16 +437,34 @@ const Startpage = () => {
                     </Toolbar>
                 </AppBar>
             </div>
-              <div id="popup" className="ol-popup">
+            <div id="popup" className="ol-popup">
                 <a href="#" id="popup-closer" className="ol-popup-closer">×</a>
                 <div id="popup-content"></div>
-                </div>
-                <div id="table-container" className="table-container-custom">
-                    <table id="table-body"></table>
-                </div>
-
-
-              <div id="map" className="map_startpage"></div>
+            </div>
+            <div id="table-container" className="table-container-custom">
+                <table id="table-body"></table>
+            </div>
+            <div id="visible-clubs-table" className="table-container-custom">
+                <table id="visible-clubs-body">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Club</th>
+                            <th>Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {selectedItems.map((item, index) => (
+                            <tr key={index} onClick={() => zoomToClub(item.name)}>
+                                <td><img src={item.logo_link} alt={item.name} style={{ width: '25px', height: 'auto' }} /></td>
+                                <td>{item.name}</td>
+                                <td>{item.kapazität}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div id="map" className="map_startpage"></div>
         </div>
     );
 };

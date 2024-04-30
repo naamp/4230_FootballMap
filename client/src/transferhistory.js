@@ -1,5 +1,3 @@
-// transferhistory (verantwortlich: Nando)
-// Inhalt: historymap, toolbar, ...
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Map from 'ol/Map.js';
@@ -10,6 +8,12 @@ import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import { fromLonLat } from 'ol/proj';
 import GeoJSON from 'ol/format/GeoJSON.js';
+import Icon from 'ol/style/Icon.js';
+import Style from 'ol/style/Style.js';
+import Feature from 'ol/Feature.js';
+import Point from 'ol/geom/Point.js'; // Import Point class
+import { useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -22,12 +26,11 @@ import HomeIcon from '@mui/icons-material/Home';
 import './transferhistory.css';
 import appbarstyle from './appbarstyle.js';
 
-import { useNavigate } from "react-router-dom";
-
 const Transferhistory = () => {
-  const [player, setPlayer] = useState(); // Player state initialized with empty string
+  const [player, setPlayer] = useState();
   const [players, setPlayers] = useState([]);
   const [transferLines, setTransferLines] = useState([]);
+  const [clubIcons, setClubIcons] = useState([]);
   const [map, setMap] = useState(null);
   const navigate = useNavigate();
 
@@ -38,12 +41,11 @@ const Transferhistory = () => {
   const fetchPlayers = async () => {
     try {
       const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json');
-      console.log('Fetched player data:', response.data);
 
       if (response && response.data && response.data.features) {
         const playerData = response.data.features.map(feature => feature.properties.spieler_name);
         setPlayers(playerData);
-        setPlayer(playerData[0]); // Set the first player as default value
+        setPlayer(playerData[0]);
       } else {
         console.error('No player data found in the response:', response);
       }
@@ -53,13 +55,12 @@ const Transferhistory = () => {
   };
 
   const handleChange = (event) => {
-    setPlayer(event.target.value); // Set the selected player
+    setPlayer(event.target.value);
   };
 
   const fetchTransferLines = async () => {
     try {
       const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_transferlinien&outputFormat=application/json');
-      console.log('Fetched transfer lines data:', response.data);
 
       if (response && response.data && response.data.features) {
         const transferLinesData = response.data.features.map(feature => ({
@@ -80,13 +81,43 @@ const Transferhistory = () => {
     }
   };
 
+  const fetchClubIcons = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_club_all&outputFormat=application/json');
+
+      if (response && response.data && response.data.features) {
+        const clubIconFeatures = response.data.features.map(feature => {
+          const coordinates = feature.geometry.coordinates;
+          const iconFeature = new Feature({
+            geometry: new Point(fromLonLat([coordinates[0], coordinates[1]]))
+          });
+          iconFeature.setStyle(new Style({
+            image: new Icon({
+              src: feature.properties.logo_link,
+              scale: 0.3
+            })
+          }));
+          return iconFeature;
+        });
+        setClubIcons(clubIconFeatures);
+      } else {
+        console.error('No club icon data found in the response:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching club icons:', error);
+    }
+  };
+
   const initializeMap = () => {
     const vectorLayer = new VectorLayer({
       source: new VectorSource({
-        features: transferLines.map(transferLine => {
-          const geojsonFormat = new GeoJSON();
-          return geojsonFormat.readFeature(transferLine.linie);
-        })
+        features: [
+          ...transferLines.map(transferLine => {
+            const geojsonFormat = new GeoJSON();
+            return geojsonFormat.readFeature(transferLine.linie);
+          }),
+          ...clubIcons
+        ]
       })
     });
 
@@ -95,7 +126,7 @@ const Transferhistory = () => {
         new TileLayer({
           source: new OSM()
         }),
-        vectorLayer // VectorLayer für transferLines hinzufügen
+        vectorLayer
       ],
       view: new View({
         center: fromLonLat([8.1, 46.9]),
@@ -107,16 +138,16 @@ const Transferhistory = () => {
     setMap(newMap);
   };
 
-
   useEffect(() => {
     fetchTransferLines();
+    fetchClubIcons();
   }, []);
 
   useEffect(() => {
-    if (transferLines.length > 0) {
+    if (transferLines.length > 0 && clubIcons.length > 0) {
       initializeMap();
     }
-  }, [transferLines]);
+  }, [transferLines, clubIcons]);
 
   return (
     <div>
@@ -154,7 +185,7 @@ const Transferhistory = () => {
           </div>
         </Toolbar>
       </AppBar>
-      <div id="map" className="map_transferhistory"></div> {/* Hier wird die Karte gerendert */}
+      <div id="map" className="map_transferhistory"></div>
     </div>
   );
 };
