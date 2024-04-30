@@ -1,10 +1,10 @@
 # GDI_Project
 Server Client Projekt für eine Geodateninfrastruktur Webportal im Rahmen des Moduls 4230
 
-- **Frontend:** React.js, OpenLayers und MUI
-- **Backend:** FastAPI, GeoServer
+- **Frontend:** React.js, OpenLayers, Axios und MUI
+- **Backend:** Python-Libraries: (BeautifulSoup, Selenium, Requests) und GeoServer
 
-GitHub Pages: https://314a.github.io/GDI_Project/
+GitHub Pages: https://naamp.github.io/4230_FootballMap/
 
 Getestet mit Node version 20.11.1, 18.15.0, 16.19.0, openlayers 9.1.0, 7.3.0, 6.4.3
 

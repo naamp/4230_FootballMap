@@ -7,7 +7,7 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
-import { useNavigate } from "react-router-dom";
+
 import axios from 'axios';
 import Map from 'ol/Map';
 import View from 'ol/View.js';
@@ -19,40 +19,62 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
-import Tooltip from '@mui/material/Tooltip';
 
 import './squadoverview.css';
 import appbarstyle from './appbarstyle.js';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Squadoverview = ({ countries, country, league, availableLeagues, setCountry, setLeague }) => {
   const [clubs, setClubs] = useState([]);
-  const [selectedClub, setSelectedClub] = useState('FC Luzern');
   const [players, setPlayers] = useState([]);
   const [countryFlags, setCountryFlags] = useState({});
   const navigate = useNavigate();
   const [map, setMap] = useState(null);
   const [vectorSource, setVectorSource] = useState(null);
   const [newIconMap, setNewIconMap] = useState({});
-  
+  const { club: selectedClubParam } = useParams();
+  const [selectedClub, setSelectedClub] = useState(selectedClubParam || '');
 
   useEffect(() => {
     fetchClubs();
     fetchCountryFlags();
-  }, []);
-
-  useEffect(() => {
-    if (selectedClub !== '') {
-      fetchPlayers(); // Fetch players when selected club changes
-    }
+    fetchPlayers();
   }, [selectedClub]);
 
   useEffect(() => {
-    if (map && vectorSource) {
-      addClubIcon(); // Add club icon when map and vector source are initialized
+    const getSelectedClubFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('club') || '';
+    };
+
+    setSelectedClub(getSelectedClubFromUrl());
+
+    const handleUrlChange = () => {
+      setSelectedClub(getSelectedClubFromUrl());
+    };
+
+    window.addEventListener('popstate', handleUrlChange);
+
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!map) {
+      initializeMap();
+    } else {
+      addClubIcon();
     }
-  }, [map, vectorSource, selectedClub]); // Add club icon when selected club changes
+  }, [map, clubs, selectedClub]);
+
+
+  const handleChange = (event) => {
+    const newClub = event.target.value;
+    setSelectedClub(newClub);
+    navigate(`/squadoverview?club=${encodeURIComponent(newClub)}`);
+  };
 
   const fetchClubs = async () => {
     try {
@@ -60,14 +82,14 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
 
       if (response && response.data && response.data.features) {
         const clubsData = response.data.features
-          .filter(feature => feature.properties.liga === 'Super League' && feature.properties.land === 'Switzerland')
-          .map(feature => ({
-            name: feature.properties.name,
-            logoLink: feature.properties.logo_link, // Neues Attribut für das Logo-Link
-            longitude: parseFloat(feature.geometry.coordinates[0]), // Längengrad
-            latitude: parseFloat(feature.geometry.coordinates[1]) // Breitengrad
-          }))
-          .sort();
+            .filter(feature => feature.properties.liga === 'Super League' && feature.properties.land === 'Switzerland')
+            .map(feature => ({
+                name: feature.properties.name,
+                logoLink: feature.properties.logo_link,
+                longitude: parseFloat(feature.geometry.coordinates[0]),
+                latitude: parseFloat(feature.geometry.coordinates[1])
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name)); // Alphabetische Sortierung hinzugefügt
         setClubs(clubsData);
       } else {
         console.error('No clubs data found in the response:', response);
@@ -77,13 +99,10 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
     }
   };
 
-  const handleChange = (event) => {
-    setSelectedClub(event.target.value);
-  };
-
   const handleHomeButtonClick = () => {
     navigate("/");
   };
+  
 
   const initializeMap = () => {
     const newVectorSource = new VectorSource();
@@ -104,7 +123,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
               icon = newIconMap[feature.getId()]
             } else {
               icon = new Icon({
-                src: feature.get('logoLink'), // Verwenden Sie das neue logoLink-Attribut
+                src: feature.get('logoLink'),
                 scale: 0.3
               });
               newIconMap[feature.getId()] = icon;
@@ -120,42 +139,38 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
     });
 
     setMap(newMap);
-    newMap.setTarget('map'); // Füge die Karte zum DOM hinzu
+    newMap.setTarget('map');
   };
 
   const addClubIcon = () => {
     if (!vectorSource || !selectedClub) return;
-  
+
     const selectedClubData = clubs.find(club => club.name === selectedClub);
     if (!selectedClubData) return;
-  
+
     const iconFeature = new Feature({
       geometry: new Point(fromLonLat([selectedClubData.longitude, selectedClubData.latitude])),
     });
-  
+
     const iconStyle = new Style({
       image: new Icon({
         src: selectedClubData.logoLink,
         scale: 0.3
       })
     });
-  
+
     iconFeature.setStyle(iconStyle);
-    vectorSource.clear(); // Clear existing icons
-    vectorSource.addFeature(iconFeature); // Add icon for selected club
-  
-    // Zoom to the extent of the icon
+    vectorSource.clear();
+    vectorSource.addFeature(iconFeature);
+
     const iconExtent = iconFeature.getGeometry().getExtent();
     map.getView().fit(iconExtent, { duration: 1, maxZoom: 16 });
   };
-  
 
   const fetchPlayers = async () => {
     try {
-      // Spielerdaten vom GeoServer abrufen
       const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spielerdaten&outputFormat=application/json');
-  
-      // Überprüfe die Antwort und extrahiere die Spielerdaten, falls vorhanden
+
       if (response && response.data && response.data.features) {
         const playersData = response.data.features.map(feature => ({
           name: feature.properties.name,
@@ -169,15 +184,12 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
           nationality: feature.properties.nationalität,
           jerseyNumber: feature.properties.trikotnummer,
           foot: feature.properties.starker_fuss,
-          club: feature.properties.club, // Hinzufügen des Club-Attributs
-          age: calculateAge(new Date(feature.properties.geburtsdatum)), // Berechne das Alter
-          // Hinzufügen der Marktwertrubrik mit Euro und Tausender-Trennstrichen formatiert
+          club: feature.properties.club,
+          age: calculateAge(new Date(feature.properties.geburtsdatum)),
           marketvalueFormatted: `€${formatNumber(feature.properties.marktwert_aktuell)}`
-        })).filter(player => player.club === selectedClub); // Filtern nach dem ausgewählten Club
-  
-        // Sortieren nach Position und dann nach Trikotnummer
+        })).filter(player => player.club === selectedClub);
+
         playersData.sort((a, b) => {
-          // Positionen nach Priorität
           const positions = {
             'Goalkeeper': 1,
             'Centre-Back': 2,
@@ -191,16 +203,14 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
             'Right Winger': 10,
             'Striker': 11
           };
-  
-          // Sortieren nach Position
+
           if (positions[a.position] !== positions[b.position]) {
             return positions[a.position] - positions[b.position];
           }
-  
-          // Wenn die Positionen gleich sind, nach Trikotnummer sortieren
+
           return a.jerseyNumber - b.jerseyNumber;
         });
-  
+
         setPlayers(playersData);
       } else {
         console.error('No player data found in the response:', response);
@@ -228,7 +238,6 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
     }
   };
 
-  // Funktion zur Berechnung des Alters aus dem Geburtsdatum
   const calculateAge = (birthDate) => {
     const today = new Date();
     const age = today.getFullYear() - birthDate.getFullYear();
@@ -239,14 +248,16 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
     return age;
   };
 
-  // Funktion zur Formatierung der Marktwertrubrik
   const formatNumber = (value) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  useEffect(() => {
-    initializeMap();
-  }, []); // Die Karte sollte nur einmal initialisiert werden
+  const handlePlayerClick = (playerName) => {
+    const selectedPlayer = players.find(player => player.name === playerName);
+    if (selectedPlayer) {
+      navigate(`/transferhistory?club=${encodeURIComponent(selectedClub)}&player=${encodeURIComponent(selectedPlayer.name)}`);
+    }
+  };
 
   return (
     <div>
@@ -307,7 +318,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
             </thead>
             <tbody>
               {players.map((player, index) => (
-                <tr key={index}>
+                <tr key={index} onClick={() => handlePlayerClick(player.name)}>
                   <td>
                     <img src={player.playerimage} alt={player.name} style={{ width: '50px', height: '50px' }} />
                   </td>
@@ -319,9 +330,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
                   <td>{player.marketvalueFormatted}</td>
                   <td>{player.age}</td>
                   <td>
-                    <Tooltip title={player.birthcountry}>
-                      <img src={countryFlags[player.birthcountry]} alt={player.birthcountry} style={{ width: '30px', height: '20px' }} />
-                    </Tooltip>
+                    <img src={countryFlags[player.birthcountry]} alt={player.birthcountry} style={{ width: '30px', height: '20px' }} />
                   </td>
                 </tr>
               ))}
@@ -330,7 +339,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
         </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default Squadoverview;

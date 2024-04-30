@@ -1,6 +1,3 @@
-// playerorigin (verantwortlich: Silvan)
-// Inhalt: originmap, toolbar, ...
-
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -21,15 +18,53 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import HomeIcon from '@mui/icons-material/Home';
 import appbarstyle from './appbarstyle.js';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from 'axios';
 
 const Playerorigin = (props) => {
-    const [club, setClub] = useState('FC Luzern');
+    const [clubs, setClubs] = useState([]);
+    const [club, setClub] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
     const [highlightedFeature, setHighlightedFeature] = useState(null);
 
+
+    useEffect(() => {
+        fetchClubs();
+        const searchParams = new URLSearchParams(location.search);
+        const clubParam = searchParams.get('club');
+        if (clubParam) {
+            setClub(clubParam);
+        }
+    }, []);
+
     const handleChange = (event) => {
-        setClub(event.target.value);
+        const newClub = event.target.value;
+        setClub(newClub);
+        navigate(`/playerorigin?club=${encodeURIComponent(newClub)}`);
+    };
+
+    const fetchClubs = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_club_all&outputFormat=application/json');
+
+            if (response && response.data && response.data.features) {
+                const clubsData = response.data.features
+                    .filter(feature => feature.properties.liga === 'Super League' && feature.properties.land === 'Switzerland')
+                    .map(feature => ({
+                        name: feature.properties.name,
+                        logoLink: feature.properties.logo_link,
+                        longitude: parseFloat(feature.geometry.coordinates[0]),
+                        latitude: parseFloat(feature.geometry.coordinates[1])
+                    }))
+                    .sort((a, b) => a.name.localeCompare(b.name)); // Alphabetische Sortierung hinzugefügt
+                setClubs(clubsData);
+            } else {
+                console.error('No clubs data found in the response:', response);
+            }
+        } catch (error) {
+            console.error('Error fetching clubs:', error);
+        }
     };
 
     useEffect(() => {
@@ -140,9 +175,14 @@ const Playerorigin = (props) => {
                                 onChange={handleChange}
                                 style={{ color: 'white' }}
                             >
-                                <MenuItem value="FC Luzern">FC Luzern</MenuItem>
-                                <MenuItem value="FC Basel">FC Basel</MenuItem>
-                                <MenuItem value="FC Sion">FC Sion</MenuItem>
+                                {clubs.map(club => (
+                                    <MenuItem key={club.name} value={club.name}>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <img src={club.logoLink} alt={club.name} style={{ width: '20px', height: '20px', marginRight: '5px' }} />
+                                            {club.name}
+                                        </div>
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                         <div className="Title" style={appbarstyle.title}>
