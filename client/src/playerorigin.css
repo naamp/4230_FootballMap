@@ -1,20 +1,20 @@
+/* CSS für die Karte */
 .map-c {
     position: absolute;
     top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
     left: 0;
-    width: 100vw; /* Breite als 70% der Viewport-Breite */
+    width: 70%; /* Breite als 70% der Viewport-Breite */
     height: calc(100% - 80px); /* Höhe der AppBar abziehen */
     padding: 20px; /* Padding beibehalten */
     box-sizing: border-box; /* Padding in die Breite und Höhe mit einbeziehen */
     background-color: #add2de;
 }
 
-
-
+/* CSS für die Legende */
 .legend {
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     background-color: white;
     border: 1px solid #ccc;
     padding: 10px;
@@ -22,15 +22,18 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
+/* CSS für die Überschrift der Legende */
 .legend h3 {
     margin-top: 0;
 }
 
+/* CSS für die Liste in der Legende */
 .legend ul {
     list-style-type: none;
     padding: 0;
 }
 
+/* CSS für die Elemente in der Liste der Legende */
 .legend ul li {
     margin-bottom: 5px;
 }

@@ -24,10 +24,11 @@ import axios from 'axios';
 const Playerorigin = (props) => {
     const [clubs, setClubs] = useState([]);
     const [club, setClub] = useState('');
+    const [highlightedFeature, setHighlightedFeature] = useState(null);
+    const [playerCounts, setPlayerCounts] = useState({}); 
+
     const navigate = useNavigate();
     const location = useLocation();
-    const [highlightedFeature, setHighlightedFeature] = useState(null);
-
 
     useEffect(() => {
         fetchClubs();
@@ -37,6 +38,12 @@ const Playerorigin = (props) => {
             setClub(clubParam);
         }
     }, []);
+
+    useEffect(() => {
+        if (club) {
+            fetchPlayerCounts(club); 
+        }
+    }, [club]);
 
     const handleChange = (event) => {
         const newClub = event.target.value;
@@ -57,7 +64,7 @@ const Playerorigin = (props) => {
                         longitude: parseFloat(feature.geometry.coordinates[0]),
                         latitude: parseFloat(feature.geometry.coordinates[1])
                     }))
-                    .sort((a, b) => a.name.localeCompare(b.name)); // Alphabetische Sortierung hinzugefügt
+                    .sort((a, b) => a.name.localeCompare(b.name));
                 setClubs(clubsData);
             } else {
                 console.error('No clubs data found in the response:', response);
@@ -67,49 +74,67 @@ const Playerorigin = (props) => {
         }
     };
 
+    const fetchPlayerCounts = async (clubName) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_spieler_geburtsland&outputFormat=application/json&cql_filter=club='${encodeURIComponent(clubName)}'`);
+
+            if (response && response.data && response.data.features) {
+                const playerCountsData = response.data.features.reduce((counts, feature) => {
+                    counts[feature.properties.geburtsland] = feature.properties.anzahl_spieler;
+                    return counts;
+                }, {});
+                setPlayerCounts(playerCountsData);
+            } else {
+                console.error('No player counts data found in the response:', response);
+            }
+        } catch (error) {
+            console.error('Error fetching player counts:', error);
+        }
+    };
+
     useEffect(() => {
         const geoserverLandLayer = 'footballmap:land';
         const landVectorSource = new VectorSource({
             format: new GeoJSON(),
             url: function(extent) {
-                return `http://localhost:8080/geoserver/wfs?service=WFS&` +
-                `version=1.1.0&request=GetFeature&typename=${geoserverLandLayer}&` +
-                `outputFormat=application/json&srsname=EPSG:3857&bbox=` +
-                `${extent.join(',')},EPSG:3857`;
+                return `http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=${geoserverLandLayer}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
             },
             strategy: bboxStrategy
         });
 
         const landVectorLayer = new VectorLayer({
-          source: landVectorSource,
-          style: new Style({
-              stroke: new Stroke({
-                  color: 'black', // Randfarbe ist Schwarz
-                  width: 1       // Randbreite ist 1
-              }),
-              fill: new Fill({
-                  color: 'white'  // Füllfarbe ist Weiß
-              })
-          })
-      });
-      
-
-        const highlightStyle = new Style({
-          stroke: new Stroke({
-              color: '#f7da00', // Umrandungsfarbe auf Gelb ändern
-              width: 4 // Dicke der Linie erhöhen
-          }),
-          fill: null // Keine Füllung
-      });
-      
-
-        const highlightVectorLayer = new VectorLayer({
-            source: new VectorSource(),
-            style: highlightStyle
+            source: landVectorSource,
+            style: function(feature) {
+                const nationalität = feature.get('name'); 
+                const playerCount = playerCounts[nationalität] || 0; 
+                let color;
+                if (playerCount >= 5) {
+                    color = 'rgba(0, 0, 0, 0.8)';
+                } else if (playerCount === 4) {
+                    color = 'rgba(51, 51, 51, 0.8)';
+                } else if (playerCount === 3) {
+                    color = 'rgba(102, 102, 102, 0.8)';
+                } else if (playerCount === 2) {
+                    color = 'rgba(153, 153, 153, 0.8)';
+                } else if (playerCount === 1) {
+                    color = 'rgba(204, 204, 204, 0.8)';
+                } else {
+                    color = 'rgba(255, 255, 255, 0.8)';
+                }
+                return new Style({
+                    fill: new Fill({
+                        color: color
+                    }),
+                    stroke: new Stroke({
+                        color: '#000000',
+                        width: 1
+                    })
+                });
+            }
         });
 
         const newMap = new Map({
-            layers: [landVectorLayer, highlightVectorLayer],
+            layers: [landVectorLayer],
             view: new View({
                 center: fromLonLat([8.1, 46.9]),
                 zoom: 5,
@@ -117,6 +142,21 @@ const Playerorigin = (props) => {
             }),
             target: 'map'
         });
+
+        const highlightStyle = new Style({
+            stroke: new Stroke({
+                color: '#f7da00',
+                width: 4
+            }),
+            fill: null
+        });
+
+        const highlightVectorLayer = new VectorLayer({
+            source: new VectorSource(),
+            style: highlightStyle
+        });
+
+        newMap.addLayer(highlightVectorLayer);
 
         newMap.on('singleclick', function (event) {
             const clickedCoord = event.coordinate;
@@ -152,7 +192,7 @@ const Playerorigin = (props) => {
         return () => {
             newMap.setTarget(undefined);
         };
-    }, []);
+    }, [playerCounts]);
 
     return (
         <div>
@@ -196,14 +236,40 @@ const Playerorigin = (props) => {
             <div id="legend" className="legend">
                 <h3>Legend</h3>
                 <ul>
-                    <li>Land 1</li>
-                    <li>Land 2</li>
-                    <li>Land 3</li>
-                    {/* Fügen Sie hier weitere Legendeninformationen hinzu */}
+                    <li>0 Spieler: Weiß</li>
+                    <li>1 Spieler: #CCCCCC</li>
+                    <li>2 Spieler: #999999</li>
+                    <li>3 Spieler: #666666</li>
+                    <li>4 Spieler: #333333</li>
+                    <li>5 und mehr Spieler: Schwarz</li>
                 </ul>
+            </div>
+            <div className="table-container-custom">
+                <h3>Player Counts by Nationality</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Flag</th>
+                            <th>Country</th>
+                            <th>Player Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.entries(playerCounts)
+                            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+                            .map(([nationalität, playerCount]) => (
+                                <tr key={nationalität}>
+                                    <td><img src={`URL_ZUR_FLAGGE_${nationalität}.png`} alt={nationalität} className="club-logo" /></td>
+                                    <td>{nationalität}</td>
+                                    <td>{playerCount}</td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
 };
+
 
 export default Playerorigin;

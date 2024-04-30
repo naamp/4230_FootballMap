@@ -313,7 +313,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
                 <th>Height</th>
                 <th>Marketvalue</th>
                 <th>Age</th>
-                <th>Nationality</th>
+                <th>Birthcountry</th>
               </tr>
             </thead>
             <tbody>
