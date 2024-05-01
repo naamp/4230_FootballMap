@@ -1,3 +1,9 @@
+// ToDo: Anzeige und Inhalt Pop-Up überarbeiten 
+// Dropdown Multiple Change optimieren, evtl. Flaggen in Dropdown
+// evtl. Zoom optimieren, evtl. Luftbild als Hintergrund
+// Tabellenüberschrift, Tabellenstyle
+// Buttons in Pop-Up nur bei Swiss-Super-League
+
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map.js';
 import TileLayer from 'ol/layer/Tile.js';

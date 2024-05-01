@@ -1,3 +1,8 @@
+// ToDo: Anzeige und Inhalt Pop-Up überarbeiten 
+// evtl. Luftbild als Hintergrund
+// Tabellenüberschrift, Tabellenstyle (Weiterleitung optimieren, Icons besser, Hover über Flagge, evlt. Playerimage vergrösserbar)
+// evtl. Pop-Up auf Icon einrichten
+
 import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';

@@ -1,4 +1,5 @@
-// ToDo: Zoom-Funktion verbessern (besser auf zentrum), Legende, Hover-Funktion, Klasseneinteilung
+// ToDo: Zoom-Funktion verbessern (besser auf zentrum), 
+// Legende, Hover-Funktion, Klasseneinteilung
 
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map';
