@@ -57,10 +57,21 @@ th, td {
 
 /* CSS für Hover-Effekt über die Liga-Tabelle */
 tr:hover {
-  background-color: #f2f2f2;
+  background-color: #f7da00;
 }
 
 .club-logo {
   max-width: 50px;
   max-height: 50px;
+}
+
+
+.table-caption {
+  font-family: Arial, sans-serif;
+  caption-side: top;
+  text-align: left;
+  font-weight: bold;
+  font-family: Arial, sans-serif; 
+  font-size: 20px;
+  padding: 20px;
 }

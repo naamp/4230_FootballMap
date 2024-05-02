@@ -1,8 +1,10 @@
-// ToDo: Anzeige und Inhalt Pop-Up überarbeiten 
-// Dropdown Multiple Change optimieren, evtl. Flaggen in Dropdown
-// evtl. Zoom optimieren, evtl. Luftbild als Hintergrund
-// Tabellenüberschrift, Tabellenstyle
-// Buttons in Pop-Up nur bei Swiss-Super-League
+// Startseite provisorisch fertig
+// Optimierungsmöglichkeiten: 
+// Luftbild als zusätzliche Karte
+// Icons "flackern" teilweise wieder, ich glaube wegen Kollision mit anderen Icons verursacht
+// Userperson irgendwie zeigen, dass es ein Pop-Up gibt, evtl. bei klick auf Tabelle Pop-Up direkt öffnen
+// evtl. geringfügige Design-Anpassungen
+// p.s. Darstellungsreihenfolge der Icons nach Stadionkapazität wurde umgesetzt
 
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map.js';
@@ -281,19 +283,20 @@ const zoomToClub = (clubName) => {
         const newVectorLayer = new VectorLayer({
             source: newVectorSource,
             style: function(feature) {
-                let icon;
-                if (newIconMap[feature.getId()]) {
-                    icon = newIconMap[feature.getId()]
-                } else {
-                    icon = new Icon({
+                const kapazität = feature.getProperties().kapazität;
+                // Berechne die Z-Index-Ebene basierend auf der Kapazität
+                const zIndex = Math.floor(kapazität / 1000);
+                
+                return new Style({
+                    image: new Icon({
                         src: feature.get('logo_link'),
                         scale: 0.3
-                    });
-                    newIconMap[feature.getId()] = icon;
-                }
-                return new Style({image: icon});
+                    }),
+                    zIndex: zIndex // Setze die Z-Index basierend auf der berechneten Ebene
+                });
             }
         });
+        
   
         // Darstellen des Pop-Ups
         const newPopup = new Overlay({
@@ -318,6 +321,8 @@ const zoomToClub = (clubName) => {
             view: new View({
                 center: fromLonLat([8.1, 46.9]),
                 zoom: 8,
+                minZoom: 5,
+                maxZoom: 20,
                 projection: new Projection({
                     code: 'EPSG:900913',
                     units: 'm'
@@ -335,6 +340,7 @@ const zoomToClub = (clubName) => {
             });
         
             if (feature) {
+                const liga = feature.get('liga');
                 const coordinates = feature.getGeometry().getCoordinates();
                 const name = feature.get('name');
                 const stadiumname = feature.get('stadium_name');
@@ -345,12 +351,14 @@ const zoomToClub = (clubName) => {
         
                 const popupContent = `
                     <strong>${name}</strong><br>
-                    <strong>Stadion:</strong> ${stadiumname}<br>
-                    <strong>Kapazität:</strong> ${kapazität} Plätze<br><br>
-                    <button id="button1" style="margin-right: 10px;">Squad Overview</button>
-                    <button id="button2">Player Origin</button>
+                    <strong>League:</strong> ${liga}<br>
+                    <strong>Stadium:</strong> ${stadiumname}<br>
+                    <strong>Capacity:</strong> ${kapazität} seats<br><br>
+                    <button id="button1" style="margin-right: 10px;" ${liga !== 'Super League' ? 'disabled' : ''}>Squad Overview</button>
+                    <button id="button2" ${liga !== 'Super League' ? 'disabled' : ''}>Player Origin</button>
+                    ${liga !== 'Super League' ? '<p style="font-size: 12px; color: #888;">Functions only for Swiss Super League</p>' : ''}
                 `;
-        
+       
                 newPopup.setPosition(coordinates);
                 const popupElement = newPopup.getElement();
                 popupElement.innerHTML = popupContent;
@@ -364,17 +372,22 @@ const zoomToClub = (clubName) => {
         
                 button1.addEventListener('click', () => {
                     console.log('Schaltfläche 1 wurde geklickt!');
-                    handleButtonClick('squadoverview', name);
+                    if (liga === 'Super League') {
+                        handleButtonClick('squadoverview', name);
+                    }
                 });
         
                 button2.addEventListener('click', () => {
                     console.log('Schaltfläche 2 wurde geklickt!');
-                    handleButtonClick('playerorigin', name);
+                    if (liga === 'Super League') {
+                        handleButtonClick('playerorigin', name);
+                    }
                 });
             } else {
                 newPopup.setPosition(undefined);
             }
         });
+        
 
         setPopup(newPopup);
         setVectorSource(newVectorSource);
@@ -427,7 +440,13 @@ const zoomToClub = (clubName) => {
                                     value={league}
                                     onChange={handleMultiLeagueChange}
                                     input={<OutlinedInput label="Choose Leagues" />}
-                                    renderValue={(selected) => selected.join(', ')}
+                                    renderValue={(selected) => {
+                                        if (selected.length > 1) {
+                                            return 'Multiple Leagues Selected';
+                                        } else {
+                                            return selected.join(', ');
+                                        }
+                                    }}
                                     MenuProps={MenuProps}
                                     style={{ color: 'white' }}
                                 >
@@ -452,6 +471,7 @@ const zoomToClub = (clubName) => {
             </div>
             <div id="visible-clubs-table" className="table-container-custom">
                 <table id="visible-clubs-body">
+                <caption className="table-caption">Selected clubs sorted by stadium capacity</caption>
                     <thead>
                         <tr>
                             <th></th>
