@@ -1,5 +1,3 @@
-//ToDo: Club Icons, Reihenfolge, zoom (BBBox)
-
 import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
 import Map from 'ol/Map.js';
@@ -25,6 +23,13 @@ import Stroke from 'ol/style/Stroke.js';
 import CircleStyle from 'ol/style/Circle.js';
 import Fill from 'ol/style/Fill.js';
 
+import TableContainer from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+
 const Transferhistory = () => {
   const [clubIcons, setClubIcons] = useState([]);
   const [transferLines, setTransferLines] = useState([]);
@@ -33,11 +38,15 @@ const Transferhistory = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const playerName = new URLSearchParams(location.search).get('player');
+  const [selectedTransferLine, setSelectedTransferLine] = useState(null);
+  const [transferData, setTransferData] = useState([]);
+
 
   useEffect(() => {
     fetchClubLocations();
     fetchTransferLines();
     fetchCountryCenters();
+    fetchTransferData();
   }, []);
 
   const fetchClubLocations = async () => {
@@ -48,7 +57,8 @@ const Transferhistory = () => {
         const clubLocations = response.data.features.map(feature => {
           const coordinates = feature.geometry.coordinates;
           return new Feature({
-            geometry: new Point(fromLonLat([coordinates[0], coordinates[1]]))
+            geometry: new Point(fromLonLat([coordinates[0], coordinates[1]])),
+            name: feature.properties.name // Name hinzufügen, um später nach Club-Icon zu suchen
           });
         });
         setClubIcons(clubLocations);
@@ -61,67 +71,71 @@ const Transferhistory = () => {
   };
 
   const fetchTransferLines = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_transferlinien&outputFormat=application/json');
+  try {
+    const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_transferlinien&outputFormat=application/json');
 
-      if (response && response.data && response.data.features) {
-        const transferLineFeatures = response.data.features.map(async feature => {
-          const playerInLine = feature.properties.spieler_name;
-          if (playerInLine === playerName) {
-            const fromClub = feature.properties.von_club;
-            const toClub = feature.properties.nach_club;
-            const fromLand = feature.properties.von_land;
-            const toLand = feature.properties.nach_land;
-            const fromClubName = feature.properties.von_club_name;
-            const toClubName = feature.properties.nach_club_name;
-  
-            // Find the corresponding country center for from_land and to_land
-            const [fromCenter, toCenter] = await Promise.all([
-              findCountryCenter(fromLand),
-              findCountryCenter(toLand)
-            ]);
-  
-            // Check if fromClub or toClub is unknown
-            if (fromClub === 999999 || toClub === 999999) {
-              // Find the corresponding country center
-              const startPoint = fromClub === 999999 ? fromCenter : clubIcons.find(icon => icon.get('name') === fromClub);
-              const endPoint = toClub === 999999 ? toCenter : clubIcons.find(icon => icon.get('name') === toClub);
-    
-              // If startPoint or endPoint is not found, skip this line
-              if (!startPoint || !endPoint) return null;
-    
-              return new Feature({
-                geometry: new LineString([startPoint.getGeometry().getCoordinates(), endPoint.getGeometry().getCoordinates()]),
-                name: feature.properties.name,
-                id: feature.properties.id
-              });
-            } else {
-              // No unknown clubs, proceed with regular transfer line
-              return new Feature({
-                geometry: new LineString(feature.geometry.coordinates.map(coord => fromLonLat(coord))),
-                name: feature.properties.name,
-                id: feature.properties.id
-              });
-            }
+    if (response && response.data && response.data.features) {
+      const transferLineFeatures = response.data.features.map(async feature => {
+        const playerInLine = feature.properties.spieler_name;
+        if (playerInLine === playerName) {
+          const id = feature.properties.id;
+          const fromClub = feature.properties.von_club;
+          const toClub = feature.properties.nach_club;
+          const transferArt = feature.properties.transferart;
+          const fromLand = feature.properties.von_land;
+          const toLand = feature.properties.nach_land;
+          const fromClubName = feature.properties.von_club_name;
+          const toClubName = feature.properties.nach_club_name;
+
+          // Find the corresponding country center for from_land and to_land
+          const [fromCenter, toCenter] = await Promise.all([
+            findCountryCenter(fromLand),
+            findCountryCenter(toLand)
+          ]);
+
+          // Check if fromClub or toClub is unknown
+          if (fromClub === 999998 || toClub === 999998) {
+            // Find the corresponding country center
+            const startPoint = fromClub === 999998 ? fromCenter : clubIcons.find(icon => icon.get('name') === fromClub);
+            const endPoint = toClub === 999998 ? toCenter : clubIcons.find(icon => icon.get('name') === toClub);
+
+            // If startPoint or endPoint is not found, skip this line
+            if (!startPoint || !endPoint) return null;
+
+            return new Feature({
+              geometry: new LineString([startPoint.getGeometry().getCoordinates(), endPoint.getGeometry().getCoordinates()]),
+              name: feature.properties.name,
+              id: feature.properties.id,
+              transferArt: transferArt // Transferart hinzufügen
+            });
           } else {
-            return null;
+            // No unknown clubs, proceed with regular transfer line
+            return new Feature({
+              geometry: new LineString(feature.geometry.coordinates.map(coord => fromLonLat(coord))),
+              name: feature.properties.name,
+              id: feature.properties.id,
+              transferArt: transferArt // Transferart hinzufügen
+            });
           }
-        });
+        } else {
+          return null;
+        }
+      });
 
-        // Wait for all async operations to complete
-        const resolvedTransferLineFeatures = await Promise.all(transferLineFeatures);
-  
-        // Filter out null values
-        const filteredTransferLineFeatures = resolvedTransferLineFeatures.filter(line => line !== null);
-  
-        setTransferLines(filteredTransferLineFeatures);
-      } else {
-        console.error('No transfer line data found in the response:', response);
-      }
-    } catch (error) {
-      console.error('Error fetching transfer lines:', error);
+      // Wait for all async operations to complete
+      const resolvedTransferLineFeatures = await Promise.all(transferLineFeatures);
+
+      // Filter out null values
+      const filteredTransferLineFeatures = resolvedTransferLineFeatures.filter(line => line !== null);
+
+      setTransferLines(filteredTransferLineFeatures);
+    } else {
+      console.error('No transfer line data found in the response:', response);
     }
-  };
+  } catch (error) {
+    console.error('Error fetching transfer lines:', error);
+  }
+};
   
   const findCountryCenter = async (countryName) => {
     try {
@@ -170,12 +184,31 @@ const Transferhistory = () => {
       }),
       style: function (feature) {
         if (feature.getGeometry().getType() === 'LineString') {
-          return new Style({
-            stroke: new Stroke({
-              color: 'blue',
-              width: 3
-            })
-          });
+          // Überprüfen der Transferart und Anpassen des Stils entsprechend
+          const transferArt = feature.get('transferArt');
+          if (transferArt === 'Leihe') {
+            return new Style({
+              stroke: new Stroke({
+                color: 'lightblue',
+                width: 3
+              })
+            });
+          } else if (transferArt === 'Transfer') {
+            return new Style({
+              stroke: new Stroke({
+                color: 'blue',
+                width: 3
+              })
+            });
+          } else {
+            // Standard-Stil für Linien, wenn keine Transferart angegeben ist
+            return new Style({
+              stroke: new Stroke({
+                color: 'black',
+                width: 3
+              })
+            });
+          }
         } else if (feature.getGeometry().getType() === 'Point') {
           // Überprüfen, ob es sich um ein Club-Icon oder ein Länderzentrum handelt
           if (clubIcons.includes(feature)) {
@@ -231,10 +264,104 @@ const Transferhistory = () => {
     }
   }, [clubIcons, transferLines, countryCenters]);
 
+  const fetchTransferData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=vw_transferlinien&outputFormat=application/json');
+      if (response && response.data && response.data.features) {
+        const filteredData = response.data.features.filter(feature => feature.properties.spieler_name === playerName)
+          .map(feature => ({
+            id: feature.properties.id,
+            date: feature.properties.datum,
+            fromClub: feature.properties.von_club_name,
+            fromClubCountry: feature.properties.von_land,
+            toClub: feature.properties.nach_club_name,
+            toClubCountry: feature.properties.nach_land,
+            marketValue: feature.properties.marktwert,
+            transferFee: feature.properties.abloesesumme
+          }))
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
+        setTransferData(filteredData);
+      } else {
+        console.error('No transfer data found in the response:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching transfer data:', error);
+    }
+  };
+
+  const highlightTransferLine = (id) => {
+  const vectorLayer = map.getLayers().item(1); // Annahme: Die Transferlinien sind auf dem zweiten Vektorlayer
+  const features = vectorLayer.getSource().getFeatures();
+  features.forEach(feature => {
+    if (feature.get('id') === id) {
+      // Ändere den Stil der Linie und setze die Z-Index-Eigenschaft
+      feature.setStyle(new Style({
+        stroke: new Stroke({
+          color: 'yellow',
+          width: 3
+        }),
+        zIndex: 1 // Setze die Z-Index-Eigenschaft auf 1, um die Linie über anderen zu platzieren
+      }));
+
+      // Zoom auf die ausgewählte Linie
+      const extent = feature.getGeometry().getExtent();
+      map.getView().fit(extent, { padding: [100, 100, 100, 100] }); // Padding, um etwas Platz um die Linie herum zu lassen
+    }
+  });
+};
+
+  
+  
+  const unhighlightTransferLine = (id) => {
+    const vectorLayer = map.getLayers().item(1); // Annahme: Die Transferlinien sind auf dem zweiten Vektorlayer
+    const features = vectorLayer.getSource().getFeatures();
+    features.forEach(feature => {
+      if (feature.get('id') === id) {
+        // Setze den Stil der Linie auf den ursprünglichen Stil zurück und setze die Z-Index-Eigenschaft zurück
+        const transferArt = feature.get('transferArt');
+        if (transferArt === 'Leihe') {
+          feature.setStyle(new Style({
+            stroke: new Stroke({
+              color: 'lightblue',
+              width: 3
+            })
+          }));
+        } else if (transferArt === 'Transfer') {
+          feature.setStyle(new Style({
+            stroke: new Stroke({
+              color: 'blue',
+              width: 3
+            })
+          }));
+        } else {
+          feature.setStyle(new Style({
+            stroke: new Stroke({
+              color: 'black',
+              width: 3
+            })
+          }));
+        }
+        feature.setStyle(feature.getStyle().setZIndex(undefined)); // Setze die Z-Index-Eigenschaft zurück
+      }
+    });
+  };
+  
+
+  const handleTableRowClick = (id) => {
+    // Zuerst die vorherige Auswahl zurücksetzen, wenn vorhanden
+    if (selectedTransferLine !== null) {
+      unhighlightTransferLine(selectedTransferLine);
+    }
+    // Dann die neue Zeile hervorheben
+    highlightTransferLine(id);
+    setSelectedTransferLine(id);
+  };
+
   const handleBackButtonClick = () => {
     const clubParam = new URLSearchParams(location.search).get('club');
     navigate(`/squadoverview?club=${clubParam}`);
   };
+
 
   return (
     <div>
@@ -255,6 +382,39 @@ const Transferhistory = () => {
         </Toolbar>
       </AppBar>
       <div id="map" className="map_transferhistory"></div>
+      <div className="transferTableContainer">
+      <TableContainer style={{ width: '30%', position: 'absolute', top: '80px', right: '20px', height: 'calc(100% - 80px)', overflowY: 'auto' }}>
+  <Table>
+    <TableHead>
+      <TableRow>
+        <TableCell>Nr.</TableCell> {/* Neue Spalte für Nummerierung */}
+        <TableCell>Datum</TableCell>
+        <TableCell>Von Club</TableCell>
+        <TableCell>d</TableCell>
+        <TableCell>Nach Club</TableCell>
+        <TableCell>d</TableCell>
+        <TableCell>Marktwert</TableCell>
+        <TableCell>Ablösesumme</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {transferData.map((transfer, index) => (
+        <TableRow key={index} onClick={() => handleTableRowClick(transfer.id)} style={{ backgroundColor: selectedTransferLine === transfer.id ? 'yellow' : 'white' }}>
+          <TableCell>{transfer.id}</TableCell> {/* Fortlaufende Nummerierung = index + 1*/}
+          <TableCell>{transfer.date}</TableCell>
+          <TableCell>{transfer.fromClub}</TableCell>
+          <TableCell>{transfer.fromClubCountry}</TableCell>
+          <TableCell>{transfer.toClub}</TableCell>
+          <TableCell>{transfer.toClubCountry}</TableCell>
+          <TableCell>{transfer.marketValue}</TableCell>
+          <TableCell>{transfer.transferFee}</TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+</TableContainer>
+
+      </div>
       <div style={{ textAlign: 'center', marginTop: '20px' }}>
         <Button variant="contained" color="primary" onClick={handleBackButtonClick}>
           Back to Squad Overview

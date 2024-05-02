@@ -2,54 +2,51 @@
 
 /* CSS für die Karte */
 .map_transferhistory {
-    position: absolute;
-    top: 90px; /* Höhe der AppBar */
-    left: 10px;
-    right: 10px;
-    bottom: 20px;
-    height: calc(100% - 90px); /* Höhe der AppBar abziehen */
-    padding: 0;
-    z-index: 0; /* Stellen Sie sicher, dass die Karte hinter anderen Elementen liegt */
-  }
-
-  /* CSS für das OpenStreetMap Copyright */
-.ol-attribution {
-    position: absolute;
-    bottom: 5px; /* Abstand nach unten */
-    left: calc(100% - 200px); /* Abstand nach links */
-    background-color: transparent; /* Hintergrundfarbe */
-    padding: 5px 10px; /* Innenabstand */
-    font-size: 10px; /* Schriftgröße */
-    color: #333; /* Textfarbe */
+  position: absolute;
+  top: 90px; /* Höhe der AppBar */
+  left: 10px;
+  width: 70%; /* Breite der Karte */
+  bottom: 20px;
+  height: calc(100% - 90px); /* Höhe der AppBar abziehen */
+  padding: 0;
+  z-index: 0; /* Stellen Sie sicher, dass die Karte hinter anderen Elementen liegt */
 }
 
-  /* CSS für das Popup */
-  .ol-popup {
-    position: absolute;
-    background-color: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    max-width: auto; /* Dynamische Breite */
-    white-space: nowrap; /* Keine Zeilenumbrüche */
-    overflow: hidden; /* Textbeschränkung */
-  }
+/* CSS für die Tabelle */
+.table-container-custom {
+  position: absolute;
+  top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+  right: 0;
+  width: 30%; /* Breite der Tabelle */
+  height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 2; /* Stellen Sie sicher, dass die Tabelle über der Karte liegt */
+}
 
-  /* Clubname fett */
-  #popup-content strong {
-    font-weight: bold;
-  }
+/* CSS für die Tabellenüberschrift */
+table.table_transferdata {
+  width: 100%;
+  border-collapse: collapse;
+}
 
+table.table_transferdata th,
+table.table_transferdata td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
 
-  /* CSS für die Tabelle */
-  .table-container-custom {
-    position: absolute;
-    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
-    right: 0;
-    width: 30%;
-    height: calc(100% - 80px); /* Höhe der AppBar abziehen */
-    overflow-y: auto;
-    padding: 20px;
-    box-sizing: border-box;
-  }
+/* CSS für Hover-Effekt über die Tabelle */
+table.table_transferdata tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* CSS für Club-Logo */
+.club-logo {
+  max-width: 50px;
+  max-height: 50px;
+}
