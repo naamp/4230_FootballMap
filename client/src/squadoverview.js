@@ -305,8 +305,8 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
       </AppBar>
       <div id="map" className="map_squadoverview"></div>
       <div className="squadoverview-container">
-        <div className="player-table">
-          <h2>Player Information</h2>
+        <div className="squadoverview-table">
+          <h2 className="squadtable-caption">Select a player to view the transfer history</h2>
           <table>
             <thead>
               <tr>
@@ -318,14 +318,14 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
                 <th>Height</th>
                 <th>Marketvalue</th>
                 <th>Age</th>
-                <th>Birthcountry</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {players.map((player, index) => (
                 <tr key={index} onClick={() => handlePlayerClick(player.name)}>
                   <td>
-                    <img src={player.playerimage} alt={player.name} style={{ width: '50px', height: '50px' }} />
+                    <img src={player.playerimage} alt={player.name} style={{ width: '50px', height: 'auto' }} />
                   </td>
                   <td>{player.jerseyNumber}</td>
                   <td>{player.name}</td>
@@ -335,7 +335,12 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
                   <td>{player.marketvalueFormatted}</td>
                   <td>{player.age}</td>
                   <td>
-                    <img src={countryFlags[player.birthcountry]} alt={player.birthcountry} style={{ width: '30px', height: '20px' }} />
+                  <img
+                      src={countryFlags[player.birthcountry]}
+                      alt={player.birthcountry}
+                      title={player.birthcountry} // Hier wird der Title für den Hover-Effekt gesetzt
+                      style={{ width: 'auto', height: '20px' }}
+                    />
                   </td>
                 </tr>
               ))}

@@ -7,7 +7,7 @@
   left: 0;
   width: 70%;
   height: calc(100% - 80px); /* Höhe der AppBar abziehen */
-  padding: 20px
+  padding: 20px;
 }
 
 /* CSS für das Popup */
@@ -28,7 +28,6 @@
   font-weight: bold;
 }
 
-
 /* CSS für die Tabelle */
 .table-container-custom {
   position: absolute;
@@ -42,36 +41,38 @@
 }
 
 /* CSS für die Tabellenüberschrift */
-table {
+.table-container-custom table {
   width: 100%;
   border-collapse: collapse;
 }
 
-th, td {
+.table-container-custom th,
+.table-container-custom td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  font-family: Arial, sans-serif; 
-  font-size: 14px
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 }
 
-/* CSS für Hover-Effekt über die Liga-Tabelle */
-tr:hover {
+/* CSS für Hover-Effekt über die Zeilen der Tabelle */
+.table-container-custom tbody tr:hover {
   background-color: #f7da00;
 }
 
+/* CSS für das Logo in der Tabelle */
 .club-logo {
   max-width: 50px;
   max-height: 50px;
 }
 
-
+/* CSS für die Tabellenüberschrift */
 .table-caption {
   font-family: Arial, sans-serif;
   caption-side: top;
   text-align: left;
   font-weight: bold;
-  font-family: Arial, sans-serif; 
+  font-family: Arial, sans-serif;
   font-size: 20px;
   padding: 20px;
 }

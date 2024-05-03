@@ -1,7 +1,11 @@
-// ToDo: Zoom-Funktion verbessern (besser auf zentrum), 
-// Legende, Hover-Funktion, Klasseneinteilung
+// provisorisch fertig
+// Optimierungsmöglichkeiten: 
+        // evtl. Design-Anpassungen
+        // Hover etwas verbessern (wenn mit der Maus die Map verlassen wird, soll z.B. der hover weg)
+        // p.s. Zoom-Funktion bei Klick auf Tabelle wurde bewusst nicht umgesetzt, da ich darin keinen grossen Mehrwert sah...
+        // p.s. "gelb-stufen" fand ich besser als graustufen, da ansonsten der Hover nicht gut aussah
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import Map from 'ol/Map';
 import View from 'ol/View';
 import { fromLonLat } from 'ol/proj';
@@ -10,6 +14,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import VectorLayer from 'ol/layer/Vector';
 import { Stroke, Style, Fill } from 'ol/style';
+import Overlay from 'ol/Overlay';
 import './playerorigin.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,14 +31,16 @@ import axios from 'axios';
 const Playerorigin = (props) => {
     const [clubs, setClubs] = useState([]);
     const [club, setClub] = useState('');
-    const [playerCounts, setPlayerCounts] = useState({});
-    const [mapInstance, setMapInstance] = useState(null);
-    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [highlightedFeature, setHighlightedFeature] = useState(null);
+    const [playerCounts, setPlayerCounts] = useState({}); 
 
     const navigate = useNavigate();
     const location = useLocation();
 
+    const [countryFlags, setCountryFlags] = useState({});
+
     useEffect(() => {
+        fetchCountryFlags();
         fetchClubs();
         const searchParams = new URLSearchParams(location.search);
         const clubParam = searchParams.get('club');
@@ -44,67 +51,9 @@ const Playerorigin = (props) => {
 
     useEffect(() => {
         if (club) {
-            fetchPlayerCounts(club);
+            fetchPlayerCounts(club); 
         }
     }, [club]);
-
-    useEffect(() => {
-        const geoserverLandLayer = 'footballmap:land';
-        const landVectorSource = new VectorSource({
-            format: new GeoJSON(),
-            url: function(extent) {
-                return `http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=${geoserverLandLayer}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
-            },
-            strategy: bboxStrategy
-        });
-
-        const landVectorLayer = new VectorLayer({
-            source: landVectorSource,
-            style: function(feature) {
-                const nationalität = feature.get('name');
-                const playerCount = playerCounts[nationalität] || 0;
-                let color;
-                if (playerCount >= 5) {
-                    color = 'rgba(0, 0, 0, 0.8)';
-                } else if (playerCount === 4) {
-                    color = 'rgba(51, 51, 51, 0.8)';
-                } else if (playerCount === 3) {
-                    color = 'rgba(102, 102, 102, 0.8)';
-                } else if (playerCount === 2) {
-                    color = 'rgba(153, 153, 153, 0.8)';
-                } else if (playerCount === 1) {
-                    color = 'rgba(204, 204, 204, 0.8)';
-                } else {
-                    color = 'rgba(255, 255, 255, 0.8)';
-                }
-                return new Style({
-                    fill: new Fill({
-                        color: color
-                    }),
-                    stroke: new Stroke({
-                        color: selectedCountry === nationalität ? 'yellow' : '#000000',
-                        width: selectedCountry === nationalität ? 2 : 1
-                    })
-                });
-            }
-        });
-
-        const newMap = new Map({
-            layers: [landVectorLayer],
-            view: new View({
-                center: fromLonLat([8.1, 46.9]),
-                zoom: 5,
-                projection: 'EPSG:3857'
-            }),
-            target: 'map'
-        });
-
-        setMapInstance(newMap);
-
-        return () => {
-            newMap.setTarget(undefined);
-        };
-    }, [playerCounts, selectedCountry]);
 
     const handleChange = (event) => {
         const newClub = event.target.value;
@@ -153,19 +102,148 @@ const Playerorigin = (props) => {
         }
     };
 
-    const handleTableRowClick = (nationalität) => {
-        const landVectorSource = mapInstance.getLayers().item(0).getSource();
-        landVectorSource.forEachFeature((feature) => {
-            if (feature.get('name') === nationalität) {
-                const mapView = mapInstance.getView();
-                const geometry = feature.getGeometry();
-                if (geometry) {
-                    mapView.fit(geometry, { padding: [200, 200, 200, 200], duration: 500 });
-                    setSelectedCountry(nationalität);
+    useEffect(() => {
+        const geoserverLandLayer = 'footballmap:land';
+        const landVectorSource = new VectorSource({
+            format: new GeoJSON(),
+            url: function(extent) {
+                return `http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=${geoserverLandLayer}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
+            },
+            strategy: bboxStrategy
+        });
+
+        const landVectorLayer = new VectorLayer({
+            source: landVectorSource,
+            style: function(feature) {
+                const nationalität = feature.get('name'); 
+                const playerCount = playerCounts[nationalität] || 0; 
+                let color;
+        
+                if (playerCount === 0) {
+                    color = 'rgba(255, 255, 255, 0.8)';
+                } else if (playerCount === 1) {
+                    color = '#fee391'; 
+                } else if (playerCount >= 2 && playerCount <= 3) {
+                    color = '#fec44f'; 
+                } else if (playerCount >= 4 && playerCount <= 5) {
+                    color = '#fe9929'; 
+                } else if (playerCount >= 6 && playerCount <= 10) {
+                    color = '#ec7014'; 
+                } else {
+                    color = '#cc4c02'; 
                 }
+        
+                return new Style({
+                    fill: new Fill({
+                        color: color
+                    }),
+                    stroke: new Stroke({
+                        color: '#000000',
+                        width: 1
+                    })
+                });
             }
         });
+        
+        const newMap = new Map({
+            layers: [landVectorLayer],
+            view: new View({
+                center: fromLonLat([14, 50]),
+                zoom: 5,
+                projection: 'EPSG:3857'
+            }),
+            target: 'map'
+        });
+
+        const highlightStyle = new Style({
+            stroke: new Stroke({
+                color: '#f7da00',
+                width: 4
+            }),
+            fill: null
+        });
+
+        const highlightVectorLayer = new VectorLayer({
+            source: new VectorSource(),
+            style: highlightStyle
+        });
+
+        newMap.addLayer(highlightVectorLayer);
+
+        let overlayElement = document.getElementById('popup-content');
+if (!overlayElement) {
+    overlayElement = document.createElement('div');
+    overlayElement.id = 'popup-content';
+    document.body.appendChild(overlayElement);
+}
+
+newMap.on('pointermove', function (event) {
+    const hoveredCoord = event.coordinate;
+    const extent = [hoveredCoord[0] - 1, hoveredCoord[1] - 1, hoveredCoord[0] + 1, hoveredCoord[1] + 1];
+    let name = '';
+    
+    landVectorSource.forEachFeatureIntersectingExtent(extent, function (feature) {
+        name = feature.get('name');
+    });
+
+    const overlay = new Overlay({
+        element: overlayElement,
+        positioning: 'center-center',
+        offset: [0, -15],
+        stopEvent: false
+    });
+
+    if (name) {
+        newMap.addOverlay(overlay);
+        overlay.setPosition(hoveredCoord);
+        overlayElement.innerText = name;
+    } else {
+        newMap.removeOverlay(overlay);
+    }
+});
+
+        return () => {
+            newMap.setTarget(undefined);
+        };
+    }, [playerCounts]);
+
+    const generateColorBoxes = () => {
+        return (
+            <div>
+                <span className="legend-color-box" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}></span>
+                <span className="legend-text">none</span> <br />
+                <span className="legend-color-box" style={{ backgroundColor: '#fee391' }}></span>
+                <span className="legend-text">1 </span> <br />
+                <span className="legend-color-box" style={{ backgroundColor: '#fec44f' }}></span>
+                <span className="legend-text">2 - 3 </span> <br />
+                <span className="legend-color-box" style={{ backgroundColor: '#fe9929' }}></span>
+                <span className="legend-text">4 - 5 </span> <br />
+                <span className="legend-color-box" style={{ backgroundColor: '#ec7014' }}></span>
+                <span className="legend-text">6 - 10 </span> <br />
+                <span className="legend-color-box" style={{ backgroundColor: '#cc4c02' }}></span>
+                <span className="legend-text">&gt; 10</span>
+            </div>
+        );
     };
+
+    const fetchCountryFlags = async () => {
+        try {
+          const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=land&outputFormat=application/json');
+    
+          if (response && response.data && response.data.features) {
+            const countryFlagsData = response.data.features.reduce((acc, feature) => {
+              acc[feature.properties.name] = feature.properties.flagge_link;
+              return acc;
+            }, {});
+            setCountryFlags(countryFlagsData);
+          } else {
+            console.error('No country flags data found in the response:', response);
+          }
+        } catch (error) {
+          console.error('Error fetching country flags:', error);
+        }
+      };
+    
 
     return (
         <div>
@@ -205,23 +283,17 @@ const Playerorigin = (props) => {
                 </Toolbar>
             </AppBar>
             <div id="map" className="map-c"></div>
+            <div id="popup-content" className="popup-content"></div>
             <div id="legend" className="legend">
-                <h3>Legend</h3>
-                <ul>
-                    <li>0 Spieler: Weiß</li>
-                    <li>1 Spieler: #CCCCCC</li>
-                    <li>2 Spieler: #999999</li>
-                    <li>3 Spieler: #666666</li>
-                    <li>4 Spieler: #333333</li>
-                    <li>5 und mehr Spieler: Schwarz</li>
-                </ul>
+                <h3>Player Nationality</h3>
+                {generateColorBoxes()}
             </div>
             <div className="table-container-custom">
-                <h3>Player Counts by Nationality</h3>
+                <h3 className="table-caption">Player Counts by Nationality</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>Flag</th>
+                            <th></th>
                             <th>Country</th>
                             <th>Player Count</th>
                         </tr>
@@ -230,8 +302,8 @@ const Playerorigin = (props) => {
                         {Object.entries(playerCounts)
                             .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
                             .map(([nationalität, playerCount]) => (
-                                <tr key={nationalität} onClick={() => handleTableRowClick(nationalität)} style={{ backgroundColor: selectedCountry === nationalität ? 'yellow' : 'transparent' }}>
-                                    <td><img src={`URL_ZUR_FLAGGE_${nationalität}.png`} alt={nationalität} className="club-logo" /></td>
+                                <tr key={nationalität}>
+                                    <td><img src={countryFlags[nationalität]} alt={nationalität} style={{ width: 'auto', height: '20px' }} /></td>
                                     <td>{nationalität}</td>
                                     <td>{playerCount}</td>
                                 </tr>

@@ -1,10 +1,10 @@
 // Startseite provisorisch fertig
 // Optimierungsmöglichkeiten: 
-// Luftbild als zusätzliche Karte
-// Icons "flackern" teilweise wieder, ich glaube wegen Kollision mit anderen Icons verursacht
-// Userperson irgendwie zeigen, dass es ein Pop-Up gibt, evtl. bei klick auf Tabelle Pop-Up direkt öffnen
-// evtl. geringfügige Design-Anpassungen
-// p.s. Darstellungsreihenfolge der Icons nach Stadionkapazität wurde umgesetzt
+        // Luftbild als zusätzliche Karte
+        // Icons "flackern" teilweise wieder, ich glaube wegen Kollision mit anderen Icons verursacht
+        // Userperson irgendwie zeigen, dass es ein Pop-Up gibt, evtl. bei klick auf Tabelle Pop-Up direkt öffnen
+        // evtl. geringfügige Design-Anpassungen
+        // p.s. Darstellungsreihenfolge der Icons nach Stadionkapazität wurde umgesetzt
 
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map.js';

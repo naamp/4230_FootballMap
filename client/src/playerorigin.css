@@ -5,9 +5,10 @@
     left: 0;
     width: 70%; /* Breite als 70% der Viewport-Breite */
     height: calc(100% - 80px); /* Höhe der AppBar abziehen */
-    padding: 20px; /* Padding beibehalten */
+    padding: 0px; /* Padding beibehalten */
     box-sizing: border-box; /* Padding in die Breite und Höhe mit einbeziehen */
     background-color: #add2de;
+    border: 3px solid #000000;
 }
 
 /* CSS für die Legende */
@@ -36,4 +37,41 @@
 /* CSS für die Elemente in der Liste der Legende */
 .legend ul li {
     margin-bottom: 5px;
+}
+
+/* CSS für die Farbkästchen in der Legende */
+.legend-color-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+    border: 1px solid #000000;
+   
+}
+
+/* CSS für den Text neben den Farbkästchen */
+.legend-text {
+    display: inline-block;
+    vertical-align: middle;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 5px;
+}
+
+/* CSS für die Überschrift der Legende */
+.legend h3 {
+    margin-top: 0;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+
+/* Hover-Styling für die Karte */
+.map-c:hover {
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    border: 1px solid black; /* Rand hinzufügen */
+    font-family: Arial, sans-serif;
+    font-weight: bold; /* Schrift fett machen */
 }

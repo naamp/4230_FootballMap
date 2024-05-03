@@ -40,6 +40,7 @@ const Transferhistory = () => {
   const playerName = new URLSearchParams(location.search).get('player');
   const [selectedTransferLine, setSelectedTransferLine] = useState(null);
   const [transferData, setTransferData] = useState([]);
+  const [countryFlags, setCountryFlags] = useState({});
 
 
   useEffect(() => {
@@ -47,6 +48,7 @@ const Transferhistory = () => {
     fetchTransferLines();
     fetchCountryCenters();
     fetchTransferData();
+    fetchCountryFlags();
   }, []);
 
   const fetchClubLocations = async () => {
@@ -362,6 +364,24 @@ const Transferhistory = () => {
     navigate(`/squadoverview?club=${clubParam}`);
   };
 
+  const fetchCountryFlags = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=land&outputFormat=application/json');
+
+      if (response && response.data && response.data.features) {
+        const countryFlagsData = response.data.features.reduce((acc, feature) => {
+          acc[feature.properties.name] = feature.properties.flagge_link;
+          return acc;
+        }, {});
+        setCountryFlags(countryFlagsData);
+      } else {
+        console.error('No country flags data found in the response:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching country flags:', error);
+    }
+  };
+
 
   return (
     <div>
@@ -387,25 +407,25 @@ const Transferhistory = () => {
   <Table>
     <TableHead>
       <TableRow>
-        <TableCell>Nr.</TableCell> {/* Neue Spalte für Nummerierung */}
-        <TableCell>Datum</TableCell>
-        <TableCell>Von Club</TableCell>
-        <TableCell>d</TableCell>
-        <TableCell>Nach Club</TableCell>
-        <TableCell>d</TableCell>
-        <TableCell>Marktwert</TableCell>
-        <TableCell>Ablösesumme</TableCell>
+        <TableCell>Nr</TableCell> 
+        <TableCell>Date</TableCell>
+        <TableCell>From</TableCell>
+        <TableCell></TableCell>
+        <TableCell>To</TableCell>
+        <TableCell></TableCell>
+        <TableCell>Market value</TableCell>
+        <TableCell>Transfer fee</TableCell>
       </TableRow>
     </TableHead>
     <TableBody>
       {transferData.map((transfer, index) => (
         <TableRow key={index} onClick={() => handleTableRowClick(transfer.id)} style={{ backgroundColor: selectedTransferLine === transfer.id ? 'yellow' : 'white' }}>
-          <TableCell>{transfer.id}</TableCell> {/* Fortlaufende Nummerierung = index + 1*/}
+          <TableCell>{index + 1}</TableCell> 
           <TableCell>{transfer.date}</TableCell>
           <TableCell>{transfer.fromClub}</TableCell>
-          <TableCell>{transfer.fromClubCountry}</TableCell>
+          <TableCell><img src={countryFlags[transfer.fromClubCountry]} alt={transfer.fromClubCountry} style={{ width: 'auto', height: '20px' }} /></TableCell>
           <TableCell>{transfer.toClub}</TableCell>
-          <TableCell>{transfer.toClubCountry}</TableCell>
+          <TableCell><img src={countryFlags[transfer.toClubCountry]} alt={transfer.toClubCountry} style={{ width: '30px', height: '20px' }} /></TableCell>
           <TableCell>{transfer.marketValue}</TableCell>
           <TableCell>{transfer.transferFee}</TableCell>
         </TableRow>
