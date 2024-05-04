@@ -1,5 +1,5 @@
 /* CSS für die Karte */
-.map_squadoverview {
+.squadoverview_map {
     position: absolute;
     top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
     left: 0;
@@ -9,7 +9,7 @@
   }
   
 /* CSS für die Spieler-Tabelle */
-.squadoverview-table {
+.squadoverview_table {
     position: absolute;
     top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
     right: 0;
@@ -20,37 +20,33 @@
     overflow-y: auto; /* Scrollen, falls die Tabelle zu groß wird */
   }
   
-  .squadoverview-table h2 {
+  .squadoverview_table h2 {
     margin-bottom: 10px;
   }
   
-  .squadoverview-table table {
+  .squadoverview_table table {
     width: 100%;
     border-collapse: collapse;
   }
   
-  .squadoverview-table th,
-  .squadoverview-table td {
+  .squadoverview_table th,
+  .squadoverview_table td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
     font-family: Arial, sans-serif;
     font-size: 14px;
-    
+    cursor: pointer;
   }
 
   /* CSS für Hover-Effekt über die Zeilen der Tabelle */
-  .squadoverview-table tbody tr:hover {
+  .squadoverview_table tbody tr:hover {
     background-color: #f7da00;
 }
   
-  .squadoverview-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
 
   /* CSS für die Tabellenüberschrift */
-  .squadtable-caption {
+  .squadoverview_table-caption {
     font-family: Arial, sans-serif;
     caption-side: top;
     text-align: left;

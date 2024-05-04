@@ -1,10 +1,10 @@
 // Startseite provisorisch fertig
 // Optimierungsmöglichkeiten: 
-        // Luftbild als zusätzliche Karte
+        // evtl. Luftbild als zusätzliche Karte
         // Icons "flackern" teilweise wieder, ich glaube wegen Kollision mit anderen Icons verursacht
-        // Userperson irgendwie zeigen, dass es ein Pop-Up gibt, evtl. bei klick auf Tabelle Pop-Up direkt öffnen
+        // Userperson irgendwie zeigen, dass es ein Pop-Up gibt, evtl. bei klick auf Tabelle Pop-Up direkt öffnen (bisher kommt eine Hand, wenn man über die Tabelle hovert, evtl auch eine Option für andere "klickbare" Objekte wie z.B. Club-Icons?)
         // evtl. geringfügige Design-Anpassungen
-        // p.s. Darstellungsreihenfolge der Icons nach Stadionkapazität wurde umgesetzt
+        // p.s. Darstellungsreihenfolge der Icons auf der Map nach Stadionkapazität wurde bisher umgesetzt
 
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map.js';
@@ -34,17 +34,18 @@ import './startpage.css';
 import appbarstyle from './appbarstyle.js';
 import { useNavigate } from "react-router-dom";
 
-// Konstanten für Menü-Styles
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+// => Abschnitt wird wohl nicht mehr benötigt
+// Konstanten für Menü-Styles 
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
 
 const Startpage = () => {
     // Zustandsvariablen der Komponenten
@@ -60,6 +61,7 @@ const Startpage = () => {
     const [rightAnchorEl, setRightAnchorEl] = useState(null);
     const [availableLeagues, setAvailableLeagues] = useState([]);
     const [clickedName, setClickedName] = useState(null);
+    const [popupReady, setPopupReady] = useState(false);
     const navigate = useNavigate();
 
     // Zustandsvariablen für Club-Positionen
@@ -92,7 +94,7 @@ const Startpage = () => {
           maxY = Math.max(maxY, extent[3]);
       });
   
-      // Zusätzlicher Rand von 200px
+      // Zusätzlicher Rand von 100px
       const padding = [100, 100, 100, 100];
   
       const extent = [minX, minY, maxX, maxY];
@@ -324,7 +326,7 @@ const zoomToClub = (clubName) => {
                 minZoom: 5,
                 maxZoom: 20,
                 projection: new Projection({
-                    code: 'EPSG:900913',
+                    code: 'EPSG:3857', //zuvor war EPSG:900913
                     units: 'm'
                 })
             }),
@@ -402,6 +404,22 @@ const zoomToClub = (clubName) => {
       }
     }, [countries]);
 
+    useEffect(() => {
+        if (popupReady) {
+            const handleClosePopup = () => {
+                popup.setPosition(undefined);
+            };
+    
+            const popupCloser = document.getElementById('popup-closer');
+            popupCloser.addEventListener('click', handleClosePopup);
+    
+            // Cleanup: Entferne den Event-Listener, wenn das Komponenten unmounted wird
+            return () => {
+                popupCloser.removeEventListener('click', handleClosePopup);
+            };
+        }
+    }, [popupReady]);
+
     // Return Hauptkomponente
     return (
         <div>
@@ -447,7 +465,7 @@ const zoomToClub = (clubName) => {
                                             return selected.join(', ');
                                         }
                                     }}
-                                    MenuProps={MenuProps}
+                                    //MenuProps={MenuProps} => wird wohl nicht mehr benötigt
                                     style={{ color: 'white' }}
                                 >
                                     {availableLeagues.map(l => (
@@ -462,16 +480,16 @@ const zoomToClub = (clubName) => {
                     </Toolbar>
                 </AppBar>
             </div>
-            <div id="popup" className="ol-popup">
-                <a href="#" id="popup-closer" className="ol-popup-closer">×</a>
+            <div id="popup" className="startpage_popup">
+                <a href="#" id="popup-closer">×</a>
                 <div id="popup-content"></div>
             </div>
-            <div id="table-container" className="table-container-custom">
+            <div id="table-container" className="startpage_table">
                 <table id="table-body"></table>
             </div>
-            <div id="visible-clubs-table" className="table-container-custom">
+            <div id="visible-clubs-table" className="startpage_table">
                 <table id="visible-clubs-body">
-                <caption className="table-caption">Selected clubs sorted by stadium capacity</caption>
+                <caption className="startpage_table-caption">Selected clubs sorted by stadium capacity</caption>
                     <thead>
                         <tr>
                             <th></th>
@@ -490,7 +508,7 @@ const zoomToClub = (clubName) => {
                     </tbody>
                 </table>
             </div>
-            <div id="map" className="map_startpage"></div>
+            <div id="map" className="startpage_map"></div>
         </div>
     );
 };

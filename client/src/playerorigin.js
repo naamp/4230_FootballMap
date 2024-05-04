@@ -210,18 +210,18 @@ newMap.on('pointermove', function (event) {
     const generateColorBoxes = () => {
         return (
             <div>
-                <span className="legend-color-box" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}></span>
-                <span className="legend-text">none</span> <br />
-                <span className="legend-color-box" style={{ backgroundColor: '#fee391' }}></span>
-                <span className="legend-text">1 </span> <br />
-                <span className="legend-color-box" style={{ backgroundColor: '#fec44f' }}></span>
-                <span className="legend-text">2 - 3 </span> <br />
-                <span className="legend-color-box" style={{ backgroundColor: '#fe9929' }}></span>
-                <span className="legend-text">4 - 5 </span> <br />
-                <span className="legend-color-box" style={{ backgroundColor: '#ec7014' }}></span>
-                <span className="legend-text">6 - 10 </span> <br />
-                <span className="legend-color-box" style={{ backgroundColor: '#cc4c02' }}></span>
-                <span className="legend-text">&gt; 10</span>
+                <span className="playerorigin_legend-color-box" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}></span>
+                <span className="playerorigin_legend-text">none</span> <br />
+                <span className="playerorigin_legend-color-box" style={{ backgroundColor: '#fee391' }}></span>
+                <span className="playerorigin_legend-text">1 </span> <br />
+                <span className="playerorigin_legend-color-box" style={{ backgroundColor: '#fec44f' }}></span>
+                <span className="playerorigin_legend-text">2 - 3 </span> <br />
+                <span className="playerorigin_legend-color-box" style={{ backgroundColor: '#fe9929' }}></span>
+                <span className="playerorigin_legend-text">4 - 5 </span> <br />
+                <span className="playerorigin_legend-color-box" style={{ backgroundColor: '#ec7014' }}></span>
+                <span className="playerorigin_legend-text">6 - 10 </span> <br />
+                <span className="playerorigin_legend-color-box" style={{ backgroundColor: '#cc4c02' }}></span>
+                <span className="playerorigin_legend-text">&gt; 10</span>
             </div>
         );
     };
@@ -277,19 +277,19 @@ newMap.on('pointermove', function (event) {
                             </Select>
                         </FormControl>
                         <div className="Title" style={appbarstyle.title}>
-                            Player Origin
+                            Player Origin {club}
                         </div>
                     </div>
                 </Toolbar>
             </AppBar>
-            <div id="map" className="map-c"></div>
+            <div id="map" className="playerorigin_map"></div>
             <div id="popup-content" className="popup-content"></div>
-            <div id="legend" className="legend">
+            <div id="legend" className="playerorigin_legend">
                 <h3>Player Nationality</h3>
                 {generateColorBoxes()}
             </div>
-            <div className="table-container-custom">
-                <h3 className="table-caption">Player Counts by Nationality</h3>
+            <div className="playerorigin_table">
+                <h3 className="playerorigin_table-caption">Player Counts by Nationality</h3>
                 <table>
                     <thead>
                         <tr>

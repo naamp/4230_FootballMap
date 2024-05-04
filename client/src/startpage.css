@@ -1,7 +1,7 @@
 /* CSS für startpage.js ------------------------------------------------------------------------- */
 
 /* CSS für die Karte */
-.map_startpage {
+.startpage_map {
   position: absolute;
   top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
   left: 0;
@@ -11,7 +11,7 @@
 }
 
 /* CSS für das Popup */
-.ol-popup {
+.startpage_popup {
   position: absolute;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
@@ -23,13 +23,8 @@
   overflow: hidden; /* Textbeschränkung */
 }
 
-/* Clubname fett */
-#popup-content strong {
-  font-weight: bold;
-}
-
 /* CSS für die Tabelle */
-.table-container-custom {
+.startpage_table {
   position: absolute;
   top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
   right: 0;
@@ -41,33 +36,28 @@
 }
 
 /* CSS für die Tabellenüberschrift */
-.table-container-custom table {
+.startpage_table table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.table-container-custom th,
-.table-container-custom td {
+.startpage_table th,
+.startpage_table td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
   font-family: Arial, sans-serif;
   font-size: 14px;
+  cursor: pointer; /* Maus ändert sich zu einer Hand */
 }
 
 /* CSS für Hover-Effekt über die Zeilen der Tabelle */
-.table-container-custom tbody tr:hover {
+.startpage_table tbody tr:hover {
   background-color: #f7da00;
 }
 
-/* CSS für das Logo in der Tabelle */
-.club-logo {
-  max-width: 50px;
-  max-height: 50px;
-}
-
 /* CSS für die Tabellenüberschrift */
-.table-caption {
+.startpage_table-caption {
   font-family: Arial, sans-serif;
   caption-side: top;
   text-align: left;

@@ -13,7 +13,7 @@
 }
 
 /* CSS für die Tabelle */
-.table-container-custom {
+.transferhistory_table {
   position: absolute;
   top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
   right: 0;
@@ -23,16 +23,17 @@
   padding: 20px;
   box-sizing: border-box;
   z-index: 2; /* Stellen Sie sicher, dass die Tabelle über der Karte liegt */
+  cursor: pointer
 }
 
 /* CSS für die Tabellenüberschrift */
-table.table_transferdata {
+.transferhistory_table table {
   width: 100%;
   border-collapse: collapse;
 }
 
-table.table_transferdata th,
-table.table_transferdata td {
+.transferhistory_table th,
+.transferhistory_table td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -41,12 +42,6 @@ table.table_transferdata td {
 }
 
 /* CSS für Hover-Effekt über die Tabelle */
-table.table_transferdata tbody tr:hover {
-  background-color: #f2f2f2;
-}
-
-/* CSS für Club-Logo */
-.club-logo {
-  max-width: 50px;
-  max-height: 50px;
+.transferhistory_table tbody tr:hover {
+  background-color: #f7da00;
 }

@@ -1,7 +1,8 @@
-// ToDo: Anzeige und Inhalt Pop-Up überarbeiten 
-// evtl. Luftbild als Hintergrund
-// Tabellenüberschrift, Tabellenstyle (Weiterleitung optimieren, Icons besser, Hover über Flagge, evlt. Playerimage vergrösserbar)
-// evtl. Pop-Up auf Icon einrichten
+// Optimierungsmöglichkeiten: 
+    // evtl. Luftbild als zusätzlichen Hintergrund
+    // evtl. geringfügige Design-Anpassungen
+    // evtl. Informationen zum Stadion (wie bei startpage) entweder wieder als popup oder als Liste unter der Karte
+    // evlt. Button einrichten zur Page "playerorigin"
 
 import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -191,7 +192,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
           foot: feature.properties.starker_fuss,
           club: feature.properties.club,
           age: calculateAge(new Date(feature.properties.geburtsdatum)),
-          marketvalueFormatted: `€${formatNumber(feature.properties.marktwert_aktuell)}`
+          marketvalueFormatted: `${formatNumber(feature.properties.marktwert_aktuell)} €`
         })).filter(player => player.club === selectedClub);
 
         playersData.sort((a, b) => {
@@ -254,7 +255,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
   };
 
   const formatNumber = (value) => {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const handlePlayerClick = (playerName) => {
@@ -298,15 +299,15 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
               </FormControl>
             </div>
             <div className="Title" style={appbarstyle.title}>
-              Squad Overview
+              Squad Overview {selectedClub}
             </div>
           </div>
         </Toolbar>
       </AppBar>
-      <div id="map" className="map_squadoverview"></div>
+      <div id="map" className="squadoverview_map"></div>
       <div className="squadoverview-container">
-        <div className="squadoverview-table">
-          <h2 className="squadtable-caption">Select a player to view the transfer history</h2>
+        <div className="squadoverview_table">
+          <h2 className="squadoverview_table-caption">Select a player to view the transfer history</h2>
           <table>
             <thead>
               <tr>
@@ -318,7 +319,7 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
                 <th>Height</th>
                 <th>Marketvalue</th>
                 <th>Age</th>
-                <th></th>
+                <th>Born</th>
               </tr>
             </thead>
             <tbody>

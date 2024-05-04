@@ -1,5 +1,5 @@
 /* CSS für die Karte */
-.map-c {
+.playerorigin_map {
     position: absolute;
     top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
     left: 0;
@@ -12,7 +12,7 @@
 }
 
 /* CSS für die Legende */
-.legend {
+.playerorigin_legend {
     position: absolute;
     bottom: 20px;
     left: 20px;
@@ -23,24 +23,19 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* CSS für die Überschrift der Legende */
-.legend h3 {
-    margin-top: 0;
-}
-
 /* CSS für die Liste in der Legende */
-.legend ul {
+.playerorigin_legend ul {
     list-style-type: none;
     padding: 0;
 }
 
 /* CSS für die Elemente in der Liste der Legende */
-.legend ul li {
+.playerorigin_legend ul li {
     margin-bottom: 5px;
 }
 
 /* CSS für die Farbkästchen in der Legende */
-.legend-color-box {
+.playerorigin_legend-color-box {
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -51,7 +46,7 @@
 }
 
 /* CSS für den Text neben den Farbkästchen */
-.legend-text {
+.playerorigin_legend-text {
     display: inline-block;
     vertical-align: middle;
     font-family: Arial, sans-serif;
@@ -61,7 +56,7 @@
 }
 
 /* CSS für die Überschrift der Legende */
-.legend h3 {
+.playerorigin_legend h3 {
     margin-top: 0;
     font-family: Arial, sans-serif;
     font-weight: bold;
@@ -69,9 +64,53 @@
 
 
 /* Hover-Styling für die Karte */
-.map-c:hover {
+.playerorigin_map:hover {
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
     border: 1px solid black; /* Rand hinzufügen */
     font-family: Arial, sans-serif;
     font-weight: bold; /* Schrift fett machen */
 }
+
+/* CSS für die Tabelle */
+.playerorigin_table {
+    position: absolute;
+    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+    right: 0;
+    width: 30%;
+    height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* CSS für die Tabellenüberschrift */
+  .playerorigin_table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .playerorigin_table th,
+  .playerorigin_table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    cursor: default; 
+  }
+  
+  /* CSS für Hover-Effekt über die Zeilen der Tabelle */
+  .playerorigin_table tbody tr:hover {
+    background-color: #f7da00;
+  }
+  
+  /* CSS für die Tabellenüberschrift */
+  .playerorigin_table-caption {
+    font-family: Arial, sans-serif;
+    caption-side: top;
+    text-align: left;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    padding: 20px;
+  }
