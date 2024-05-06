@@ -1,32 +1,99 @@
-/* CSS für startpage.js ------------------------------------------------------------------------- */
+/* CSS für startpage.js ----------------------------------------------------------------------------------------------------------------------------------------- */
 
+/* Kartenstyling *********************************************************************/
 /* CSS für die Karte */
 .startpage_map {
   position: absolute;
-  top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+  top: 80px; /* Höhe der AppBar */
   left: 0;
   width: 70%;
-  height: calc(100% - 80px); /* Höhe der AppBar abziehen */
-  padding: 20px;
+  height: calc(100% - 80px);
+  padding: 0px;
 }
 
+/* CSS für das copyright der Open Street Map Karte */
+.ol-attribution {
+  bottom: 0;
+  right: 0;
+  left: auto;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  color: #333;
+}
+
+/* CSS für die zoom controls */
+.ol-zoom-custom {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.ol-zoom-custom button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255);
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+.ol-zoom-custom button:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.ol-zoom-custom button:active {
+  background-color: rgba(238, 238, 238, 1);
+}
+
+/* Popups und Tabellen ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* CSS für das Popup */
 .startpage_popup {
   position: absolute;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 4px;
   border: 1px solid #ccc;
   max-width: auto; /* Dynamische Breite */
   white-space: nowrap; /* Keine Zeilenumbrüche */
   overflow: hidden; /* Textbeschränkung */
 }
 
+.startpage_popup-button {
+  background-color: #28487d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 2px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.startpage_popup-button:disabled {
+  background-color: #cccccc; /* Grau für deaktivierte Buttons */
+  cursor: not-allowed;       /* Cursor-Symbol für deaktivierte Buttons */
+}
+
 /* CSS für die Tabelle */
 .startpage_table {
   position: absolute;
-  top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+  top: 80px; /* Höhe der AppBar */
   right: 0;
   width: 30%;
   height: calc(100% - 80px); /* Höhe der AppBar abziehen */
@@ -41,28 +108,36 @@
   border-collapse: collapse;
 }
 
-.startpage_table th,
 .startpage_table td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  font-family: Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   cursor: pointer; /* Maus ändert sich zu einer Hand */
+}
+
+.startpage_table th {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
 }
 
 /* CSS für Hover-Effekt über die Zeilen der Tabelle */
 .startpage_table tbody tr:hover {
   background-color: #f7da00;
+  color: #28487d;
 }
 
 /* CSS für die Tabellenüberschrift */
 .startpage_table-caption {
-  font-family: Arial, sans-serif;
-  caption-side: top;
+  caption-side: bottom;
   text-align: left;
-  font-weight: bold;
-  font-family: Arial, sans-serif;
-  font-size: 20px;
-  padding: 20px;
+  font-weight: condensed;
+  font-family: "Roboto", sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  padding-top: 30px;
 }

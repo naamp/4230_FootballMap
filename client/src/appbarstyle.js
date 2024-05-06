@@ -1,26 +1,31 @@
 const appbarstyle = {
     appBar: {
-        padding: '10px',
+        padding: '0',
         height: '80px',
-        position: 'relative',
+        width: '100%',
+        top: '0',
+        position: 'fixed',
         zIndex: '1000',
         backgroundColor: '#28487d',
+        margin: '0',
+        left: '0',
+        right: '0',
     },
     button: {
         margin: '10px',
-        color: "white",
-        fontFamily: 'Arial, sans-serif',
+        color: 'white',
+        fontFamily: '"Roboto", sans-serif',
         fontWeight: 'bold',
+        fontSize: '32px'
     },
     title: {
         margin: '10px',
         color: '#f7da00',
         fontWeight: 'bold',
-        fontStyle: 'italic',
-        fontFamily: 'Arial, sans-serif',
-        fontSize: '24px',  
+        fontFamily: '"Roboto", sans-serif',
+        fontSize: '20px',
     },
-    
 };
 
 export default appbarstyle;
+

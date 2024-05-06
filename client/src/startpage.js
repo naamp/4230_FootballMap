@@ -19,6 +19,8 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy.js';
 import VectorLayer from 'ol/layer/Vector';
 import { Icon, Style } from 'ol/style.js';
 import Overlay from 'ol/Overlay.js';
+import Attribution from 'ol/control/Attribution';
+import Zoom from 'ol/control/Zoom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -148,13 +150,13 @@ const zoomToClub = (clubName) => {
     }
 };
 
-  // Aufruf der Fetch-Funktion für Länder bei Änderungen in league und availableLeagues 
+  // Aufruf der Fetch-Funktion für Länder bei Änderungen in league und availableLeagues
   useEffect(() => {
     if (vectorLayer && availableLeagues.length > 0) {
         updateFilteredFeatures(league);
-        zoomToVisibleFeatures(); 
+        zoomToVisibleFeatures();
     }
-}, [league, availableLeagues]);  
+}, [league, availableLeagues]);
     // Funktion für die Buttons innerhalb des Pop-Ups
     const handleButtonClick = (page, clubName) => {
         switch(page) {
@@ -298,8 +300,8 @@ const zoomToClub = (clubName) => {
                 });
             }
         });
-        
-  
+
+
         // Darstellen des Pop-Ups
         const newPopup = new Overlay({
             element: document.getElementById('popup'),
@@ -308,12 +310,16 @@ const zoomToClub = (clubName) => {
                 duration: 250
             }
         });
-  
+
+        // Festlegen der Attibution/Quelle
+        const attributions =
+            '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+
         // Darstellen der OSM-Karte
         const osmLayer = new TileLayer({
-            source: new OSM()
+            source: new OSM({attributions: attributions}),
         });
-  
+
         // Darstellen der Karte
         const newMap = new Map({
             layers: [
@@ -330,7 +336,15 @@ const zoomToClub = (clubName) => {
                     units: 'm'
                 })
             }),
-            target: 'map'
+            target: 'map',
+            controls: [
+                new Zoom({
+                    className: 'ol-zoom-custom'
+                }),
+                new Attribution({
+                    collapsed: true,
+                    collapsible: true,
+                })]
         });
   
         newMap.addOverlay(newPopup);
@@ -356,8 +370,8 @@ const zoomToClub = (clubName) => {
                     <strong>League:</strong> ${liga}<br>
                     <strong>Stadium:</strong> ${stadiumname}<br>
                     <strong>Capacity:</strong> ${kapazität} seats<br><br>
-                    <button id="button1" style="margin-right: 10px;" ${liga !== 'Super League' ? 'disabled' : ''}>Squad Overview</button>
-                    <button id="button2" ${liga !== 'Super League' ? 'disabled' : ''}>Player Origin</button>
+                    <button id="button1" class="startpage_popup-button" style="margin-right: 10px;" ${liga !== 'Super League' ? 'disabled' : ''}>Squad Overview</button>
+                    <button id="button2" class="startpage_popup-button" ${liga !== 'Super League' ? 'disabled' : ''}>Player Origin</button>
                     ${liga !== 'Super League' ? '<p style="font-size: 12px; color: #888;">Functions only for Swiss Super League</p>' : ''}
                 `;
        
@@ -365,8 +379,8 @@ const zoomToClub = (clubName) => {
                 const popupElement = newPopup.getElement();
                 popupElement.innerHTML = popupContent;
         
-                popupElement.style.fontSize = '16px';
-                popupElement.style.fontFamily = 'Arial, sans-serif';
+                popupElement.style.fontSize = '14px';
+                popupElement.style.fontFamily = '"Roboto", sans-serif';
                 popupElement.style.color = '#311313';
         
                 const button1 = popupElement.querySelector('#button1');
@@ -423,19 +437,19 @@ const zoomToClub = (clubName) => {
     // Return Hauptkomponente
     return (
         <div>
-            <div className="standardAppBar"> 
+            <div className="standardAppBar">
                 <AppBar position="static" style={appbarstyle.appBar}>
-                    <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}> 
-                        <Button 
-                            style={appbarstyle.button}  
-                            startIcon={<HomeIcon style={{ color: '#f7da00' }} />}  
+                    <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}>
+                        <Button
+                            style={appbarstyle.button}
                             aria-controls="left-menu"
-                            onClick={() => window.location.reload()}  
+                            onClick={() => window.location.reload()}
                         >
+                            <img src="public/Logo_FootballMap.png" style={{ width: '10px', height: 'auto' , marginRight: '10px' }} />
                             FootballMap
                         </Button>
                         <div>
-                            <FormControl sx={{ m: 1, minWidth: 120 }} >  
+                            <FormControl sx={{ m: 1,color:'red', minWidth: 120 }} >
                                 <InputLabel id="country-label" style={{ color: '#f7da00' }}>Country</InputLabel>
                                 <Select
                                     labelId="country-label"
@@ -449,7 +463,7 @@ const zoomToClub = (clubName) => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <FormControl sx={{ m: 1, minWidth: 120 }}>  
+                            <FormControl sx={{ m: 1, minWidth: 120 }}>
                                 <InputLabel id="leagues-label" style={{ color: '#f7da00' }}>Leagues</InputLabel>
                                 <Select
                                     labelId="leagues-label"
