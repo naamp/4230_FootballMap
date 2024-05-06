@@ -23,10 +23,13 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
+import Zoom from 'ol/control/Zoom';
+import Attribution from 'ol/control/Attribution.js';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 
 import './squadoverview.css';
+import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import appbarstyle from './appbarstyle.js';
 
 import { useNavigate, useParams } from 'react-router-dom';
@@ -114,6 +117,9 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
     const newVectorSource = new VectorSource();
     setVectorSource(newVectorSource);
 
+    const attributions =
+            '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap</a>';
+
     const osmLayer = new TileLayer({
       source: new OSM()
     });
@@ -141,7 +147,18 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
       view: new View({
         center: fromLonLat([8.1, 46.9]),
         zoom: 8
-      })
+      }),
+      controls: [
+        new Zoom({
+            className: 'ol-zoom-custom'
+        }),
+        new Attribution({
+            collapsed: true,
+            collapsible: true,
+            tipLabel: 'show Attibution',
+            label: '\u00A9',
+            collapseLabel: '>'
+        })]
     });
 
     setMap(newMap);
@@ -271,9 +288,9 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
         <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}>
           <Button
             style={appbarstyle.button}
-            startIcon={<HomeIcon style={{ color: '#f7da00' }} />}
             onClick={handleHomeButtonClick}
           >
+            <img src={LogoFootballMap} style={{ width: 'auto', height: '50px' , marginRight: '10px' }} />
             FootballMap
           </Button>
           <div style={{ display: 'flex', alignItems: 'center' }}>

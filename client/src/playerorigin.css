@@ -8,7 +8,6 @@
     padding: 0px; /* Padding beibehalten */
     box-sizing: border-box; /* Padding in die Breite und Höhe mit einbeziehen */
     background-color: #add2de;
-    border: 3px solid #000000;
 }
 
 /* CSS für die Legende */
@@ -49,7 +48,7 @@
 .playerorigin_legend-text {
     display: inline-block;
     vertical-align: middle;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: bold;
     font-size: 14px;
     margin: 5px;
@@ -58,7 +57,7 @@
 /* CSS für die Überschrift der Legende */
 .playerorigin_legend h3 {
     margin-top: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: bold;
 }
 
@@ -66,8 +65,7 @@
 /* Hover-Styling für die Karte */
 .playerorigin_map:hover {
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
-    border: 1px solid black; /* Rand hinzufügen */
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: bold; /* Schrift fett machen */
 }
 
@@ -94,7 +92,7 @@
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 14px;
     cursor: default; 
   }
@@ -106,11 +104,11 @@
   
   /* CSS für die Tabellenüberschrift */
   .playerorigin_table-caption {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     caption-side: top;
     text-align: left;
     font-weight: bold;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 20px;
     padding: 20px;
   }

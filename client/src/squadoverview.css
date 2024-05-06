@@ -1,13 +1,67 @@
+/* CSS für squadoverview.js ----------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* Kartenstyling *********************************************************************/
 /* CSS für die Karte */
 .squadoverview_map {
     position: absolute;
-    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+    top: 80px; /* Höhe der AppBar */
     left: 0;
     width: 40%;
-    height: calc(100% - 80px); /* Höhe der AppBar abziehen */
-    padding: 20px
+    height: calc(100% - 80px);
+    padding: 0px
   }
-  
+
+  /* CSS für das copyright der Open Street Map Karte */
+.ol-attribution {
+  bottom: 0;
+  right: 0;
+  left: auto;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  color: #333;
+  max-height: 50px;
+}
+
+
+/* CSS für die zoom controls */
+.ol-zoom-custom {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.ol-zoom-custom button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+.ol-zoom-custom button:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.ol-zoom-custom button:active {
+  background-color: rgba(238, 238, 238, 1);
+}
+
+/* Popups und Tabellen ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* CSS für die Spieler-Tabelle */
 .squadoverview_table {
     position: absolute;
@@ -19,22 +73,22 @@
     box-sizing: border-box;
     overflow-y: auto; /* Scrollen, falls die Tabelle zu groß wird */
   }
-  
+
   .squadoverview_table h2 {
     margin-bottom: 10px;
   }
-  
+
   .squadoverview_table table {
     width: 100%;
     border-collapse: collapse;
   }
-  
+
   .squadoverview_table th,
   .squadoverview_table td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 14px;
     cursor: pointer;
   }
@@ -43,15 +97,15 @@
   .squadoverview_table tbody tr:hover {
     background-color: #f7da00;
 }
-  
+
 
   /* CSS für die Tabellenüberschrift */
   .squadoverview_table-caption {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     caption-side: top;
     text-align: left;
     font-weight: bold;
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 20px;
     padding: 20px;
   }

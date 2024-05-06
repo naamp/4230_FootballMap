@@ -3,13 +3,11 @@
 /* CSS für die Karte */
 .map_transferhistory {
   position: absolute;
-  top: 90px; /* Höhe der AppBar */
-  left: 10px;
+  top: 80px; /* Höhe der AppBar */
+  left: 0;
   width: 70%; /* Breite der Karte */
-  bottom: 20px;
-  height: calc(100% - 90px); /* Höhe der AppBar abziehen */
-  padding: 0;
-  z-index: 0; /* Stellen Sie sicher, dass die Karte hinter anderen Elementen liegt */
+  height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+  padding: 0px;
 }
 
 /* CSS für die Tabelle */
@@ -37,7 +35,7 @@
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  font-family: Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
 }
 

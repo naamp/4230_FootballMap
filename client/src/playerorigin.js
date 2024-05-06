@@ -16,6 +16,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { Stroke, Style, Fill } from 'ol/style';
 import Overlay from 'ol/Overlay';
 import './playerorigin.css';
+import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -251,9 +252,9 @@ newMap.on('pointermove', function (event) {
                 <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}>
                     <Button
                         style={appbarstyle.button}
-                        startIcon={<HomeIcon style={{ color: '#f7da00' }} />}
                         onClick={() => navigate("/")}
                     >
+                        <img src={LogoFootballMap} style={{ width: 'auto', height: '50px' , marginRight: '10px' }} />
                         FootballMap
                     </Button>
                     <div style={{ display: 'flex', alignItems: 'center' }}>

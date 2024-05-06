@@ -18,13 +18,15 @@
   left: auto;
   position: absolute;
   background-color: rgba(255, 255, 255, 0.8);
-  padding: 5px;
+  padding: 3px 10px;
   border-radius: 3px;
   font-size: 12px;
   font-family: "Roboto", sans-serif;
   font-weight: 200;
   color: #333;
+  max-height: 50px;
 }
+
 
 /* CSS für die zoom controls */
 .ol-zoom-custom {
@@ -45,7 +47,7 @@
   width: 30px;
   height: 30px;
   background-color: rgba(255, 255, 255);
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 2px;
   cursor: pointer;
   outline: none;
@@ -83,6 +85,11 @@
   border-radius: 2px;
   font-size: 14px;
   font-family: 'Roboto', sans-serif;
+}
+
+.startpage_popup-button:hover {
+  background-color: #f7da00; /* Grau für deaktivierte Buttons */
+  color: #28487d;
 }
 
 .startpage_popup-button:disabled {

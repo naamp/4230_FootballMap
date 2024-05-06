@@ -34,6 +34,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import './startpage.css';
 import appbarstyle from './appbarstyle.js';
+import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import { useNavigate } from "react-router-dom";
 
 // => Abschnitt wird wohl nicht mehr benötigt
@@ -313,7 +314,7 @@ const zoomToClub = (clubName) => {
 
         // Festlegen der Attibution/Quelle
         const attributions =
-            '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+            '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap</a>';
 
         // Darstellen der OSM-Karte
         const osmLayer = new TileLayer({
@@ -344,28 +345,39 @@ const zoomToClub = (clubName) => {
                 new Attribution({
                     collapsed: true,
                     collapsible: true,
+                    tipLabel: 'show Attibution',
+                    label: '\u00A9',
+                    collapseLabel: '>'
                 })]
         });
-  
+
         newMap.addOverlay(newPopup);
-  
+
+        // Änderung des Mauszeigers bei Hover über den Clublogos
+        newMap.on('pointermove', function(evt) {
+            const hit = newMap.hasFeatureAtPixel(evt.pixel);
+            const element = newMap.getTargetElement();
+            element.style.cursor = hit ? 'pointer' : '';
+        });
+
         // Darstellen der Pop-Up inklusive Content und Buttons
         newMap.on('click', function(evt) {
             const feature = newMap.forEachFeatureAtPixel(evt.pixel, function(feature) {
                 return feature;
             });
-        
+
             if (feature) {
                 const liga = feature.get('liga');
                 const coordinates = feature.getGeometry().getCoordinates();
                 const name = feature.get('name');
                 const stadiumname = feature.get('stadium_name');
                 const kapazität = feature.get('kapazität');
-        
+
                 // Setze den geklickten Namen hier
                 setClickedName(name);
-        
+
                 const popupContent = `
+                    <a href="#" id="popup-closer" style="position: absolute; top: 10px; right: 10px; font-size: 20px; color: #888; text-decoration: none;">&times;</a>
                     <strong>${name}</strong><br>
                     <strong>League:</strong> ${liga}<br>
                     <strong>Stadium:</strong> ${stadiumname}<br>
@@ -382,28 +394,34 @@ const zoomToClub = (clubName) => {
                 popupElement.style.fontSize = '14px';
                 popupElement.style.fontFamily = '"Roboto", sans-serif';
                 popupElement.style.color = '#311313';
-        
+
                 const button1 = popupElement.querySelector('#button1');
                 const button2 = popupElement.querySelector('#button2');
-        
+
                 button1.addEventListener('click', () => {
                     console.log('Schaltfläche 1 wurde geklickt!');
                     if (liga === 'Super League') {
                         handleButtonClick('squadoverview', name);
                     }
                 });
-        
+
                 button2.addEventListener('click', () => {
                     console.log('Schaltfläche 2 wurde geklickt!');
                     if (liga === 'Super League') {
                         handleButtonClick('playerorigin', name);
                     }
                 });
+
+                const closer = popupElement.querySelector('#popup-closer');
+            closer.addEventListener('click', function() {
+                newPopup.setPosition(undefined);
+            });
+
             } else {
                 newPopup.setPosition(undefined);
             }
         });
-        
+
 
         setPopup(newPopup);
         setVectorSource(newVectorSource);
@@ -445,7 +463,7 @@ const zoomToClub = (clubName) => {
                             aria-controls="left-menu"
                             onClick={() => window.location.reload()}
                         >
-                            <img src="public/Logo_FootballMap.png" style={{ width: '10px', height: 'auto' , marginRight: '10px' }} />
+                            <img src={LogoFootballMap} style={{ width: 'auto', height: '50px' , marginRight: '10px' }} />
                             FootballMap
                         </Button>
                         <div>

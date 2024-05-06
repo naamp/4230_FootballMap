@@ -28,6 +28,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import './transferhistory.css';
+import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import appbarstyle from './appbarstyle.js';
 import LineString from 'ol/geom/LineString.js';
 import Stroke from 'ol/style/Stroke.js';
@@ -417,11 +418,11 @@ const Transferhistory = () => {
         <Toolbar className="Toolbar" style={{ justifyContent: 'space-between' }}>
           <Button
             style={appbarstyle.button}
-            startIcon={<HomeIcon style={{ color: '#f7da00' }} />}
             onClick={() => {
               navigate("/");
             }}
           >
+            <img src={LogoFootballMap} style={{ width: 'auto', height: '50px' , marginRight: '10px' }} />
             FootballMap
           </Button>
           <div style={{ display: 'flex', alignItems: 'center' }}>
