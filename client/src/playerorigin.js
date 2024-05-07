@@ -1,11 +1,10 @@
 // provisorisch fertig
-// Optimierungsmöglichkeiten: 
+// Optimierungsmöglichkeiten:
         // evtl. Design-Anpassungen
         // Hover etwas verbessern (wenn mit der Maus die Map verlassen wird, soll z.B. der hover weg)
         // p.s. Zoom-Funktion bei Klick auf Tabelle wurde bewusst nicht umgesetzt, da ich darin keinen grossen Mehrwert sah...
-        // p.s. "gelb-stufen" fand ich besser als graustufen, da ansonsten der Hover nicht gut aussah
 
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import { fromLonLat } from 'ol/proj';
@@ -15,6 +14,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import VectorLayer from 'ol/layer/Vector';
 import { Stroke, Style, Fill } from 'ol/style';
 import Overlay from 'ol/Overlay';
+import { useRef } from 'react';
 import './playerorigin.css';
 import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import AppBar from '@mui/material/AppBar';
@@ -33,12 +33,15 @@ const Playerorigin = (props) => {
     const [clubs, setClubs] = useState([]);
     const [club, setClub] = useState('');
     const [highlightedFeature, setHighlightedFeature] = useState(null);
-    const [playerCounts, setPlayerCounts] = useState({}); 
+    const [playerCounts, setPlayerCounts] = useState({});
 
     const navigate = useNavigate();
     const location = useLocation();
 
     const [countryFlags, setCountryFlags] = useState({});
+
+    const landVectorSource = useRef(null);
+    const newMap = useRef(null);
 
     useEffect(() => {
         fetchCountryFlags();
@@ -52,7 +55,7 @@ const Playerorigin = (props) => {
 
     useEffect(() => {
         if (club) {
-            fetchPlayerCounts(club); 
+            fetchPlayerCounts(club);
         }
     }, [club]);
 
@@ -116,24 +119,24 @@ const Playerorigin = (props) => {
         const landVectorLayer = new VectorLayer({
             source: landVectorSource,
             style: function(feature) {
-                const nationalität = feature.get('name'); 
-                const playerCount = playerCounts[nationalität] || 0; 
+                const nationalität = feature.get('name');
+                const playerCount = playerCounts[nationalität] || 0;
                 let color;
-        
+
                 if (playerCount === 0) {
                     color = 'rgba(255, 255, 255, 0.8)';
                 } else if (playerCount === 1) {
-                    color = '#fee391'; 
+                    color = '#fee391';
                 } else if (playerCount >= 2 && playerCount <= 3) {
-                    color = '#fec44f'; 
+                    color = '#fec44f';
                 } else if (playerCount >= 4 && playerCount <= 5) {
-                    color = '#fe9929'; 
+                    color = '#fe9929';
                 } else if (playerCount >= 6 && playerCount <= 10) {
-                    color = '#ec7014'; 
+                    color = '#ec7014';
                 } else {
-                    color = '#cc4c02'; 
+                    color = '#cc4c02';
                 }
-        
+
                 return new Style({
                     fill: new Fill({
                         color: color
@@ -145,12 +148,12 @@ const Playerorigin = (props) => {
                 });
             }
         });
-        
+
         const newMap = new Map({
             layers: [landVectorLayer],
             view: new View({
-                center: fromLonLat([14, 50]),
-                zoom: 5,
+                center: fromLonLat([10, 50]),
+                zoom: 3.5,
                 projection: 'EPSG:3857'
             }),
             target: 'map'
@@ -182,7 +185,7 @@ newMap.on('pointermove', function (event) {
     const hoveredCoord = event.coordinate;
     const extent = [hoveredCoord[0] - 1, hoveredCoord[1] - 1, hoveredCoord[0] + 1, hoveredCoord[1] + 1];
     let name = '';
-    
+
     landVectorSource.forEachFeatureIntersectingExtent(extent, function (feature) {
         name = feature.get('name');
     });
@@ -208,6 +211,20 @@ newMap.on('pointermove', function (event) {
         };
     }, [playerCounts]);
 
+    const handleRowClick = (nationality) => {
+        const countryFeature = landVectorSource.getFeatures().find(
+            (feature) => feature.get('name') === nationality
+        );
+
+        if (countryFeature) {
+            const extent = countryFeature.getGeometry().getExtent();
+            newMap.getView().fit(extent, {
+                duration: 1000, // Smooth zooming
+                padding: [50, 50, 50, 50] // Optional padding around the fit
+            });
+        }
+    };
+
     const generateColorBoxes = () => {
         return (
             <div>
@@ -230,7 +247,7 @@ newMap.on('pointermove', function (event) {
     const fetchCountryFlags = async () => {
         try {
           const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=land&outputFormat=application/json');
-    
+
           if (response && response.data && response.data.features) {
             const countryFlagsData = response.data.features.reduce((acc, feature) => {
               acc[feature.properties.name] = feature.properties.flagge_link;
@@ -244,7 +261,18 @@ newMap.on('pointermove', function (event) {
           console.error('Error fetching country flags:', error);
         }
       };
-    
+
+    const tableRows = Object.entries(playerCounts)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([nationalität, playerCount]) => (
+        <tr key={nationalität} onClick={() => handleRowClick(nationalität)}>
+            <td>
+                <img src={countryFlags[nationalität]} alt={nationalität} style={{ width: 'auto', height: '20px' }} />
+            </td>
+            <td>{nationalität}</td>
+            <td>{playerCount}</td>
+        </tr>
+    ));
 
     return (
         <div>
@@ -291,7 +319,7 @@ newMap.on('pointermove', function (event) {
             </div>
             <div className="playerorigin_table">
                 <table>
-                <caption className="playerorigin_table-caption">Player Counts by Nationality</caption>
+                <caption className="playerorigin_table-caption">ⓘ Player Counts by Nationality</caption>
                     <thead>
                         <tr>
                             <th></th>
@@ -300,15 +328,7 @@ newMap.on('pointermove', function (event) {
                         </tr>
                     </thead>
                     <tbody>
-                        {Object.entries(playerCounts)
-                            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-                            .map(([nationalität, playerCount]) => (
-                                <tr key={nationalität}>
-                                    <td><img src={countryFlags[nationalität]} alt={nationalität} style={{ width: 'auto', height: '20px' }} /></td>
-                                    <td>{nationalität}</td>
-                                    <td>{playerCount}</td>
-                                </tr>
-                            ))}
+                        {tableRows}
                     </tbody>
                 </table>
             </div>
