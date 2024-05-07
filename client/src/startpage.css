@@ -16,7 +16,7 @@
   bottom: 0;
   right: 0;
   left: auto;
-  position: absolute;
+  display: flex;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 3px 10px;
   border-radius: 3px;
@@ -24,7 +24,7 @@
   font-family: "Roboto", sans-serif;
   font-weight: 200;
   color: #333;
-  max-height: 50px;
+  max-height: 10px;
 }
 
 
@@ -88,13 +88,14 @@
 }
 
 .startpage_popup-button:hover {
-  background-color: #f7da00; /* Grau für deaktivierte Buttons */
+  background-color: #f7da00;
   color: #28487d;
 }
 
 .startpage_popup-button:disabled {
-  background-color: #cccccc; /* Grau für deaktivierte Buttons */
-  cursor: not-allowed;       /* Cursor-Symbol für deaktivierte Buttons */
+  background-color: #cccccc;
+  color: white;
+  cursor: not-allowed;
 }
 
 /* CSS für die Tabelle */
@@ -121,7 +122,7 @@
   border-bottom: 1px solid #ddd;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
-  cursor: pointer; /* Maus ändert sich zu einer Hand */
+  cursor: pointer;
 }
 
 .startpage_table th {

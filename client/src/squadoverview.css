@@ -65,7 +65,7 @@
 /* CSS für die Spieler-Tabelle */
 .squadoverview_table {
     position: absolute;
-    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+    top: 80px; /* Höhe der AppBar */
     right: 0;
     width: 60%;
     height: calc(100% - 80px); /* Höhe der AppBar abziehen */
@@ -74,16 +74,11 @@
     overflow-y: auto; /* Scrollen, falls die Tabelle zu groß wird */
   }
 
-  .squadoverview_table h2 {
-    margin-bottom: 10px;
-  }
-
   .squadoverview_table table {
     width: 100%;
     border-collapse: collapse;
   }
 
-  .squadoverview_table th,
   .squadoverview_table td {
     padding: 8px;
     text-align: left;
@@ -93,20 +88,27 @@
     cursor: pointer;
   }
 
+  .squadoverview_table th {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+  }
+
   /* CSS für Hover-Effekt über die Zeilen der Tabelle */
   .squadoverview_table tbody tr:hover {
     background-color: #f7da00;
+    color: #28487d;
 }
-
 
   /* CSS für die Tabellenüberschrift */
   .squadoverview_table-caption {
-    font-family: "Roboto", sans-serif;
-    caption-side: top;
+    caption-side: bottom;
     text-align: left;
-    font-weight: bold;
+    font-weight: condensed;
     font-family: "Roboto", sans-serif;
-    font-size: 20px;
-    padding: 20px;
+    font-style: italic;
+    font-size: 14px;
+    padding-top: 30px;
   }
-  

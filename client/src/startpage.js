@@ -378,7 +378,7 @@ const zoomToClub = (clubName) => {
                 setClickedName(name);
 
                 const popupContent = `
-                    <a href="#" id="popup-closer" style="position: absolute; top: 10px; right: 10px; font-size: 20px; color: #888; text-decoration: none;">&times;</a>
+                    <a href="#" id="popup-closer" style="position: absolute; top: 10px; right: 10px; font-size: 20px;color: #888; text-decoration: none;">&times;</a>
                     <strong>${name}</strong><br>
                     <strong>League:</strong> ${liga}<br>
                     <strong>Stadium:</strong> ${stadiumname}<br>
