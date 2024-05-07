@@ -324,8 +324,8 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
       <div id="map" className="squadoverview_map"></div>
       <div className="squadoverview-container">
         <div className="squadoverview_table">
-          <h2 className="squadoverview_table-caption">Select a player to view the transfer history</h2>
           <table>
+          <caption className="squadoverview_table-caption">Select a player to view the transfer history</caption>
             <thead>
               <tr>
                 <th></th>

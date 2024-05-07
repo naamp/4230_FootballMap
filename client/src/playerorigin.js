@@ -290,8 +290,8 @@ newMap.on('pointermove', function (event) {
                 {generateColorBoxes()}
             </div>
             <div className="playerorigin_table">
-                <h3 className="playerorigin_table-caption">Player Counts by Nationality</h3>
                 <table>
+                <caption className="playerorigin_table-caption">Player Counts by Nationality</caption>
                     <thead>
                         <tr>
                             <th></th>

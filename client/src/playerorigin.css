@@ -1,24 +1,59 @@
+/* CSS für playerorigin.js ----------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* Kartenstyling *********************************************************************/
 /* CSS für die Karte */
 .playerorigin_map {
-    position: absolute;
-    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
-    left: 0;
-    width: 70%; /* Breite als 70% der Viewport-Breite */
-    height: calc(100% - 80px); /* Höhe der AppBar abziehen */
-    padding: 0px; /* Padding beibehalten */
-    box-sizing: border-box; /* Padding in die Breite und Höhe mit einbeziehen */
-    background-color: #add2de;
+  position: absolute;
+  top: 80px; /* Höhe der AppBar */
+  left: 0;
+  width: 70%;
+  height: calc(100% - 80px);
+  padding: 0px;
+  background-color: #add2de;
+}
+
+/* CSS für die zoom controls */
+.ol-zoom-custom {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.ol-zoom-custom button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+.ol-zoom-custom button:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.ol-zoom-custom button:active {
+  background-color: rgba(238, 238, 238, 1);
 }
 
 /* CSS für die Legende */
 .playerorigin_legend {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 10px;
+    left: 10px;
     background-color: white;
     border: 1px solid #ccc;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
@@ -41,7 +76,6 @@
     margin-right: 5px;
     vertical-align: middle;
     border: 1px solid #000000;
-   
 }
 
 /* CSS für den Text neben den Farbkästchen */
@@ -69,24 +103,25 @@
     font-weight: bold; /* Schrift fett machen */
 }
 
+/* Popups und Tabellen ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* CSS für die Tabelle */
 .playerorigin_table {
     position: absolute;
-    top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+    top: 80px; /* Höhe der AppBar*/
     right: 0;
     width: 30%;
-    height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+    height: calc(100% - 80px);
     overflow-y: auto;
     padding: 20px;
     box-sizing: border-box;
   }
-  
+
   /* CSS für die Tabellenüberschrift */
   .playerorigin_table table {
     width: 100%;
     border-collapse: collapse;
   }
-  
+
   .playerorigin_table th,
   .playerorigin_table td {
     padding: 8px;
@@ -94,21 +129,21 @@
     border-bottom: 1px solid #ddd;
     font-family: "Roboto", sans-serif;
     font-size: 14px;
-    cursor: default; 
+    cursor: default;
   }
-  
+
   /* CSS für Hover-Effekt über die Zeilen der Tabelle */
   .playerorigin_table tbody tr:hover {
     background-color: #f7da00;
   }
-  
+
   /* CSS für die Tabellenüberschrift */
   .playerorigin_table-caption {
-    font-family: "Roboto", sans-serif;
-    caption-side: top;
+    caption-side: bottom;
     text-align: left;
-    font-weight: bold;
+    font-weight: condensed;
     font-family: "Roboto", sans-serif;
-    font-size: 20px;
-    padding: 20px;
+    font-style: italic;
+    font-size: 14px;
+    padding-top: 30px;
   }
