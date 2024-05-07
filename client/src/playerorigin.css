@@ -122,19 +122,27 @@
     border-collapse: collapse;
   }
 
-  .playerorigin_table th,
   .playerorigin_table td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
     font-family: "Roboto", sans-serif;
     font-size: 14px;
-    cursor: default;
+    cursor: pointer;
+  }
+
+  .playerorigin_table th {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
   }
 
   /* CSS für Hover-Effekt über die Zeilen der Tabelle */
   .playerorigin_table tbody tr:hover {
     background-color: #f7da00;
+    color: #28487d;
   }
 
   /* CSS für die Tabellenüberschrift */

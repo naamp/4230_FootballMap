@@ -1,10 +1,7 @@
 // Startseite provisorisch fertig
-// Optimierungsmöglichkeiten: 
+// Optimierungsmöglichkeiten:
         // evtl. Luftbild als zusätzliche Karte
         // Icons "flackern" teilweise wieder, ich glaube wegen Kollision mit anderen Icons verursacht
-        // Userperson irgendwie zeigen, dass es ein Pop-Up gibt, evtl. bei klick auf Tabelle Pop-Up direkt öffnen (bisher kommt eine Hand, wenn man über die Tabelle hovert, evtl auch eine Option für andere "klickbare" Objekte wie z.B. Club-Icons?)
-        // evtl. geringfügige Design-Anpassungen
-        // p.s. Darstellungsreihenfolge der Icons auf der Map nach Stadionkapazität wurde bisher umgesetzt
 
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map.js';
@@ -38,7 +35,7 @@ import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import { useNavigate } from "react-router-dom";
 
 // => Abschnitt wird wohl nicht mehr benötigt
-// Konstanten für Menü-Styles 
+// Konstanten für Menü-Styles
 // const ITEM_HEIGHT = 48;
 // const ITEM_PADDING_TOP = 8;
 // const MenuProps = {
@@ -58,7 +55,7 @@ const Startpage = () => {
     const [map, setMap] = useState(null);
     const [countries, setCountries] = useState(['Switzerland']);
     const [country, setCountry] = useState('Switzerland');
-    const [league, setLeague] = useState([]); 
+    const [league, setLeague] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [leftAnchorEl, setLeftAnchorEl] = useState(null);
     const [rightAnchorEl, setRightAnchorEl] = useState(null);
@@ -75,45 +72,44 @@ const Startpage = () => {
       if (!map || !source) {
           return;
       }
-  
+
       const features = source.getFeatures();
-  
+
       if (features.length === 0) {
           return;
       }
-  
+
       let minX = Infinity;
       let minY = Infinity;
       let maxX = -Infinity;
       let maxY = -Infinity;
-  
+
       features.forEach(feature => {
           const geometry = feature.getGeometry();
           const extent = geometry.getExtent();
-  
+
           minX = Math.min(minX, extent[0]);
           minY = Math.min(minY, extent[1]);
           maxX = Math.max(maxX, extent[2]);
           maxY = Math.max(maxY, extent[3]);
       });
-  
-      // Zusätzlicher Rand von 100px
+
       const padding = [100, 100, 100, 100];
-  
+
       const extent = [minX, minY, maxX, maxY];
       map.getView().fit(extent, { padding, maxZoom: 16 });
   };
-  
+
   // Funktion zum Aktualisieren der gefilterten Ligen (gemäss Dropdown "leagues")
   const updateFilteredFeatures = (selectedLeagues) => {
     const features = vectorSource.getFeatures();
     const filteredFeatures = filterFeaturesByLeagues(features, selectedLeagues, country);
-    
+
     const newVectorSource = new VectorSource({
         format: new GeoJSON(),
         features: filteredFeatures
     });
-    
+
     vectorLayer.setSource(newVectorSource);
     zoomToVisibleFeatures(newVectorSource);
     updateSelectedItems(filteredFeatures); // Update der ausgewählten Elemente für die Tabelle
@@ -173,7 +169,6 @@ const zoomToClub = (clubName) => {
                 console.error('Unbekannte Seite');
         }
     };
-    
 
     // Funktion beim Wechseln des Drop-Downs "country"
     const handleChange = (event) => {
@@ -181,15 +176,15 @@ const zoomToClub = (clubName) => {
       setCountry(selectedCountry);
       fetchLeagues(selectedCountry);
     };
-    
+
     // Funktion beim Wechseln des Drop-Downs "leagues"
     const handleMultiLeagueChange = (event) => {
       const selectedLeagues = event.target.value;
       setLeague(selectedLeagues);
       updateFilteredFeatures(selectedLeagues);
-      zoomToVisibleFeatures();  
+      zoomToVisibleFeatures();
   };
-  
+
     // Schliessen des Pop-Ups
     const handleClose = () => {
         setLeftAnchorEl(null);
@@ -201,12 +196,12 @@ const zoomToClub = (clubName) => {
       return features.filter(feature => {
           const featureLeagues = feature.getProperties().liga.split(',');
           const featureCountry = feature.getProperties().land;
-  
+
           return featureLeagues.some(league => selectedLeagues.includes(league.trim())) &&
                  featureCountry === selectedCountry;
       });
   };
-    
+
     // Fetch der Länder (Verbindung zum Geoserver)
     const fetchCountries = () => {
         const geoserverWFSPointLayer = 'footballmap:vw_club_all';
@@ -227,7 +222,7 @@ const zoomToClub = (clubName) => {
     // Fetch der Ligen (Verbindung zum Geoserver)
     const fetchLeagues = (selectedCountry) => {
       const geoserverWFSPointLayer = 'footballmap:vw_club_all';
-    
+
       fetch(`http://localhost:8080/geoserver/wfs?service=WFS&` +
           `version=1.1.0&request=GetFeature&typename=${geoserverWFSPointLayer}` +
           `&outputFormat=application/json&cql_filter=land='${selectedCountry}'`)
@@ -245,16 +240,16 @@ const zoomToClub = (clubName) => {
                       }
                       return acc;
                   }, [])
-                  .map(item => item.league); 
-    
-              setAvailableLeagues(leaguesWithWeight);  
-    
+                  .map(item => item.league);
+
+              setAvailableLeagues(leaguesWithWeight);
+
               // Standardmässig Liga mit Gewichtung = 1 im Drop-Down "leagues" auswählen
               const defaultLeague = leaguesWithWeight.find(league => {
                   const weight = data.features.find(feature => feature.properties.liga === league)?.properties.gewichtung;
                   return weight === 1;
               });
-    
+
               if (defaultLeague) {
                   setLeague([defaultLeague]);
               } else {
@@ -265,13 +260,13 @@ const zoomToClub = (clubName) => {
               console.error('Error fetching leagues:', error);
           });
     };
-    
+
     // Initialisierung der Komponente: Einrichtung der Karte, Vektorlayer, Pop-up usw.
     useEffect(() => {
         fetchCountries();
 
         const geoserverWFSPointLayer = 'vw_club_all';
-  
+
         const newVectorSource = new VectorSource({
             format: new GeoJSON(),
             url: function(extent) {
@@ -281,9 +276,9 @@ const zoomToClub = (clubName) => {
             },
             strategy: bboxStrategy
         });
-  
+
         const newIconMap = {};
-  
+
         // Darstellen der Club-Icons
         const newVectorLayer = new VectorLayer({
             source: newVectorSource,
@@ -291,7 +286,7 @@ const zoomToClub = (clubName) => {
                 const kapazität = feature.getProperties().kapazität;
                 // Berechne die Z-Index-Ebene basierend auf der Kapazität
                 const zIndex = Math.floor(kapazität / 1000);
-                
+
                 return new Style({
                     image: new Icon({
                         src: feature.get('logo_link'),
@@ -387,11 +382,11 @@ const zoomToClub = (clubName) => {
                     <button id="button2" class="startpage_popup-button" ${liga !== 'Super League' ? 'disabled' : ''}>Player Origin</button>
                     ${liga !== 'Super League' ? '<p style="font-size: 12px; color: #888;">Functions only for Swiss Super League</p>' : ''}
                 `;
-       
+
                 newPopup.setPosition(coordinates);
                 const popupElement = newPopup.getElement();
                 popupElement.innerHTML = popupContent;
-        
+
                 popupElement.style.fontSize = '14px';
                 popupElement.style.fontFamily = '"Roboto", sans-serif';
                 popupElement.style.color = '#311313';
@@ -442,10 +437,10 @@ const zoomToClub = (clubName) => {
             const handleClosePopup = () => {
                 popup.setPosition(undefined);
             };
-    
+
             const popupCloser = document.getElementById('popup-closer');
             popupCloser.addEventListener('click', handleClosePopup);
-    
+
             // Cleanup: Entferne den Event-Listener, wenn das Komponenten unmounted wird
             return () => {
                 popupCloser.removeEventListener('click', handleClosePopup);
@@ -522,7 +517,7 @@ const zoomToClub = (clubName) => {
             </div>
             <div id="visible-clubs-table" className="startpage_table">
                 <table id="visible-clubs-body">
-                <caption className="startpage_table-caption">Selected clubs sorted by stadium capacity</caption>
+                <caption className="startpage_table-caption">ⓘ Selected clubs sorted by stadium capacity</caption>
                     <thead>
                         <tr>
                             <th></th>
