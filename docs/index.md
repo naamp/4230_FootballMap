@@ -1,5 +1,9 @@
 # GDI Projekt - Footballmap
 
+[↑ Nach oben](#top)
+
+<a id="top"></a>
+
 Das ist die Projekt Website des *GDI Projekts*. Das GDI enthält eine Server und eine Client Umgebung.
 - Server: FastAPI
 - Client: React + OpenLayers
@@ -11,9 +15,9 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
 ## Inhaltsverzeichnis
 - [Einleitung](#einleitung)
 - [Aufabu GDI](#aufbau)
+    - [Architektur Aufbau](#architektur)
     - [Backend](#backend)
     - [Frontend](#frontend)
-    - [Mockup]
 - [Erklärung der Funktionen von Football Map](#funktionen)
     - [Startpage](#startpage)
     - [Squad Overview](#squadoverview)
@@ -57,6 +61,11 @@ In den Nachfolgenden Kapiteln werden alle Funktionen der Football Map vorgestell
 
 ### Frontend
 
+#### Mockup
+
+![mockup1](Bilder/mockup1.png)
+![mockup2](Bilder/mockup2.png)
+
 
 ## Erklärung der Funktionen von Football Map
 In diesem Abschnitt werden die Funktionen und Interaktionen der Fussballmap beschrieben
@@ -92,8 +101,9 @@ Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine n
 ![transfer history](Bilder/TransferHistory.png)
 
 #### Fuktionen:
-- 
+- Transferströme unterteilt in
 
 
 
 360 Spieler
+[Zurück nach oben](#top)
