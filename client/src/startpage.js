@@ -299,7 +299,8 @@ const zoomToClub = (clubName) => {
                     }),
                     zIndex: zIndex // Setze die Z-Index basierend auf der berechneten Ebene
                 });
-            }
+            },
+            declutter: false
         });
 
 
