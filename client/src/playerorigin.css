@@ -12,6 +12,28 @@
   background-color: #add2de;
 }
 
+.playerorigin_backbutton {
+  position: absolute;
+  transform-origin: top right;
+  top: 10px;
+  right: 10px;
+  background-color: #28487d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 2px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  z-index: 1000;
+}
+
+.playerorigin_backbutton:hover {
+  background-color: #f7da00;
+  color: #28487d;
+}
+
 /* CSS für die Legende */
 .playerorigin_legend {
     position: absolute;
@@ -64,10 +86,10 @@
 
 
 /* Hover-Styling für die Karte */
-.playerorigin_map:hover {
+.playerorigin_map:hover :not(.playerorigin_backbutton) {
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
     font-family: "Roboto", sans-serif;
-    font-weight: bold; /* Schrift fett machen */
+    font-weight: bold;
 }
 
 /* Popups und Tabellen ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

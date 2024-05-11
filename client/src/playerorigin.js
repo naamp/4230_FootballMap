@@ -252,6 +252,10 @@ newMap.on('pointermove', function (event) {
         );
     };
 
+    const handleBackButtonClick = () => {
+        navigate(`/`);
+      };
+
     const fetchCountryFlags = async () => {
         try {
           const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=land&outputFormat=application/json');
@@ -319,7 +323,13 @@ newMap.on('pointermove', function (event) {
                     </div>
                 </Toolbar>
             </AppBar>
-            <div id="map" className="playerorigin_map"></div>
+            <div id="map" className="playerorigin_map">
+                <div
+                className="playerorigin_backbutton"
+                onClick={handleBackButtonClick}>
+                Back to Swiss Super League
+                </div>
+            </div>
             <div id="popup-content" className="popup-content"></div>
             <div id="legend" className="playerorigin_legend">
                 <h3>Player Nationality</h3>

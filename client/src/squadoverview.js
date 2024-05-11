@@ -244,6 +244,10 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
     }
   };
 
+  const handleBackButtonClick = () => {
+    navigate(`/`);
+  };
+
   const fetchCountryFlags = async () => {
     try {
       const response = await axios.get('http://localhost:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=land&outputFormat=application/json');
@@ -322,7 +326,13 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
           </div>
         </Toolbar>
       </AppBar>
-      <div id="map" className="squadoverview_map"></div>
+      <div id="map" className="squadoverview_map">
+        <div
+            className="transferhistory_backbutton"
+            onClick={handleBackButtonClick}>
+            Back to Swiss Super League
+        </div>
+      </div>
       <div className="squadoverview-container">
         <div className="squadoverview_table">
           <table>

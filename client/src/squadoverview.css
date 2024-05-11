@@ -11,6 +11,28 @@
     padding: 0px
   }
 
+  .transferhistory_backbutton {
+    position: absolute;
+    transform-origin: top right;
+    top: 10px;
+    right: 10px;
+    background-color: #28487d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    z-index: 1000;
+  }
+
+  .transferhistory_backbutton:hover {
+    background-color: #f7da00;
+    color: #28487d;
+  }
+
 /* Popups und Tabellen ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* CSS für die Spieler-Tabelle */
 .squadoverview_table {

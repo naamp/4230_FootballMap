@@ -509,20 +509,19 @@ const Transferhistory = () => {
             FootballMap
           </Button>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleBackButtonClick}
-            >
-              Back to Squad Overview
-            </Button>
             <div className="Title" style={appbarstyle.title}>
               Transfer History from {playerName}
             </div>
           </div>
         </Toolbar>
       </AppBar>
-      <div id="map" className="map_transferhistory"></div>
+      <div id="map" className="map_transferhistory">
+        <div
+            className="transferhistory_backbutton"
+            onClick={handleBackButtonClick}>
+            Back to Squad Overview
+        </div>
+      </div>
       <div className="transferTableContainer">
         <div className='transferhistory_table'>
           <caption className='transferhistory_table-caption'></caption>
@@ -544,10 +543,10 @@ const Transferhistory = () => {
                 <tr key={index} onClick={() => handleTableRowClick(transfer.id)} className={selectedTransferIds.includes(transfer.id) ? 'selected-row' : 'table-row'}>
                   <td>{index + 1}</td>
                   <td>{transfer.date}</td>
-                  <td>{transfer.fromClub}</td>
                   <td><img src={countryFlags[transfer.fromClubCountry]} alt={transfer.fromClubCountry} style={{ width: 'auto', height: '20px' }} /></td>
-                  <td>{transfer.toClub}</td>
+                  <td>{transfer.fromClub}</td>
                   <td><img src={countryFlags[transfer.toClubCountry]} alt={transfer.toClubCountry} style={{ width: 'auto', height: '20px' }} /></td>
+                  <td>{transfer.toClub}</td>
                   <td>{transfer.marketValue}</td>
                   <td>{transfer.transferFee}</td>
                 </tr>
