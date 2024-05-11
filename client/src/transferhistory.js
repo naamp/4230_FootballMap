@@ -22,12 +22,16 @@ import Feature from 'ol/Feature.js';
 import Style from 'ol/style/Style.js';
 import Icon from 'ol/style/Icon.js';
 import Point from 'ol/geom/Point.js';
+import Attribution from 'ol/control/Attribution';
+import Zoom from 'ol/control/Zoom';
+import {extend as extendExtent, createEmpty as createEmptyExtent} from 'ol/extent';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import './transferhistory.css';
+import './ol.css';
 import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import appbarstyle from './appbarstyle.js';
 import LineString from 'ol/geom/LineString.js';
@@ -44,6 +48,7 @@ const Transferhistory = () => {
   const location = useLocation();
   const playerName = new URLSearchParams(location.search).get('player');
   const [selectedTransferLine, setSelectedTransferLine] = useState(null);
+  const [selectedTransferIds, setSelectedTransferIds] = useState([]);
   const [transferData, setTransferData] = useState([]);
   const [countryFlags, setCountryFlags] = useState({});
 
@@ -197,7 +202,7 @@ const Transferhistory = () => {
               stroke: new Stroke({
                 color: '#2196F3',
                 width: 4
-              })       
+              })
             });
           } else if (transferArt === 'Transfer') {
             return new Style({
@@ -246,22 +251,91 @@ const Transferhistory = () => {
       }
     });
 
+    // Festlegen der Attibution/Quelle
+    const attributionsOSM =
+    '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap</a>';
+
+    // Erstellen OSM Hintergrundlayer
+    const osmStandard = new TileLayer({
+      source: new OSM({attributions: attributionsOSM}),
+    });
+
     const newMap = new Map({
       layers: [
-        new TileLayer({
-          source: new OSM()
-        }),
+        osmStandard,
         vectorLayer
       ],
       view: new View({
         center: fromLonLat([8.1, 46.9]),
         zoom: 8
       }),
-      target: 'map'
+      target: 'map',
+      controls: [
+        new Zoom({
+            className: 'ol-zoom-custom'
+        }),
+        new Attribution({
+            collapsed: true,
+            collapsible: true,
+            tipLabel: 'show Attibution',
+            label: '\u00A9',
+            collapseLabel: '>'
+        })]
+    });
+
+    newMap.on('singleclick', (event) => {
+      let featureFound = false;
+
+      newMap.forEachFeatureAtPixel(event.pixel, (feature, layer) => {
+        if (layer === vectorLayer) {
+          featureFound = true;
+          // Behandle das Klicken auf ein Feature hier
+        }
+        return true; // Stoppe die Suche, wenn ein Feature gefunden wurde
+      });
+
+      if (!featureFound) {
+        // Kein Feature wurde gefunden, setze die States und Hervorhebungen zurück
+        unhighlightTransferLine(); // Keine ID übergeben, setzt alle Linien zurück
+        setSelectedTransferIds([]);
+      }
     });
 
     setMap(newMap);
   };
+
+
+  const zoomToVisibleFeatures = () => {
+    if (!map) {
+      console.log("Map is not initialized.");
+      return;
+    }
+
+    if (transferLines.length === 0) {
+      console.log("No transfer lines to zoom to.");
+      return;
+    }
+
+    let extent = createEmptyExtent();
+
+    transferLines.forEach(feature => {
+      extendExtent(extent, feature.getGeometry().getExtent());
+    });
+
+    map.getView().fit(extent, {
+      size: map.getSize(),
+      padding: [100, 100, 100, 100],
+      maxZoom: 16
+    });
+  };
+
+  // useEffect, um auf Änderungen in der Karte und den transferLines zu reagieren
+  useEffect(() => {
+    if (map && transferLines.length > 0) {
+      zoomToVisibleFeatures();
+    }
+  }, [map, transferLines]);
+
 
   useEffect(() => {
     if (clubIcons.length > 0 && transferLines.length > 0 && countryCenters.length > 0) {
@@ -293,13 +367,13 @@ const Transferhistory = () => {
       console.error('Error fetching transfer data:', error);
     }
   };
-  
+
   // Funktion zum Konvertieren des Datums in ein Objekt
   const convertToDateObject = (dateString) => {
     const parts = dateString.split('.');
     return new Date(parts[2], parts[1] - 1, parts[0]); // Jahr, Monat (0-11), Tag
   };
-  
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -320,9 +394,7 @@ const Transferhistory = () => {
     const integerEuro = Math.floor(euroValue); // Rundet den Euro-Betrag auf ganze Zahlen
     return formatter.format(integerEuro);
   };
-  
-  
-  
+
 
   const handleTableRowClick = (id) => {
     // Zuerst die vorherige Auswahl zurücksetzen, wenn vorhanden
@@ -332,6 +404,7 @@ const Transferhistory = () => {
     // Dann die neue Zeile hervorheben
     highlightTransferLine(id);
     setSelectedTransferLine(id);
+    setSelectedTransferIds([id]);
   };
 
   const handleBackButtonClick = () => {
@@ -379,7 +452,17 @@ const Transferhistory = () => {
   };
 
   const unhighlightTransferLine = (id) => {
+    if (!map) {
+      console.log("Map is not initialized.");
+      return;
+    }
+
     const vectorLayer = map.getLayers().item(1); // Annahme: Die Transferlinien sind auf dem zweiten Vektorlayer
+    if (!vectorLayer) {
+      console.log("Vector layer is not available.");
+      return;
+    }
+
     const features = vectorLayer.getSource().getFeatures();
     features.forEach(feature => {
       if (feature.get('id') === id) {
@@ -442,7 +525,7 @@ const Transferhistory = () => {
       <div id="map" className="map_transferhistory"></div>
       <div className="transferTableContainer">
         <div className='transferhistory_table'>
-          <h3 className='transferhistory_table-caption'></h3>
+          <caption className='transferhistory_table-caption'></caption>
           <table>
             <thead>
               <tr>
@@ -458,7 +541,7 @@ const Transferhistory = () => {
             </thead>
             <tbody>
               {transferData.map((transfer, index) => (
-                <tr key={index} onClick={() => handleTableRowClick(transfer.id)} style={{ backgroundColor: selectedTransferLine === transfer.id ? 'yellow' : 'white' }}>
+                <tr key={index} onClick={() => handleTableRowClick(transfer.id)} className={selectedTransferIds.includes(transfer.id) ? 'selected-row' : 'table-row'}>
                   <td>{index + 1}</td>
                   <td>{transfer.date}</td>
                   <td>{transfer.fromClub}</td>

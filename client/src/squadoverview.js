@@ -1,4 +1,4 @@
-// Optimierungsmöglichkeiten: 
+// Optimierungsmöglichkeiten:
     // evtl. Luftbild als zusätzlichen Hintergrund
     // evtl. geringfügige Design-Anpassungen
     // evtl. Informationen zum Stadion (wie bei startpage) entweder wieder als popup oder als Liste unter der Karte
@@ -29,6 +29,7 @@ import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 
 import './squadoverview.css';
+import './ol.css';
 import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import appbarstyle from './appbarstyle.js';
 
@@ -111,17 +112,17 @@ const Squadoverview = ({ countries, country, league, availableLeagues, setCountr
   const handleHomeButtonClick = () => {
     navigate("/");
   };
-  
+
 
   const initializeMap = () => {
     const newVectorSource = new VectorSource();
     setVectorSource(newVectorSource);
 
-    const attributions =
+    const attributionsOSM =
             '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap</a>';
 
     const osmLayer = new TileLayer({
-      source: new OSM()
+      source: new OSM({attributions: attributionsOSM})
     });
 
     const newMap = new Map({

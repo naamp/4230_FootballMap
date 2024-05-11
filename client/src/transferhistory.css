@@ -5,23 +5,23 @@
   position: absolute;
   top: 80px; /* Höhe der AppBar */
   left: 0;
-  width: 70%; /* Breite der Karte */
-  height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+  width: 55%;
+  height: calc(100% - 80px);
   padding: 0px;
 }
 
 /* CSS für die Tabelle */
 .transferhistory_table {
   position: absolute;
-  top: 80px; /* Höhe der AppBar plus ein bisschen Platz */
+  top: 80px; /* Höhe der AppBar*/
   right: 0;
-  width: 30%; /* Breite der Tabelle */
-  height: calc(100% - 80px); /* Höhe der AppBar abziehen */
+  width: 45%;
+  height: calc(100% - 80px);
   overflow-y: auto;
   padding: 20px;
   box-sizing: border-box;
-  z-index: 2; /* Stellen Sie sicher, dass die Tabelle über der Karte liegt */
-  cursor: pointer
+  z-index: 2;
+  box-shadow: -4px 1px 4px rgba(0, 0, 0, 0.055);
 }
 
 /* CSS für die Tabellenüberschrift */
@@ -30,8 +30,7 @@
   border-collapse: collapse;
 }
 
-.transferhistory_table th,
-.transferhistory_table td {
+.transferhistory_table th {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -39,7 +38,39 @@
   font-size: 14px;
 }
 
-/* CSS für Hover-Effekt über die Tabelle */
+.transferhistory_table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Standardzeilenstil */
+.table-row {
+  background-color: white;
+}
+
+/* Stil für ausgewählte Zeile */
+.selected-row {
+  background-color: #f7da00;
+  color: #28487d;
+}
+
+/* CSS für Hover-Effekt über die Zeilen der Tabelle */
 .transferhistory_table tbody tr:hover {
   background-color: #f7da00;
+  color: #28487d;
+}
+
+/* CSS für die Tabellenüberschrift */
+.transferhistory_table-caption {
+  caption-side: bottom;
+  text-align: left;
+  font-weight: condensed;
+  font-family: "Roboto", sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  padding-top: 30px;
 }

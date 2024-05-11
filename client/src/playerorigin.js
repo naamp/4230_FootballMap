@@ -14,6 +14,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import VectorLayer from 'ol/layer/Vector';
 import { Stroke, Style, Fill } from 'ol/style';
 import Overlay from 'ol/Overlay';
+import Zoom from 'ol/control/Zoom';
 import { useRef } from 'react';
 import './playerorigin.css';
 import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
@@ -156,7 +157,11 @@ const Playerorigin = (props) => {
                 zoom: 3.5,
                 projection: 'EPSG:3857'
             }),
-            target: 'map'
+            target: 'map',
+            controls: [
+                new Zoom({
+                    className: 'ol-zoom-custom'
+                })]
         });
 
         const highlightStyle = new Style({
@@ -212,9 +217,12 @@ newMap.on('pointermove', function (event) {
     }, [playerCounts]);
 
     const handleRowClick = (nationality) => {
-        const countryFeature = landVectorSource.getFeatures().find(
-            (feature) => feature.get('name') === nationality
-        );
+        const countryFeature = VectorSource.getFeatures();
+
+        if (!countryFeature) {
+            console.error("vectorSource is not defined.");
+            return;
+        }
 
         if (countryFeature) {
             const extent = countryFeature.getGeometry().getExtent();

@@ -30,9 +30,11 @@ import InputLabel from '@mui/material/InputLabel';
 import HomeIcon from '@mui/icons-material/Home';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import './startpage.css';
+import './ol.css';
 import appbarstyle from './appbarstyle.js';
 import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import { useNavigate } from "react-router-dom";
+import { XYZ } from 'ol/source.js';
 
 // => Abschnitt wird wohl nicht mehr benötigt
 // Konstanten für Menü-Styles
@@ -309,18 +311,26 @@ const zoomToClub = (clubName) => {
         });
 
         // Festlegen der Attibution/Quelle
-        const attributions =
+        const attributionsOSM =
             '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap</a>';
 
-        // Darstellen der OSM-Karte
-        const osmLayer = new TileLayer({
-            source: new OSM({attributions: attributions}),
+        // Erstellen OSM Hintergrundlayer
+        const osmStandard = new TileLayer({
+            source: new OSM({attributions: attributionsOSM}),
+        });
+
+        // Erstellen OSM Hintergrundlayer
+        const MapBoxLight = new TileLayer({
+            source: new XYZ({
+                attributions: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> contributors',
+                url: 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmFhbXAiLCJhIjoiY2x3MXV6ODI5MGdlbDJxcGhqNXlpMHZwaSJ9.yLrZYxgQjbgitKABOhmhTg'
+            }),
         });
 
         // Darstellen der Karte
         const newMap = new Map({
             layers: [
-                osmLayer,
+                osmStandard,
                 newVectorLayer
             ],
             view: new View({
