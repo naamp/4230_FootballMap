@@ -1,4 +1,5 @@
-theme: jekyll-theme-minimal
 logo: Bilder/Logo_FootballMap.jpg
-title: GDI Projekt
-description: Speichere diese Seite als Bookmark und verfolge unseren Projektstand!
+title: FootballMap
+description: Diese interaktive Fussball-Karte ist im Rahmen des Moduls 4230 GeoInformatik und Raumanalyse entstanden.
+navigation: main
+theme: jekyll-theme-minimal
