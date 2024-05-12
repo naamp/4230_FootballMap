@@ -23,7 +23,7 @@
   cursor: pointer;
   border-radius: 2px;
   font-size: 14px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   z-index: 1000;
 }
 
@@ -35,7 +35,7 @@
 /* CSS für die Tabelle */
 .transferhistory_table {
   position: absolute;
-  top: 80px; /* Höhe der AppBar*/
+  top: 40px;
   right: 0;
   width: 45%;
   height: calc(100% - 80px);
