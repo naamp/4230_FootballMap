@@ -236,7 +236,7 @@ newMap.on('pointermove', function (event) {
     const generateColorBoxes = () => {
         return (
             <div>
-                <span className="playerorigin_legend-color-box" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}></span>
+                <span className="playerorigin_legend-color-box" style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)'}}></span>
                 <span className="playerorigin_legend-text">none</span> <br />
                 <span className="playerorigin_legend-color-box" style={{ backgroundColor: '#fee391' }}></span>
                 <span className="playerorigin_legend-text">1 </span> <br />
@@ -332,7 +332,7 @@ newMap.on('pointermove', function (event) {
             </div>
             <div id="popup-content" className="popup-content"></div>
             <div id="legend" className="playerorigin_legend">
-                <h3>Player Nationality</h3>
+                <p>Player nationality</p>
                 {generateColorBoxes()}
             </div>
             <div className="playerorigin_table">

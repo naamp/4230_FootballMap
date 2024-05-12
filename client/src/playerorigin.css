@@ -64,7 +64,7 @@
     height: 20px;
     margin-right: 5px;
     vertical-align: middle;
-    border: 1px solid #000000;
+    border: 0.25px solid #000000;
 }
 
 /* CSS für den Text neben den Farbkästchen */
@@ -72,13 +72,12 @@
     display: inline-block;
     vertical-align: middle;
     font-family: "Roboto", sans-serif;
-    font-weight: bold;
     font-size: 14px;
     margin: 5px;
 }
 
 /* CSS für die Überschrift der Legende */
-.playerorigin_legend h3 {
+.playerorigin_legend p {
     margin-top: 0;
     font-family: "Roboto", sans-serif;
     font-weight: bold;

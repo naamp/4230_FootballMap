@@ -27,6 +27,55 @@
   z-index: 1000;
 }
 
+/* CSS für die Legende */
+.transferhistory_legend {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* CSS für die Liste in der Legende */
+.transferhistory_legend ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* CSS für die Elemente in der Liste der Legende */
+.transferhistory_legend ul li {
+  margin-bottom: 5px;
+}
+
+/* CSS für die Farbkästchen in der Legende */
+.transferhistory_legend-color-box {
+  display: inline-block;
+  width: 30px;
+  height: 4px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+/* CSS für den Text neben den Farbkästchen */
+.transferhistory_legend-text {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  margin: 5px;
+}
+
+/* CSS für die Überschrift der Legende */
+.transferhistory_legend p {
+  margin-top: 0;
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 .transferhistory_backbutton:hover {
   background-color: #f7da00;
   color: #28487d;

@@ -407,6 +407,17 @@ const Transferhistory = () => {
     setSelectedTransferIds([id]);
   };
 
+  const generateLegend = () => {
+    return (
+        <div>
+            <span className="transferhistory_legend-color-box" style={{ backgroundColor: '#2196F3'}}></span>
+            <span className="transferhistory_legend-text">on loan</span> <br />
+            <span className="transferhistory_legend-color-box" style={{ backgroundColor: '#28487d' }}></span>
+            <span className="transferhistory_legend-text">transfer</span> <br />
+        </div>
+    );
+};
+
   const handleBackButtonClick = () => {
     const clubParam = new URLSearchParams(location.search).get('club');
     navigate(`/squadoverview?club=${clubParam}`);
@@ -522,6 +533,10 @@ const Transferhistory = () => {
             Back to Squad Overview
         </div>
       </div>
+      <div id="legend" className="transferhistory_legend">
+                <p>transfer type</p>
+                {generateLegend()}
+            </div>
       <div className="transferTableContainer">
         <div className='transferhistory_table'>
           <caption className='transferhistory_table-caption'></caption>

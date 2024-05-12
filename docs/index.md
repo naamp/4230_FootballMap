@@ -18,7 +18,7 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
     - [Architektur Aufbau](#architektur)
     - [Backend](#backend)
     - [Frontend](#frontend)
-- [Erklärung der Funktionen von Football Map](#funktionen)
+- [Erklärung der Funktionen von Football Map](#funktionen )
     - [Startpage](#startpage)
     - [Squad Overview](#squadoverview)
     - [Player Origin](#playerorigin)
