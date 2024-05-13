@@ -13,18 +13,28 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
 ![GDI Projekt Screenshot](Bilder/Startpage1.png)
 
 ## Inhaltsverzeichnis
-- [Einleitung](#einleitung)
-- [Aufabu GDI](#aufbau)
-    - [Architektur Aufbau](#architektur)
-    - [Backend](#backend)
-    - [Frontend](#frontend)
-- [Erklärung der Funktionen von Football Map](#funktionen )
+- [GDI Projekt - Footballmap](#gdi-projekt---footballmap)
+  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
+  - [Einleitung](#einleitung)
+    - [Projektteam](#projektteam)
+  - [Erklärung der Funktionen von Football Map](#erklärung-der-funktionen-von-football-map)
     - [Startpage](#startpage)
-    - [Squad Overview](#squadoverview)
-    - [Player Origin](#playerorigin)
-    - [Transfer History](#transferhisory)
-- [Ausblick](#transferhisory)
-- [Quellen](#transferhisory)
+      - [Funktionen:](#funktionen)
+    - [Squad Overview](#squad-overview)
+      - [Funktionen:](#funktionen-1)
+    - [Transfer History](#transfer-history)
+      - [Fuktionen:](#fuktionen)
+  - [Aufbau GDI](#aufbau-gdi)
+    - [Backend](#backend)
+      - [Grundlagedaten](#grundlagedaten)
+        - [Datenabfrage über API-Schnittstelle](#datenabfrage-über-api-schnittstelle)
+        - [Scraping Transfer History](#scraping-transfer-history)
+        - [Scraping Squad Overview](#scraping-squad-overview)
+      - [Datenbank und Datenbankschema](#datenbank-und-datenbankschema)
+    - [Frontend](#frontend)
+      - [Mockup](#mockup)
+  - [Ursprüngliches Konzept](#ursprüngliches-konzept)
+  - [Ausblick und Erweiterungsmöglichkeiten](#ausblick-und-erweiterungsmöglichkeiten)
 
 
 ## Einleitung
@@ -51,22 +61,6 @@ In den Nachfolgenden Kapiteln werden alle Funktionen der Football Map vorgestell
 - [Stefan Sidler](https://github.com/StefanSidler95)
 - [Silvan Baumeler](https://github.com/SilvanBaumeler)
 
-## Aufbau GDI
-
-### Backend
-
-#### Scraping Transfer History
-
-#### Scraping Squad Overview
-
-### Frontend
-
-#### Mockup
-
-![mockup1](Bilder/mockup1.png)
-![mockup2](Bilder/mockup2.png)
-
-
 ## Erklärung der Funktionen von Football Map
 In diesem Abschnitt werden die Funktionen und Interaktionen der Fussballmap beschrieben
 
@@ -75,7 +69,7 @@ Auf der Startseite erscheint eine dynamische Karte, die auf die Schweiz fokussie
 
 Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fussballnationen sind die drei obersten Ligen verfügbar. Bei Ländern mit mittlerem Fussballniveau wurden die zwei höchsten Ligen einbezogen. In anderen Nationen ist jeweils nur die oberste Liga vertreten. Für die Schweiz hingegen wurden die fünf höchsten Ligen aufgenommen.
 
-#### Funktionen: 
+#### Funktionen:
 - Filtern nach Land und Liga mit der Möglichkeit mehrere Ligen eines Landes einzublenden (siehe Bild)
 - Tabelle aller Stadion in einer Liga geordnet nach Stadionkapazität
 - Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es eröffnet weitere Funktionen: Squad Overview und Player Origin (siehe Bild)
@@ -96,14 +90,43 @@ Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel S
 Bemerkung: Diese Informationen und Funktionen sind nur für Clubs aus der schweizerischen Super League, sowie deren Spieler möglich.
 
 ### Transfer History
-Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine neue Seite auf. Die Seite Transfer History ermöglicht es den Transferweg eines Spielers zu betrachten. Dabei werden die Stationen mittels einer Linie dargestellt. Ist ein Club bei einem Transfer in der Datenbank nicht vorhanden, so wird das Land des Clubs mit dem Zentroid als Station verwendet. 
+Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine neue Seite auf. Die Seite Transfer History ermöglicht es den Transferweg eines Spielers zu betrachten. Dabei werden die Stationen mittels einer Linie dargestellt. Ist ein Club bei einem Transfer in der Datenbank nicht vorhanden, so wird das Land des Clubs mit dem Zentroid als Station verwendet.
 
 ![transfer history](Bilder/TransferHistory.png)
 
 #### Fuktionen:
 - Transferströme unterteilt in
 
+## Aufbau GDI
 
+Eine komplette Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend und den verwendeted Libraries und API Schnittstellen. Das folgende Schema zeigt die aufgebaute und verwendete Geodateninfrasturktur der FootballMap auf.
+![GDI Architektur Schema](Bilder/GDI_Achitektur_final.png)
+
+### Backend
+
+Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu gehört auch der Bezug von Geodaten und sonstigen Daten über eine API-Schnittstelle oder per Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver.....
+
+#### Grundlagedaten
+
+##### Datenabfrage über API-Schnittstelle
+
+##### Scraping Transfer History
+
+##### Scraping Squad Overview
+
+#### Datenbank und Datenbankschema
+
+![Datenbankschema](Bilder/Datenbankschema_1.png)
+
+### Frontend
+
+#### Mockup
+
+![mockup1](Bilder/mockup1.png)
+![mockup2](Bilder/mockup2.png)
+
+## Ursprüngliches Konzept
+## Ausblick und Erweiterungsmöglichkeiten
 
 360 Spieler
 [Zurück nach oben](#top)
