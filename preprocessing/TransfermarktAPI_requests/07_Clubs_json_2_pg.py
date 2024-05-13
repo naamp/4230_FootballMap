@@ -3,11 +3,11 @@ import json
 
 # Verbindung zur Datenbank herstellen
 conn = psycopg2.connect(
-    dbname="footballmap_v2",
+    dbname="footballmap_v3",
     user="postgres",
-    password="6037",
+    password="",                                                                            # Passwort muss eingegeben werden # WARNING
     host="localhost",
-    port="5432"
+    port=""                                                                                 # Port muss eingegeben werden # WARNING
 )
 cur = conn.cursor()
 
@@ -39,7 +39,7 @@ cur.execute("""
 conn.commit()
 
 # Lesen der Daten aus JSON und Einfügen in die Datenbank
-with open('AlleLigenAlleClubs_formatiert.json', 'r', encoding='utf-8') as f:
+with open('AlleLigenAlleClubs_formatiert.json', 'r', encoding='utf-8') as f:                # (INPUT) Filename kann angepasst werden # WARNING
     club_data = json.load(f)
     for club_info in club_data:
         stadium_id = int(club_info['stadium_id'])

@@ -1,10 +1,10 @@
 import requests
 import json
 
-# Liste für nicht gefundene Clubs
+# Klubs ohne Kooridinaten werden der Liste hinzugefügt, kann bei den Files 03/04/05 als Grundlage verwendet werden
 clubs_notfound = []
 
-# Funktion für Clubdaten
+# Funktion für Abfrage der Clubdaten
 def get_club_profile(club_id):
     url = f'https://transfermarkt-api.vercel.app/clubs/{club_id}/profile'
     response = requests.get(url)
@@ -15,7 +15,7 @@ def get_club_profile(club_id):
         print(f"Fehler beim Abrufen der Daten für Club {club_id}. Statuscode: {response.status_code}")
         return None
 
-# Funktion für Stadionkoordinaten
+# Funktion für Abfrage der Stadionkoordinaten über den Stadionnamen
 def get_coordinates(city, stadium_name):
     url = f'https://nominatim.openstreetmap.org/search.php?q={stadium_name}+{city}&format=json'         # Suche mit Nominatim Openstreetmap nach Stadionname und Stadt
     response = requests.get(url)
@@ -46,8 +46,8 @@ def get_coordinates(city, stadium_name):
 
 
 def main():
-    # Liste der Club-IDs der Schweizer Super League
-    club_ids = []
+    # INPUT Liste der Club-IDs. Füge alle Club_nr hinzu für welche du Informationen erhalten willst
+    club_ids = []                                                                                      # (INPUT) Inhalt der Liste muss angepasst werden #WARNING
 
     # Liste für Club-Daten
     club_profiles = []
@@ -79,9 +79,9 @@ def main():
             club_profiles.append(club_profile)
 
     # Club-Daten in eine Datei speichern
-    with open('Clubs.json', 'w') as f:                                                #Filname kann angepasst werden #WARNING
+    with open('Club_profiles.json', 'w') as f:                                                        # (OUTPUT) Filname kann angepasst werden #WARNING
         json.dump(club_profiles, f, indent=4)
-    print("Club-Daten erfolgreich abgerufen und in Zielfile gespeichert.")
+    print(f"Club-Daten erfolgreich abgerufen und in Zielfile Club_profiles.json gespeichert.")
     print(clubs_notfound)                                                             # Ausgabe der nicht gefundenen Clubs
 
 if __name__ == "__main__":

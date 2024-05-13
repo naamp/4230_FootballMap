@@ -2,7 +2,7 @@ import json
 import requests
 
 def get_coordinates(city, country):
-    url = f'https://nominatim.openstreetmap.org/search.php?q={city}&format=json'                                # Suche mit Nominatim Openstreetmap nach Stadtnamen
+    url = f'https://nominatim.openstreetmap.org/search.php?q={city}&format=json'                                # Suche mit Nominatim Openstreetmap nach der Stadt
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
@@ -30,7 +30,7 @@ def get_coordinates(city, country):
         return None
 
 # Laden der Daten aus der JSON-Datei
-with open('Clubs_Coordinates_not_found.json', 'r') as file:                                                     # Filname kann angepasst werden #WARNING
+with open('Club_profiles.json.json', 'r') as file:                                                              # (INPUT) Filname kann angepasst werden #WARNING
     data = json.load(file)
 
 # Iteration über die Klubs
@@ -47,7 +47,7 @@ for club in data:
             club["stadium_coordinates"] = coordinates
 
 # Aktualisierte Daten speichern
-with open('Clubs_updated.json', 'w') as file:                                                                   # Filname kann angepasst werden #WARNING
+with open('Club_profiles_updated.json', 'w') as file:                                                           # (OUTPUT) Filname kann angepasst werden #WARNING
     json.dump(data, file, indent=4)
 
 print("Das Programm wurde erfolgreich ausgeführt und die Daten wurden aktualisiert.")

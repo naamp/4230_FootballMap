@@ -23,14 +23,15 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
     - [Squad Overview](#squad-overview)
       - [Funktionen:](#funktionen-1)
     - [Transfer History](#transfer-history)
-      - [Fuktionen:](#fuktionen)
-  - [Aufbau GDI](#aufbau-gdi)
+      - [Funktionen:](#funktionen-2)
+  - [Aufbau Geodateninfrastruktur (GDI)](#aufbau-geodateninfrastruktur-gdi)
     - [Backend](#backend)
       - [Grundlagedaten](#grundlagedaten)
         - [Datenabfrage über API-Schnittstelle](#datenabfrage-über-api-schnittstelle)
-        - [Scraping Transfer History](#scraping-transfer-history)
-        - [Scraping Squad Overview](#scraping-squad-overview)
+        - [Web-Scraping Transfer History](#web-scraping-transfer-history)
+        - [Web-Scraping Squad Overview](#web-scraping-squad-overview)
       - [Datenbank und Datenbankschema](#datenbank-und-datenbankschema)
+      - [Geoserver](#geoserver)
     - [Frontend](#frontend)
       - [Mockup](#mockup)
   - [Ursprüngliches Konzept](#ursprüngliches-konzept)
@@ -94,29 +95,74 @@ Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine n
 
 ![transfer history](Bilder/TransferHistory.png)
 
-#### Fuktionen:
+#### Funktionen:
 - Transferströme unterteilt in
 
-## Aufbau GDI
+## Aufbau Geodateninfrastruktur (GDI)
 
 Eine komplette Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend und den verwendeted Libraries und API Schnittstellen. Das folgende Schema zeigt die aufgebaute und verwendete Geodateninfrasturktur der FootballMap auf.
-![GDI Architektur Schema](Bilder/GDI_Achitektur_final.png)
+
+![GDI Architektur Schema](Bilder/GDI_Architektur_final.png)
 
 ### Backend
 
-Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu gehört auch der Bezug von Geodaten und sonstigen Daten über eine API-Schnittstelle oder per Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver.....
+Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu gehört auch der Bezug von Geodaten und sonstigen Daten über eine API-Schnittstelle oder per Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver ist das Bindeglied und der Bereitsteller der Datenbank. Mit Java Script React wird über den Geoserver auf die Daten zugegriffen und schlussendlich im Frontend dargestellt.
 
 #### Grundlagedaten
 
+Um die erwähnten Funktionen der FootballMap umsetzten zu können, werden Fussballdaten benötigt. Ligen, Vereine, Stadien, Spieler und deren Transfers sollen in Form von strukturierten Daten erfasst und gespeichert werden. Transfermarkt.ch bietet seit 2001 eine Webseite mit umfassenden Daten rund um den Sport Fussball an. Die Grundlagedaten für die FootballMap beruhen deshalb auf Daten von Transfermarkt.ch.
+
 ##### Datenabfrage über API-Schnittstelle
 
-##### Scraping Transfer History
+Die Daten von Transfermarkt.ch konnten bis am 31. März 2024 über die API-Schnittstelle Transfermarkt-API (https://transfermarkt-api.vercel.app/) bezogen werden. Liga-, Vereins- und Spielerdaten konnten über folgende Abfragen gefiltert und angezeigt werden. Folgend einige Beispielabfragen:
 
-##### Scraping Squad Overview
+Suche eines Wettbewerbs (Liga):
+https://transfermarkt-api.vercel.app/competitions/search/Super%20League
+
+Abfrage Vereine eines Wettbewerbs:
+https://transfermarkt-api.vercel.app/competitions/{Wettbewerbs_ID}/clubs
+
+Abfrage Daten eines Vereins:
+https://transfermarkt-api.vercel.app/clubs/{Club_ID}/profile
+
+Abfrage Spieler eines Vereins:
+https://transfermarkt-api.vercel.app/clubs/{Club_ID}/players
+
+Abfrage Spielerprofil:
+https://transfermarkt-api.vercel.app/players/{Spieler_ID}/profile
+
+Abfrage Transfers eines Spielers:
+https://transfermarkt-api.vercel.app/players/{Spieler_ID}/transfers
+
+Die Liga- und Vereinsdaten der FootballMap-Datenbank wurden über die Transfermarkt-API bezogen. Im Repository-Ordner (preprocessing/TransfermarktAPI_requests) befinden sich die Python-Skripts zur Abfrage und Speicherung der Daten. Es werden die Libraries requests, json, csv und pycopg2 verwendet.
+
+01_TM-API_AlleLigen_2_Liste_club_ids.py              Grundlagedatei: JSON Liga mit Attribut Liga_nr                  Zieldatei: Liste mit Club_nr jeder Liga
+02_TM-API_Liste_club_nr_2_JSON.py                    Grundlagedatei: Liste mit Club Nummern (Club_nr)                Zieldatei: JSON mit Club Informationen
+
+Im File 02 wird pro Club das Clubprofil abgerufen und die jeweiligen Attribute wie Clubname, Stadionname, Adresse werden abgefragt. Die Adresse und der Stadionname werden als Parameter einer Abfrage der Nominatim API hinzugefügt. Die Nominatim API von Open Street Map lokalisiert die Stadien und die passenden Koordinaten werden im Clubprofil gespeichert. Falls mit den Parametern (Stadt, Stadionname und Typ="stadium") kein Eintrag gefunden wird, wird das Attribut Stadium_Coordinates mit dem Wert "None" abgefüllt. Die folgenden drei Python-Skripts verwenden andere Parameter, um einen passenden Eintrag zum jeweiligen Stadionnamen zu finden.
+
+03_Koord_request_Nominatim_v1.py                    Parameter: Stadionname und Typ="stadium"
+04_Koord_request_Nominatim_v2.py                    Parameter: Clubname und Typ="stadium"
+05_Koord_request_Nominatim_v3.py                    Parameter: Stadtname und Country="country"
+
+Falls bei der zweiten Abfrage keine Koordinaten gefunden werden, werden in der dritten Abfrage die Koordinaten der zugehörigen Stadt im Clubprofil gespeichert.
+Die finalisierten Clubprofile werden entweder in eine CSV-Datei oder in eine JSON-Datei umgewandelt oder formatiert. Je nach weiterem Anwendungswunsch, kann zwischen CSV und JSON gewählt werden. Für den Import der Daten in die Datenbank wird ein weiteres Skript (07_Clubs_json2pg.py) verwendet.
+
+06_Clubs_json_2_csv.py                              Grundlagedatei: JSON mit Clubprofilen inklusive Koordinaten     Zieldatei: CSV mit Clubprofilen
+06_Clubs_json_2_json_formatiert.py                  Grundlagedatei: JSON mit Clubprofilen inklusive Koordinaten     Zieldatei: JSON mit Clubprofilen
+07_Clubs_json_2_pg.py                               Grundlagedatei: JSON mit Clubprofilen inklusive Koordinaten     Ziel: Daten in Datenbank
+
+
+##### Web-Scraping Transfer History
+
+##### Web-Scraping Squad Overview
 
 #### Datenbank und Datenbankschema
 
 ![Datenbankschema](Bilder/Datenbankschema_1.png)
+
+#### Geoserver
+
 
 ### Frontend
 

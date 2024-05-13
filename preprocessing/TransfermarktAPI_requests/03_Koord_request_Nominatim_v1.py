@@ -30,7 +30,7 @@ def get_coordinates(city, stadium_name):
         return None
 
 # Laden der Daten aus der JSON-Datei
-with open('Clubs_Coordinates_not_found.json', 'r') as file:                                                     # Filname kann angepasst werden #WARNING
+with open('Club_profiles.json', 'r') as file:                                                                   # (INPUT) Filname kann angepasst werden #WARNING
     data = json.load(file)
 
 # Iteration über die Klubs
@@ -45,7 +45,7 @@ for club in data:
             club["stadium_coordinates"] = coordinates
 
 # Aktualisierte Daten speichern
-with open('Clubs_updated.json', 'w') as file:                                                                   # Filname kann angepasst werden #WARNING
+with open('Club_profiles_updated.json', 'w') as file:                                                            # (OUTPUT) Filname kann angepasst werden #WARNING
     json.dump(data, file, indent=4)
 
 print("Das Programm wurde erfolgreich ausgeführt und die Daten wurden aktualisiert.")

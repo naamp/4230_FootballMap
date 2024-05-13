@@ -1,8 +1,8 @@
 import json
 
 # Definition Filename
-grundlagen_file = "AlleLigenAlleClubs.json"             #Filename kann angepasst werden # WARNING
-ziel_file = "AlleLigenAlleClubs_formatiert.json"        #Filename kann angepasst werden # WARNING
+grundlagen_file = "Club_profiles_updated.json"              # (INPUT) Filename kann angepasst werden # WARNING
+ziel_file = "AlleLigenAlleClubs_formatiert.json"            # (OUTPUT) Filename kann angepasst werden # WARNING
 
 # Funktion zur Konvertierung eines Vereins
 def convert_club(club, stadium_id):

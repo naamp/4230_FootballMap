@@ -2,10 +2,10 @@ import json
 import requests
 
 # Lesen der Inputdatei
-with open('AlleLigen_formatiert.json', 'r') as file:                                  #Filname kann angepasst werden #WARNING
+with open('Leagues.json', 'r') as file:                                  #Filname kann angepasst werden #WARNING
     leagues = json.load(file)
 
-club_ids = []
+club_ids = []                                                            #Inhalt der Liste kann angepasst werden #WARNING
 
 # Iteration der Ligen
 for country, leagues_list in leagues.items():

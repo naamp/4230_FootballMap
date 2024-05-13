@@ -2,7 +2,7 @@ import requests
 import json
 
 # Liste aller club_ids
-club_ids = ["504"]
+club_ids = []
 
 # Basis-URL der API
 base_url = "https://transfermarkt-api.vercel.app/clubs/"
