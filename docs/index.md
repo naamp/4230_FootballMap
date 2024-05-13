@@ -1,7 +1,4 @@
 # GDI Projekt - Footballmap
-
-[↑ Nach oben](#top)
-
 <a id="top"></a>
 
 Das ist die Projekt Website des *GDI Projekts*. Das GDI enthält eine Server und eine Client Umgebung.
@@ -12,10 +9,10 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
 
 ![GDI Projekt Screenshot](Bilder/Startpage1.png)
 
-## Inhaltsverzeichnis
+# Inhaltsverzeichnis
 - [GDI Projekt - Footballmap](#gdi-projekt---footballmap)
-  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
-  - [Einleitung](#einleitung)
+- [Inhaltsverzeichnis](#inhaltsverzeichnis)
+- [Einleitung](#einleitung)
     - [Projektteam](#projektteam)
   - [Erklärung der Funktionen von Football Map](#erklärung-der-funktionen-von-football-map)
     - [Startpage](#startpage)
@@ -24,22 +21,22 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
       - [Funktionen:](#funktionen-1)
     - [Transfer History](#transfer-history)
       - [Funktionen:](#funktionen-2)
-  - [Aufbau Geodateninfrastruktur (GDI)](#aufbau-geodateninfrastruktur-gdi)
+- [Aufbau Geodateninfrastruktur (GDI)](#aufbau-geodateninfrastruktur-gdi)
     - [Backend](#backend)
       - [Grundlagedaten](#grundlagedaten)
         - [Datenabfrage über API-Schnittstelle](#datenabfrage-über-api-schnittstelle)
         - [Web-Scraping Squad Overview](#web-scraping-squad-overview)
         - [Web-Scraping Transfer History](#web-scraping-transfer-history)
-        - [aktuelle Liga Tabelle](#aktuelle-liga-tabelle)
+        - [Web-Scraping aktuelle Liga Tabelle](#web-scraping-aktuelle-liga-tabelle)
       - [Datenbank und Datenbankschema](#datenbank-und-datenbankschema)
       - [Geoserver](#geoserver)
     - [Frontend](#frontend)
       - [Mockup](#mockup)
-  - [Ursprüngliches Konzept](#ursprüngliches-konzept)
-  - [Ausblick und Erweiterungsmöglichkeiten](#ausblick-und-erweiterungsmöglichkeiten)
+- [Ursprüngliches Konzept](#ursprüngliches-konzept)
+- [Ausblick und Erweiterungsmöglichkeiten](#ausblick-und-erweiterungsmöglichkeiten)
 
 
-## Einleitung
+# Einleitung
 Im Vertiefungsmodul 4230 „Geoinformatik & Raumanalyse I“ des Bachelorstudiengangs Geomatik an der Fachhochschule Nordwestschweiz (FHNW) wurde eine Geodateninfrastruktur entwickelt. Das Thema konnte frei gewählt werden, musste jedoch räumlich-zeitliche Inhalte umfassen.
 
 Auf dieser GitHub Page handelt es sich um die Geodateninfratstruktur "Football Map". Der Fussball ist enorm populär und generiert somit auch eine unglaubliche Menge an Daten. Die deutsche Bundesliga erfasst zum Beispiel 3.6 Millionen Positionsdatenpunkte pro Spiel (DFL Deutsche Fussball Liga GmbH 2024). Unzählige Portale und Applikationen zeigen die erfassten Daten live in Tabellen und Spielberichten an. Jedoch gibt es praktisch keine Webseite oder Applikation, welche die geografischen Daten integriert und auf einer interaktiven Karte darstellt.
@@ -76,7 +73,7 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 - Tabelle aller Stadion in einer Liga geordnet nach Stadionkapazität
 - Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es eröffnet weitere Funktionen: Squad Overview und Player Origin (siehe Bild)
 
-![Mehrere Ligen](Bilder/Startpage2.png) ![Klick auf Logo](Bilder/Startpage3.png)
+![Mehrere Ligen](GIFs/Startpage_4.gif) ![Klick auf Logo](GIFs/Startpage_1.gif)
 
 ### Squad Overview
 Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel Startpage beschrieben wurde, öffnet ein weiteres Fenster. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden (siehe Bild). Ingesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
@@ -99,7 +96,7 @@ Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine n
 #### Funktionen:
 - Transferströme unterteilt in
 
-## Aufbau Geodateninfrastruktur (GDI)
+# Aufbau Geodateninfrastruktur (GDI)
 
 Eine komplette Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend und den verwendeted Libraries und API Schnittstellen. Das folgende Schema zeigt die aufgebaute und verwendete Geodateninfrasturktur der FootballMap auf.
 
@@ -191,7 +188,7 @@ Alle Spieler Nummern (Spieler_nr) von Spielern in der Schweizer Super League wur
 
 ##### Web-Scraping Transfer History
 
-##### aktuelle Liga Tabelle
+##### Web-Scraping aktuelle Liga Tabelle
 
 #### Datenbank und Datenbankschema
 
@@ -207,8 +204,9 @@ Alle Spieler Nummern (Spieler_nr) von Spielern in der Schweizer Super League wur
 ![mockup1](Bilder/mockup1.png)
 ![mockup2](Bilder/mockup2.png)
 
-## Ursprüngliches Konzept
-## Ausblick und Erweiterungsmöglichkeiten
+# Ursprüngliches Konzept
+# Ausblick und Erweiterungsmöglichkeiten
 
 360 Spieler
+
 [Zurück nach oben](#top)
