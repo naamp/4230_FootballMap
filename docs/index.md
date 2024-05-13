@@ -28,8 +28,9 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
     - [Backend](#backend)
       - [Grundlagedaten](#grundlagedaten)
         - [Datenabfrage über API-Schnittstelle](#datenabfrage-über-api-schnittstelle)
-        - [Web-Scraping Transfer History](#web-scraping-transfer-history)
         - [Web-Scraping Squad Overview](#web-scraping-squad-overview)
+        - [Web-Scraping Transfer History](#web-scraping-transfer-history)
+        - [aktuelle Liga Tabelle](#aktuelle-liga-tabelle)
       - [Datenbank und Datenbankschema](#datenbank-und-datenbankschema)
       - [Geoserver](#geoserver)
     - [Frontend](#frontend)
@@ -114,48 +115,83 @@ Um die erwähnten Funktionen der FootballMap umsetzten zu können, werden Fussba
 
 ##### Datenabfrage über API-Schnittstelle
 
-Die Daten von Transfermarkt.ch konnten bis am 31. März 2024 über die API-Schnittstelle Transfermarkt-API (https://transfermarkt-api.vercel.app/) bezogen werden. Liga-, Vereins- und Spielerdaten konnten über folgende Abfragen gefiltert und angezeigt werden. Folgend einige Beispielabfragen:
+Die Daten von Transfermarkt.ch konnten bis am 31. März 2024 über die API-Schnittstelle [Transfermarkt-API](https://transfermarkt-api.vercel.app/) bezogen werden. Liga-, Vereins- und Spielerdaten konnten über folgende Abfragen gefiltert und angezeigt werden. Der Zugang zu dieser API wurde nach dem 31. März 2024 geschlossen. Die Daten zu den Ligen, Vereinen und Stadien sind die Grundlage zur Darstellung der Club Logos auf der Startseite der FootballMap. Ausserdem werden diese Daten auch für die weiteren Funktionen [Squad Overview](#squad-overview) und [Transfer History](#transfer-history) benötigt.
 
-Suche eines Wettbewerbs (Liga):
-https://transfermarkt-api.vercel.app/competitions/search/Super%20League
+**Beispielabfragen:**
 
-Abfrage Vereine eines Wettbewerbs:
-https://transfermarkt-api.vercel.app/competitions/{Wettbewerbs_ID}/clubs
+- **Suche eines Wettbewerbs (Liga):**
+  `https://transfermarkt-api.vercel.app/competitions/search/Super%20League`
 
-Abfrage Daten eines Vereins:
-https://transfermarkt-api.vercel.app/clubs/{Club_ID}/profile
+- **Abfrage Vereine eines Wettbewerbs:**
+  `https://transfermarkt-api.vercel.app/competitions/{Wettbewerbs_ID}/clubs`
 
-Abfrage Spieler eines Vereins:
-https://transfermarkt-api.vercel.app/clubs/{Club_ID}/players
+- **Abfrage Daten eines Vereins:**
+  `https://transfermarkt-api.vercel.app/clubs/{Club_ID}/profile`
 
-Abfrage Spielerprofil:
-https://transfermarkt-api.vercel.app/players/{Spieler_ID}/profile
+- **Abfrage Spieler eines Vereins:**
+  `https://transfermarkt-api.vercel.app/clubs/{Club_ID}/players`
 
-Abfrage Transfers eines Spielers:
-https://transfermarkt-api.vercel.app/players/{Spieler_ID}/transfers
+- **Abfrage Spielerprofil:**
+  `https://transfermarkt-api.vercel.app/players/{Spieler_ID}/profile`
 
-Die Liga- und Vereinsdaten der FootballMap-Datenbank wurden über die Transfermarkt-API bezogen. Im Repository-Ordner (preprocessing/TransfermarktAPI_requests) befinden sich die Python-Skripts zur Abfrage und Speicherung der Daten. Es werden die Libraries requests, json, csv und pycopg2 verwendet.
+- **Abfrage Transfers eines Spielers:**
+  `https://transfermarkt-api.vercel.app/players/{Spieler_ID}/transfers`
 
-01_TM-API_AlleLigen_2_Liste_club_ids.py              Grundlagedatei: JSON Liga mit Attribut Liga_nr                  Zieldatei: Liste mit Club_nr jeder Liga
-02_TM-API_Liste_club_nr_2_JSON.py                    Grundlagedatei: Liste mit Club Nummern (Club_nr)                Zieldatei: JSON mit Club Informationen
+Die Liga- und Vereinsdaten der FootballMap-Datenbank wurden über die Transfermarkt-API bezogen. Im Repository-Ordner (preprocessing/TransfermarktAPI_requests) befinden sich die Python-Skripts zur Abfrage und Speicherung der Daten. Es werden die Libraries [requests](https://pypi.org/project/requests/), [json](https://docs.python.org/3/library/json.html), [csv](https://docs.python.org/3/library/csv.html) und [pycopg2](https://pypi.org/project/psycopg2/) verwendet.
+
+- `01_TM-API_AlleLigen_2_Liste_club_ids.py`
+  - **Grundlagedatei:** JSON der Ligen jeweils mit dem Attribut Liga_nr
+  - **Zieldatei:** Liste mit allen Club Nummern (Club_nr) aus jeder Liga (Liga_nr)
+  - Es wurden die relevantesten Fussballländer in Europa mittels [UEFA Ranking](https://www.uefa.com/nationalassociations/uefarankings/country/?year=2024) ausgewählt
+  - Von den besten fünf Ländern wurden jeweils die obersten drei Ligen ausgewählt, bei den weiteren 15 Ländern jeweils die obersten zwei Ligen, von weiteren 18 Ländern jeweils die oberste Liga
+  - In der Schweiz wurden die obersten fünf Ligen mit einbezogen
+
+- `02_TM-API_Liste_club_nr_2_JSON.py`
+  - **Grundlagedatei:** Liste mit Club Nummern (Club_nr)
+  - **Zieldatei:** JSON mit Club Informationen
+  - Jeder Club wird abgefragt, um ein Clubprofil mit Attributen wie Clubname, Stadionname und Adresse zu erstellen
 
 Im File 02 wird pro Club das Clubprofil abgerufen und die jeweiligen Attribute wie Clubname, Stadionname, Adresse werden abgefragt. Die Adresse und der Stadionname werden als Parameter einer Abfrage der Nominatim API hinzugefügt. Die Nominatim API von Open Street Map lokalisiert die Stadien und die passenden Koordinaten werden im Clubprofil gespeichert. Falls mit den Parametern (Stadt, Stadionname und Typ="stadium") kein Eintrag gefunden wird, wird das Attribut Stadium_Coordinates mit dem Wert "None" abgefüllt. Die folgenden drei Python-Skripts verwenden andere Parameter, um einen passenden Eintrag zum jeweiligen Stadionnamen zu finden.
 
-03_Koord_request_Nominatim_v1.py                    Parameter: Stadionname und Typ="stadium"
-04_Koord_request_Nominatim_v2.py                    Parameter: Clubname und Typ="stadium"
-05_Koord_request_Nominatim_v3.py                    Parameter: Stadtname und Country="country"
+- `03_Koord_request_Nominatim_v1.py`
+  - **Parameter:** Stadionname und Typ="stadium"
+
+- `04_Koord_request_Nominatim_v2.py`
+  - **Parameter:** Clubname und Typ="stadium"
+
+- `05_Koord_request_Nominatim_v3.py`
+  - **Parameter:** Stadtname und Country="country"
 
 Falls bei der zweiten Abfrage keine Koordinaten gefunden werden, werden in der dritten Abfrage die Koordinaten der zugehörigen Stadt im Clubprofil gespeichert.
 Die finalisierten Clubprofile werden entweder in eine CSV-Datei oder in eine JSON-Datei umgewandelt oder formatiert. Je nach weiterem Anwendungswunsch, kann zwischen CSV und JSON gewählt werden. Für den Import der Daten in die Datenbank wird ein weiteres Skript (07_Clubs_json2pg.py) verwendet.
 
-06_Clubs_json_2_csv.py                              Grundlagedatei: JSON mit Clubprofilen inklusive Koordinaten     Zieldatei: CSV mit Clubprofilen
-06_Clubs_json_2_json_formatiert.py                  Grundlagedatei: JSON mit Clubprofilen inklusive Koordinaten     Zieldatei: JSON mit Clubprofilen
-07_Clubs_json_2_pg.py                               Grundlagedatei: JSON mit Clubprofilen inklusive Koordinaten     Ziel: Daten in Datenbank
+- `06_Clubs_json_2_csv.py`
+  - **Grundlagedatei:** JSON mit Clubprofilen inklusive Koordinaten
+  - **Zieldatei:** CSV mit Clubprofilen
+
+- `06_Clubs_json_2_json_formatiert.py`
+  - **Grundlagedatei:** JSON mit Clubprofilen inklusive Koordinaten
+  - **Zieldatei:** JSON mit Clubprofilen formatiert
+
+- `07_Clubs_json_2_pg.py`
+  - **Grundlagedatei:** JSON mit Clubprofilen inklusive Koordinaten
+  - **Ziel:** Daten in Datenbank
+
+
+Alle Spieler Nummern (Spieler_nr) von Spielern in der Schweizer Super League wurden mit der [Transfermarkt-API](https://transfermarkt-api.vercel.app/) abgefragt und gespeichert. Diese Liste dient als Grundlage für das Web-Scraping der Spielerdaten und der Transferdaten.
+
+- `10_TM-API_AlleSpieler_CH_SuperLeague.py`
+  - **Grundlagedatei:** Liste mit allen Club Nummern (Club_nr)
+  - **Ziel:** JSON mit allen Spielern der angegebenen Club Nummern (club_nr)
+  - Es wurden alle Spieler der Schweizer Super League in der Datenbank der FootballMap integriert. Die wirklich genutzten Spielerdaten stammen jedoch aus dem [Web-Scraping Sqad Overview](#web-scraping-squad-overview)
+
+##### Web-Scraping Squad Overview
+
 
 
 ##### Web-Scraping Transfer History
 
-##### Web-Scraping Squad Overview
+##### aktuelle Liga Tabelle
 
 #### Datenbank und Datenbankschema
 

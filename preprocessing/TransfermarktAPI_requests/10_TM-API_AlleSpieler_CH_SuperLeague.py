@@ -2,7 +2,7 @@ import requests
 import json
 
 # Liste aller club_ids
-club_ids = []
+club_ids = []                                                                                   # (INPUT) Liste kann angepasst werden #WARNING
 
 # Basis-URL der API
 base_url = "https://transfermarkt-api.vercel.app/clubs/"
@@ -29,7 +29,7 @@ def get_all_players(club_ids):
 all_players = get_all_players(club_ids)
 
 # Speichern der Spielerdaten in einer JSON-Datei
-with open("AlleSpieler_SuperLeague.json", "w", encoding="utf-8") as f:                          # Filname kann angepasst werden #WARNING
+with open("AlleSpieler_SuperLeague.json", "w", encoding="utf-8") as f:                          # (OUTPUT) Filname kann angepasst werden #WARNING
     json.dump(all_players, f, ensure_ascii=False, indent=4)
 
 print("Alle Spielerdaten wurden erfolgreich abgerufen und gespeichert.")
