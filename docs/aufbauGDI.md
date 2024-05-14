@@ -112,19 +112,6 @@ Die Attribute für das Ursprungs- und Zielland der Clubs (`old_club_country` und
 
 
 #### Web-Scraping aktuelle Liga Tabelle
-<<<<<<< HEAD
-Ziel ist es, die aktuelle Tabelle der Schweizer Superleague mit einem [Web-Scraping] (https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) zu erhalten, da diese Daten nicht mit der [Transfermarkt-API](https://transfermarkt-api.vercel.app/)bezogen werden konnten. Dabei sollen die Attribute Rang, Club, Anz. Spiele, gewonnen, verloren, unentschieden, Anz. Tore, Gegentore und die anzahl Punkte von [Transfermarkt](https://www.transfermarkt.ch/super-league/tabelle/wettbewerb/C1/saison_id/2023) bezogen werden. 
-
-- `01_scrape_table.py`
-  - **Grundlagedatei:** Keine
-  - **Ziel:** JSON mit der aktuellen Tabelle
-  
-Das Skript verwendet die Python-Bibliotheken [requests](https://pypi.org/project/requests/) und [BeautifulSoup]( https://beautiful-soup-4.readthedocs.io/en/latest/), um Daten von der Webseite "Transfermarkt" zu extrahieren, die es anschliessend in einer JSON-Datei speichert.
-Jedoch wurde dieses Skript nicht mehr weiter verwendet [siehe Kapitel Mockup](#Mockup)
-
-=======
-<div id="web-scraping-aktuelle-liga-tabelle"></div>
->>>>>>> dcc15354569f07f60de0d0206d9a71445618a7a1
 
 ### Datenbank und Datenbankschema
 <div id="datenbank-und-datenbankschema"></div>
