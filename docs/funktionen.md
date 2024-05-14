@@ -12,10 +12,13 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 ### Funktionen:
 - Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es werden weitere Funktionen (Squad Overview und Player Origin) freigeschaltet.
 ![Mehrere Ligen](GIFs/Startpage_1.gif)
+
 - Tabelle aller Stadion innerhalb einer Liga geordnet nach Stadionkapazität
 ![Mehrere Ligen](GIFs/Startpage_2.gif)
+
 - Filtern nach Land 
 ![Mehrere Ligen](GIFs/Startpage_3.gif)
+
 - Filtern nach Land und Liga mit der Möglichkeit mehrere Ligen eines Landes einzublenden
 ![Mehrere Ligen](GIFs/Startpage_5.gif)
 
@@ -32,8 +35,10 @@ Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel S
 - Button, um zur Startseite zurückzukehren
 - Tabelle mit Spielern des Clubs und Spielerinformationen (Shirt Nr., Name, Position, Foot, Height, Marketvalue, Age, Born)
 ![squad overview](GIFs/SquadOverview_2.gif)
+
 - Ändern der Teamübersicht auf einen anderen Club mittels Auswahlmenü in der Toolbar
 ![squad overview](GIFs/SquadOverview_3.gif)
+
 - Wenn der Mauszeiger über die Flagge des Herkunftslandes in der Tabelle bewegt wird, erscheint der Name des Landes.
 ![squad overview](GIFs/SquadOverview_5.gif)
 
@@ -62,6 +67,7 @@ Durch Klicken auf den Button „Player Origin“, wie im Kapitel „Startpage“
 - Tabelle, sortiert nach der Anzahl der Spieler aus jedem Herkunftsland
 - Automatische Anzeige des Landnamens, wenn der Mauszeiger über ein Land bewegt wird
 ![player origin](GIFs/PlayerOrigin_2.gif)
+
 - Möglichkeit das Team zu wechseln
 ![player origin](GIFs/PlayerOrigin_3.gif)
 
