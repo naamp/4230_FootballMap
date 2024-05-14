@@ -120,25 +120,39 @@ Ziel ist es, die aktuelle Tabelle der Schweizer Superleague mit einem [Web-Scrap
 Das Skript verwendet die Python-Bibliotheken [requests](https://pypi.org/project/requests/) und [BeautifulSoup]( https://beautiful-soup-4.readthedocs.io/en/latest/), um Daten von der Webseite "Transfermarkt" zu extrahieren, die es anschliessend in einer JSON-Datei speichert.
 Jedoch wurde dieses Skript nicht mehr weiter verwendet [siehe Kapitel Mockup](#Mockup)
 
-### Datenbank und Datenbankschema
+### Datenbank
 
+#### Datenbankschema
+Das Datenbankschema wurde möglichst auf die vorhandenen Daten und auf die Nutzung der Daten abgestimmt. Nicht alles ist Datenbank-technisch optimal umgesetzt, da z.B. Redundanzen in den Daten vorhanden sind. Ausserdem gibt es fehlende Beziehungen, die technisch zwar möglich sind, aber bei der Erfassung der Daten zu vielen Problemen führten, nicht definiert.
+
+Die Datenbank "footballmap" wurde technisch in postgresql / postgis umgesetzt. Es wurden folgende Entitäten (Tabellen) definiert. Die wichtigsten Inhalte sind in den Klammern aufgelistet.
+- land (Ländergrenzen, Flaggen, etc.)
+- stadium (Standort, Kapazität und Name der Fussballstadien)
+- liga (Name und Land der Ligen)
+- club (Name, Land und Logo der Fussball-Clubs)
+- spieler (Informationen wie Name, Geburtsdatum, etc. zu den Fussballspielern)
+- transfer (Fussballtransfers von Club nach Club)
+
+Die detaillierten Attribute sind im nachfolgenden Datenbankschema abgebildet:
 ![Datenbankschema](Bilder/db_footballmap_v4_uml.png)
 
-Die dazugehörige SQL-Definition ist im [File](preprocessing/Database/db_footballmap_v4.sql) einzusehen.
+Die dazugehörige SQL-Definition ist im "preprocessing/Database/db_footballmap_v4.sql" einzusehen.
 
-Es ist zu erwähnen, dass die Position der Stadien als geographische Koordinaten (lat / lon) erfasst sind und nicht als Punktgeometrie.
+Es ist zu erwähnen, dass die Position der Stadien als geographische Koordinaten (lat / lon) erfasst sind und nicht als Punktgeometrien.
 
-Die einzigen Geometrien sind in der Tabelle land mit den Ländergrenzen (multipolygon) und den Zentren der Ländern (point) enthalten. 
+Die einzigen Geometrien in der sogenannten Geodatenbank sind in der Tabelle "land" mit den Ländergrenzen (multipolygon) und den Zentren der Ländern (point) enthalten. 
 
 #### Tabelle land und Abfrage von Länder-Flaggen
-Die Tabelle land enthält die Grundlagedaten der Länder, welche zum einten als Hintergrundkarte bei Player Origin wie auch für die Darstellung von Transferlinien teilweise verwendet wird.
+Die Tabelle "land" enthält die Grundlagedaten der Länder, welche zum einten als Hintergrundkarte bei Player Origin wie auch teilweise für die Darstellung von Transferlinien verwendet wird.
 
-Aus Fussball-Technischen Gründen wurde Grossbritannien in die Länder England, Schottland, Wales und Nordirland aufgeteilt. Ansonsten wurden die Länder-Grenzen unverändert von "Natural Earth" übernommen und in die Datenbank importiert. Für politische Ungereimtheiten bei den Landesgrenzen wird keine Verantwortung übernommen. Die Tabelle land wurde mit den ISO 3166-Ländercodes erweitert, welche als Identifikation für die Abfrage der Länder-Flaggen verwendet wurde. Die Flaggen wurden von der [API]("https://www.welt-flaggen.de/herunterladen/api") bezogen. Der Import in die Datenbank wurde mit dem File "preprocessing/Database/flag2db.ipynb" grösstenteils mittels Python erledigt. Die Flaggen wurden als Binär-Bild, als online-Link und als lokalen Pfad in die Datenbank abgespeichert.
+Aus Fussball-Technischen Gründen wurde Grossbritannien in die Länder England, Schottland, Wales und Nordirland aufgeteilt. Ansonsten wurden die Länder-Grenzen unverändert von [Natural Earth](https://www.naturalearthdata.com/) übernommen und in die Datenbank importiert. Für politische Ungereimtheiten bei den Landesgrenzen wird keine Verantwortung übernommen. Die Tabelle "land" wurde mit den ISO 3166-Ländercodes erweitert, welche als Identifikation für die Abfrage der Länder-Flaggen verwendet wurde. Die Flaggen wurden von einer [API]("https://www.welt-flaggen.de/herunterladen/api") bezogen. Der Import in die Datenbank wurde mit dem File "preprocessing/Database/flag2db.ipynb" grösstenteils mittels Python erledigt. Die Flaggen wurden als Binär-Bild, als online-Link und als lokalen Pfad in die Datenbank abgespeichert.
+
+Die Tabelle "land" weist technisch keine Beziehung zu den anderen Tabellen auf, was aus Datenbank-technischer Sicht nicht optimal ist. Jedoch wurde dies so umgesetzt, da die Importe der extrahierten Daten ansonsten infolge Fremdschlüssel-Bedingungen zu vielen Problemen führten, da die Schreibweise der Länder oft unterschiedlich war. Bei für die Abfragen entscheidenden Attributen wie das Geburtsland oder die Nationalität der Spieler wurde darauf geachtet, dass die Schreibweise der Fussballdaten mit den Namen in der Tabelle "land" übereinstimmen. Dies musste manuell korrigiert werden. Bei Attributen, wo das Land lediglich als Information für den User genutzt wird, wurde die Schreibweise der Länder von den extrahierten Daten unverändert übernommen. Grundsätzlich wurde jedoch die Englische Schreibweise der Länder-Namen verwendet.
 
 #### Import Fussballdaten in die Datenbank
-Die Daten aus dem Scraping entstandenen Zieldateien (.json) wurden in die Datenbank importiert. Als Schnittstelle wurde das File "preprocessing/Database/json2db.ipynb" verwendet, welches grösstenteils die Daten mittels Python direkt in die Datenbank schreibt. Das File ist Schrittweise aufgebaut und erlaubt dem Benutzer, die Daten Schritt für Schritt in der Datenbank entweder gesamthaft oder nach einzelnen Tabellen zu aktualisieren. Dabei ist zu erwähnen dass die gescrapten Daten teilweise unenheitlich und schlecht strukturiert waren. Einige Spezialfälle wurden bereits abgedeckt, jedoch tauchten bei jeder Aktualisierung wieder neue Probleme auf, die eine vollständige Automatisierung verunmöglichte. Beispielsweise wurde der Marktwert als "600 Tsd." gescrapt, diese Art von Zahlen mussten in eine numerische Zahl (600000) umgewandelt werden. Ein weiteres Beispiel stellen die erfassten Daten dar. Diese mussten von der Form "Dec 31, 1998" nach "31.12.1998" umgewandelt werden.
+Die Daten aus dem Scraping entstandenen Zieldateien (.json) wurden in die Datenbank importiert. Als Schnittstelle wurde das File "preprocessing/Database/json2db.ipynb" verwendet, welches grösstenteils die Daten mittels Python direkt in die Datenbank schreibt. Das File ist Schrittweise aufgebaut und erlaubt dem Benutzer, die Daten Schritt für Schritt in der Datenbank entweder gesamthaft oder nach einzelnen Tabellen zu aktualisieren. Dabei ist zu erwähnen, dass die gescrapten Daten teilweise unenheitlich und schlecht strukturiert waren. Einige Spezialfälle wurden bereits abgedeckt, jedoch tauchten bei jeder Aktualisierung wieder neue Probleme auf, die eine vollständige Automatisierung verunmöglichte. Beispielsweise wurde der Marktwert als "600 Tsd." extrahiert, diese Art von Zahlen mussten in eine numerische Zahl (600000) umgewandelt werden. Ein weiteres Beispiel stellen die extrahierten Daten dar. Diese mussten von der Form "Dec 31, 1998" nach "31.12.1998" umgewandelt werden.
 
-Auf diese Art können die Tabellen stadium, liga, club, spieler und transfer aktualisiert werden.
+Alle Bilddateien (Spielerbilder und Club-Logos) wurden, wie die Flaggen bei der Tabelle "land" als Binär-Bild, als online-Link und als lokalen Pfad in der Datenbank erfasst.
 
 #### Datenbankabfragen (DB-Views)
 Insgesamt wurden 4 DB-Views definiert, welche als Schnittstelle zwischen den Daten in den Datentabellen und dem Frontend dienen werden:
@@ -153,7 +167,7 @@ Die Transferlinien werden als Geometrie (line) mittels Postgis-Befehlen "ST_Make
 
 
 ### Geoserver
-
+Die 4 oben beschriebenen DB-View wurden mittels Geoserver freigegeben.
 
 ## Frontend
 <div id="frontend"></div>
