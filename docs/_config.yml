@@ -1,5 +1,5 @@
-logo: Bilder/Logo_FootballMap.jpg
 title: FootballMap
+logo: Bilder/Logo_FootballMap.jpg
 description: Diese interaktive Fussball-Karte ist im Rahmen des Moduls 4230 GeoInformatik und Raumanalyse entstanden.
 navigation: main
 theme: jekyll-theme-minimal

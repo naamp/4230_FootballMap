@@ -14,24 +14,24 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
 - [Inhaltsverzeichnis](#inhaltsverzeichnis)
 - [Einleitung](#einleitung)
     - [Projektteam](#projektteam)
-  - [Erklärung der Funktionen von Football Map](#erklärung-der-funktionen-von-football-map)
-    - [Startpage](#startpage)
-      - [Funktionen:](#funktionen)
-    - [Squad Overview](#squad-overview)
-      - [Funktionen:](#funktionen-1)
-    - [Transfer History](#transfer-history)
-      - [Funktionen:](#funktionen-2)
+- [Erklärung der Funktionen von Football Map](#erklärung-der-funktionen-von-football-map)
+  - [Startpage](#startpage)
+    - [Funktionen:](#funktionen)
+  - [Squad Overview](#squad-overview)
+    - [Funktionen:](#funktionen-1)
+  - [Transfer History](#transfer-history)
+    - [Funktionen:](#funktionen-2)
 - [Aufbau Geodateninfrastruktur (GDI)](#aufbau-geodateninfrastruktur-gdi)
-    - [Backend](#backend)
-      - [Grundlagedaten](#grundlagedaten)
-        - [Datenabfrage über API-Schnittstelle](#datenabfrage-über-api-schnittstelle)
-        - [Web-Scraping Squad Overview](#web-scraping-squad-overview)
-        - [Web-Scraping Transfer History](#web-scraping-transfer-history)
-        - [Web-Scraping aktuelle Liga Tabelle](#web-scraping-aktuelle-liga-tabelle)
-      - [Datenbank und Datenbankschema](#datenbank-und-datenbankschema)
-      - [Geoserver](#geoserver)
-    - [Frontend](#frontend)
-      - [Mockup](#mockup)
+  - [Backend](#backend)
+    - [Grundlagedaten](#grundlagedaten)
+      - [Datenabfrage über API-Schnittstelle](#datenabfrage-über-api-schnittstelle)
+      - [Web-Scraping Squad Overview](#web-scraping-squad-overview)
+      - [Web-Scraping Transfer History](#web-scraping-transfer-history)
+      - [Web-Scraping aktuelle Liga Tabelle](#web-scraping-aktuelle-liga-tabelle)
+    - [Datenbank und Datenbankschema](#datenbank-und-datenbankschema)
+    - [Geoserver](#geoserver)
+  - [Frontend](#frontend)
+    - [Mockup](#mockup)
 - [Ursprüngliches Konzept](#ursprüngliches-konzept)
 - [Ausblick und Erweiterungsmöglichkeiten](#ausblick-und-erweiterungsmöglichkeiten)
 
@@ -60,27 +60,27 @@ In den Nachfolgenden Kapiteln werden alle Funktionen der Football Map vorgestell
 - [Stefan Sidler](https://github.com/StefanSidler95)
 - [Silvan Baumeler](https://github.com/SilvanBaumeler)
 
-## Erklärung der Funktionen von Football Map
+# Erklärung der Funktionen von Football Map
 In diesem Abschnitt werden die Funktionen und Interaktionen der Fussballmap beschrieben
 
-### Startpage
+## Startpage
 Auf der Startseite erscheint eine dynamische Karte, die auf die Schweiz fokussiert ist. Es werden die Clublogos entsprechend iherer geografischen Lage (Stadion) angezeit. Über die Toolbar können Nutzer aus 30 Ländern und 70 Ligen Clubs auswählen und filtern. Insgesamt sind 1060 Clubs in der Datenbank vorhanden.
 
 Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fussballnationen sind die drei obersten Ligen verfügbar. Bei Ländern mit mittlerem Fussballniveau wurden die zwei höchsten Ligen einbezogen. In anderen Nationen ist jeweils nur die oberste Liga vertreten. Für die Schweiz hingegen wurden die fünf höchsten Ligen aufgenommen.
 
-#### Funktionen:
+### Funktionen:
 - Filtern nach Land und Liga mit der Möglichkeit mehrere Ligen eines Landes einzublenden (siehe Bild)
 - Tabelle aller Stadion in einer Liga geordnet nach Stadionkapazität
 - Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es eröffnet weitere Funktionen: Squad Overview und Player Origin (siehe Bild)
 
 ![Mehrere Ligen](GIFs/Startpage_4.gif) ![Klick auf Logo](GIFs/Startpage_1.gif)
 
-### Squad Overview
+## Squad Overview
 Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel Startpage beschrieben wurde, öffnet ein weiteres Fenster. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden (siehe Bild). Ingesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
 
 ![squad overview](Bilder/SquadOverview.png)
 
-#### Funktionen:
+### Funktionen:
 - Dynamische Karte mit Zoomfunktion auf Club
 - Tabelle mit Spielern des Clubs und Spielerinformationen (Shirt Nr., Name, Position, Foot, Height, Marketvalue, Age, Born)
 - Durch den Klick auf Spieler ist ein weitere Funktionion (Transfer History) aufrufbar
@@ -88,12 +88,12 @@ Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel S
 
 Bemerkung: Diese Informationen und Funktionen sind nur für Clubs aus der schweizerischen Super League, sowie deren Spieler möglich.
 
-### Transfer History
+## Transfer History
 Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine neue Seite auf. Die Seite Transfer History ermöglicht es den Transferweg eines Spielers zu betrachten. Dabei werden die Stationen mittels einer Linie dargestellt. Ist ein Club bei einem Transfer in der Datenbank nicht vorhanden, so wird das Land des Clubs mit dem Zentroid als Station verwendet.
 
 ![transfer history](Bilder/TransferHistory.png)
 
-#### Funktionen:
+### Funktionen:
 - Transferströme unterteilt in
 
 # Aufbau Geodateninfrastruktur (GDI)
@@ -102,15 +102,15 @@ Eine komplette Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend
 
 ![GDI Architektur Schema](Bilder/GDI_Architektur_final.png)
 
-### Backend
+## Backend
 
 Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu gehört auch der Bezug von Geodaten und sonstigen Daten über eine API-Schnittstelle oder per Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver ist das Bindeglied und der Bereitsteller der Datenbank. Mit Java Script React wird über den Geoserver auf die Daten zugegriffen und schlussendlich im Frontend dargestellt.
 
-#### Grundlagedaten
+### Grundlagedaten
 
 Um die erwähnten Funktionen der FootballMap umsetzten zu können, werden Fussballdaten benötigt. Ligen, Vereine, Stadien, Spieler und deren Transfers sollen in Form von strukturierten Daten erfasst und gespeichert werden. Transfermarkt.ch bietet seit 2001 eine Webseite mit umfassenden Daten rund um den Sport Fussball an. Die Grundlagedaten für die FootballMap beruhen deshalb auf Daten von Transfermarkt.ch.
 
-##### Datenabfrage über API-Schnittstelle
+#### Datenabfrage über API-Schnittstelle
 
 Die Daten von Transfermarkt.ch konnten bis am 31. März 2024 über die API-Schnittstelle [Transfermarkt-API](https://transfermarkt-api.vercel.app/) bezogen werden. Liga-, Vereins- und Spielerdaten konnten über folgende Abfragen gefiltert und angezeigt werden. Der Zugang zu dieser API wurde nach dem 31. März 2024 geschlossen. Die Daten zu den Ligen, Vereinen und Stadien sind die Grundlage zur Darstellung der Club Logos auf der Startseite der FootballMap. Ausserdem werden diese Daten auch für die weiteren Funktionen [Squad Overview](#squad-overview) und [Transfer History](#transfer-history) benötigt.
 
@@ -182,24 +182,24 @@ Alle Spieler Nummern (Spieler_nr) von Spielern in der Schweizer Super League wur
   - **Ziel:** JSON mit allen Spielern der angegebenen Club Nummern (club_nr)
   - Es wurden alle Spieler der Schweizer Super League in der Datenbank der FootballMap integriert. Die wirklich genutzten Spielerdaten stammen jedoch aus dem [Web-Scraping Sqad Overview](#web-scraping-squad-overview)
 
-##### Web-Scraping Squad Overview
+#### Web-Scraping Squad Overview
 
 
 
-##### Web-Scraping Transfer History
+#### Web-Scraping Transfer History
 
-##### Web-Scraping aktuelle Liga Tabelle
+#### Web-Scraping aktuelle Liga Tabelle
 
-#### Datenbank und Datenbankschema
+### Datenbank und Datenbankschema
 
 ![Datenbankschema](Bilder/Datenbankschema_1.png)
 
-#### Geoserver
+### Geoserver
 
 
-### Frontend
+## Frontend
 
-#### Mockup
+### Mockup
 
 ![mockup1](Bilder/mockup1.png)
 ![mockup2](Bilder/mockup2.png)
