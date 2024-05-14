@@ -88,6 +88,7 @@ Alle Spieler Nummern (Spieler_nr) von Spielern in der Schweizer Super League wur
 
 #### Web-Scraping Squad Overview
 <div id="web-scraping-squad-overview"></div>
+
 Das Ziel der Seite Squad Overview ist es, alle Spieler eines ausgewählten Vereins anzuzeigen. Von den Spielern sollten mehrere Informationen in einer Tabelle angezeigt werden, wie die Nationalität, Position, Trikotnummer, starker Fuss und Geburtsdatum. Die geforderten Informationen können nicht mehr über die API-Schnittstelle bezogen werden. Als Alternative wird die Technik [Web-Scraping](https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) angewendet. Es werden Daten von Webseiten über den HTML Code und den CSS-Klassen identifiziert und strukturiert abgespeichert. Für die Spielerdaten der FootballMap wurden die Inhalte von Transfermarkt.ch verwendet. Somit können die bestehenden Daten und die bereits verwendeten ID's von Transfermarkt.ch (Spieler_nr) weiterverwendet werden.
 
 Um die oben beschriebenen Daten aus der Webseite zu extrahieren werden die Libraries [beautifulsoup](https://beautiful-soup-4.readthedocs.io/en/latest/), [requests](https://pypi.org/project/requests/) und [json](https://docs.python.org/3/library/json.html) verwendet.
@@ -96,11 +97,12 @@ Um die oben beschriebenen Daten aus der Webseite zu extrahieren werden die Libra
   - ***Grundlagedatei:*** JSON mit allen Spielernummern (Spieler_nr)
   - ***Ziel:*** JSON mit Spielerprofilen. Attribute: "spieler_nr", "trikotnummer", "name", "geburtsort","geburtsland", "vereinsbeitritt", "vertragsende", "position", "starker_fuss", "geburtsdatum", "körpergrösse","nationalität", "marktwert", "vereinsnummer", "spielerbild_link"
 
-Mit den Funktionen von [requests](https://pypi.org/project/requests/) wird pro Spieler die URL mit der Spieler_nr aufgerufen. Abfrage-URL: "https://www.transfermarkt.ch/spielername/profil/spieler/{Spieler_nr}". Die Antwort der URL Abfrage wird mit [beautifulsoup](https://beautiful-soup-4.readthedocs.io/en/latest/) umgewandelt, sodass Daten aus den einzelnen HTML Elementen extrahiert werden können.
+Mit den Funktionen von [requests](https://pypi.org/project/requests/) wird pro Spieler die URL mit der Spieler_nr aufgerufen. ***Abfrage-URL:*** `https://www.transfermarkt.ch/spielername/profil/spieler/{Spieler_nr}`. Die Antwort der URL Abfrage wird mit [beautifulsoup](https://beautiful-soup-4.readthedocs.io/en/latest/) umgewandelt, sodass Daten aus den einzelnen HTML Elementen extrahiert werden können.
 
 #### Web-Scraping Transfer History
 <div id="web-scraping-transfer-history"></div>
-Für die Seite `Transfer History` werden die Transferdaten jedes Spielers von der spezifischen Abfrage-URL "https://www.transfermarkt.ch/spielername/transfers/spieler/{Spieler_nr}" extrahiert. Die Standardabfrage mittels [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/) stösst jedoch aufgrund eines speziellen HTML-Elements (`<tm-transfer-history player-id="{spieler_nr}"></tm-transfer-history>`) auf Herausforderungen. Das HTML-Element `<tm-transfer-history>` . Daher wird für das Web-Scraping eine Kombination aus [Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/) verwendet.
+
+Für die Seite `Transfer History` werden die Transferdaten jedes Spielers von der spezifischen ***Abfrage-URL:*** `https://www.transfermarkt.ch/spielername/transfers/spieler/{Spieler_nr}` extrahiert. Die Standardabfrage mittels [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/) stösst jedoch aufgrund eines speziellen HTML-Elements (`<tm-transfer-history player-id="{spieler_nr}"></tm-transfer-history>`) auf Herausforderungen. Das HTML-Element `<tm-transfer-history>` . Daher wird für das Web-Scraping eine Kombination aus [Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/) verwendet.
 
 Der Web-Scraping-Prozess erfolgt durch ein [Jupyter Notebook](https://docs.jupyter.org/en/latest/) und nutzt Funktionen der Libraries [Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/):
 
@@ -116,7 +118,7 @@ Die Attribute für das Ursprungs- und Zielland der Clubs (`old_club_country` und
 Ziel ist es, die aktuelle Tabelle der Schweizer Superleague mit einem [Web-Scraping] (https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) zu erhalten, da diese Daten nicht mit der [Transfermarkt-API](https://transfermarkt-api.vercel.app/)bezogen werden konnten. Es sollen die Attribute Rang, Club, Anz. Spiele, gewonnen, verloren, unentschieden, Anz. Tore, Gegentore und die Anzahl Punkte als Attribute von [Transfermarkt](https://www.transfermarkt.ch) bezogen werden.
 
 - `01_scrape_table.py`
-  - **Abfrage-URL:** "https://www.transfermarkt.ch/super-league/tabelle/wettbewerb/C1/saison_id/2023"
+  - **Abfrage-URL:** `https://www.transfermarkt.ch/super-league/tabelle/wettbewerb/C1/saison_id/2023`
   - **Ziel:** JSON mit der aktuellen Tabelle
 
 Das Skript verwendet die Python-Bibliotheken [requests](https://pypi.org/project/requests/) und [BeautifulSoup]( https://beautiful-soup-4.readthedocs.io/en/latest/), um Daten von der Webseite "Transfermarkt" zu extrahieren, die es anschliessend in einer JSON-Datei speichert.
@@ -174,21 +176,33 @@ Die 4 oben beschriebenen DB-View wurden mittels Geoserver freigegeben.
 ## Frontend
 <div id="frontend"></div>
 
+Die Kombination folgender Technologien ermöglicht es für die FootballMap, eine robuste und interaktive Webanwendung zu erstellen. [React](https://react.dev/) wird genutzt, um die Benutzeroberfläche aufzubauen und zu steuern, während npm dabei hilft, alle notwendigen Pakete und Abhängigkeiten zu verwalten. [OpenLayers](https://openlayers.org/) bindet die Kartendaten ein und bietet die Funktionalität für interaktive Kartennavigation an.
+
 ### React
 <div id="react"></div>
-Wie greift React mit Axios auf die Daten(Geoserver) zu
+
+[React](https://react.dev/) ist eine leistungsstarke JavaScript-Bibliothek zur Erstellung von Benutzeroberflächen, entwickelt von Facebook. Sie ermöglicht es Entwicklern, wiederverwendbare UI-Komponenten zu erstellen, die den Zustand der Anwendung effizient verwalten können. [React](https://react.dev/) wird verwendet, um eine reaktive, benutzerfreundliche Oberfläche zu schaffen, die sich dynamisch an die Interaktionen des Benutzers anpasst. Diese Vorteile von [React](https://react.dev/) wurden ausgenutzt.
+
+Es wird die Bibliothek [Axios](https://axios-http.com/docs/intro) genutzt, um auf Daten von externen Quellen wie dem Geoserver via HTTP-Anfragen zuzugreifen. [Axios](https://axios-http.com/docs/intro) ermöglicht es, asynchrone HTTP-Requests zu senden und zu empfangen,
+
+### Node package manager (npm)
+
+npm erleichtert das Installieren, Aktualisieren und Verwalten von Softwarepaketen, die für die Entwicklung des Frontends, einschließlich [React](https://react.dev/) und [OpenLayers](https://openlayers.org/), benötigt werden. npm verwaltet Abhängigkeiten für Node.js-Anwendungen.
 
 ### Open Layers
 <div id="open-layers"></div>
-Wie werden die Daten des Geoservers mit OL dargestellt?
+
+[OpenLayers](https://openlayers.org/) wird eingesetzt, um die geografischen Daten in einer interaktiven Karte darzustellen, die Benutzerinteraktionen wie Zoomen, Verschieben und Klicken auf Elemente unterstützt. [OpenLayers](https://openlayers.org/) kann über seine umfangreichen Quellenoptionen direkt auf den Geoserver zugreifen, um räumliche Daten zu laden und anzuzeigen. Durch die Verwendung von WMS (Web Map Service) oder WFS (Web Feature Service), ermöglicht [OpenLayers](https://openlayers.org/) das Abrufen der bereitgestellten Geodaten auf dem Geoserver.
 
 ### UI Design
 <div id="ui-design"></div>
-Das User Interface (UI) Design konzentriert sich darauf, wie die Website optisch gestaltet ist und wie die Benutzerelemente angeordnet sind. Für die Footballmap wurde ein klares, sportliches Design gewählt, das durch die Verwendung von dynamischen Karten und Clublogos, die geografische Daten repräsentieren, verstärkt wird. Die visuelle Darstellung auf der Startseite und in den verschiedenen Funktionsbereichen wie "Squad Overview" und "Transfer History" verwendet eine Kombination aus Icons, Menüleisten und interaktiven Karten, die intuitiv und leicht zugänglich sind. Farben und Schriftarten sind so gewählt, dass sie Lesbarkeit verbessern und gleichzeitig ein Gefühl von Energie und Bewegung vermitteln.
+
+Das [User Interface (UI)](https://www.unic.com/de/magazin/was-ist-user-experience-ux-was-user-interface-ui) Design konzentriert sich darauf, wie die Website optisch gestaltet ist und wie die Benutzerelemente angeordnet sind. Für die Footballmap wurde ein simples Design gewählt, das durch die Verwendung von dynamischen Karten und interaktiven Geodaten ergänzt wird. Die visuelle Darstellung auf der Startseite und in den verschiedenen Funktionsbereichen wie "Squad Overview" und "Transfer History" verwendet eine Kombination aus Icons, Menüleisten und interaktiven Karten, die intuitiv und leicht zugänglich sind. Farben und Schriftarten sind so gewählt, dass sie Lesbarkeit verbessern und die Hierarchie der Funktionen erkennbar ist. Das simple Design erleichtert das Lesen von Information und regt an die verschiedenen Ligen, Vereine, Spieler und deren Transferhistorie zu erkunden.
 
 ### UX Design
 <div id="ux-design"></div>
-Das User Experience (UX) Design der Footballmap zielt darauf ab, eine nahtlose und engagierte Nutzererfahrung zu schaffen. Dies wird durch eine durchdachte Benutzerführung erreicht, die es den Nutzern ermöglicht, schnell und effizient durch die verschiedenen Funktionen der Plattform zu navigieren. Die interaktiven Elemente, wie das Klicken auf Clublogos, um detaillierte Informationen zu einem Club oder Spieler zu erhalten, sind logisch und vorhersehbar gestaltet. Der Übergang zwischen den einzelnen Seiten und Funktionen ist fließend, wodurch die Nutzer engagiert bleiben und leicht verstehen können, wie sie die benötigten Informationen abrufen können. Die Anpassung der Informationsdarstellung an die Bedürfnisse der Benutzer, wie z.B. die Filterung nach Ligen oder Ländern, verbessert das Gesamterlebnis und erhöht die Benutzerzufriedenheit.
+
+Das [User Experience (UX)](https://www.unic.com/de/magazin/was-ist-user-experience-ux-was-user-interface-ui) Design der Footballmap zielt darauf ab, eine nahtlose Nutzererfahrung zu schaffen. Dies wird durch die geplante Benutzerführung erreicht, die es den Nutzenden ermöglicht, schnell und effizient durch die verschiedenen Funktionen der Plattform zu navigieren. Die interaktiven Elemente, wie das Klicken auf Clublogos, um die weiteren Funktionen zu einem Club oder Spieler zu erhalten, sind logisch gestaltet. Der Übergang zwischen den einzelnen Seiten und Funktionen ist fließend, wodurch die Nutzer engagiert bleiben und leicht verstehen können, wie sie die benötigten Informationen abrufen können. Die Hauptfunktionen mit der meisten Benutzung sind die Dropdown-Elemente im Headerbereich. Alle Buttons wurden im gleichen Stil verwaltet. Das Highliten der Buttons und der Tabelleneinträge bei einem Mouse-Hover und die Änderung der Cursordarstellung vermittelt den Nutzenden, dass eine Funktion an dieser Stelle aufgerufen wird. Ausserdem verstärkt das Farbdesign mit einer dunkeln Grundfarbe (dunkelblau) und zwei kontrastreichen Ergänzugsfarben (weiss/gelb) die einzelnen Hervorhebungen und Buttons. Die Dropdown-Elemente werden mit einer Überschrift beschrieben. Die Überschriften verdeutlichen den Nutzenden, was mit diesem Dropdown ausgewählt werden kann. Alle User-Interaktionen sind durch Hover-Styling und Cursor-Styling klar verständlich. Die möglichen Fehlinteraktionen wurden minimiert.
 
 
 [↑](#top)

@@ -16,4 +16,4 @@ Die Football Map unterstützt derzeit die Funktionen Squad Overview, Player Orig
 In den Nachfolgenden Kapiteln werden alle Funktionen, das verwendete Konzept, die Architektur, das Backend/Frontend und die verwendeten Methoden der Football Map vorgestellt.
 
 
-[Zurück nach oben](#top)
+[↑](#top)
