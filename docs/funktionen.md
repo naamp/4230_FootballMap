@@ -14,9 +14,10 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 - Tabelle aller Stadion innerhalb einer Liga geordnet nach Stadionkapazität
 - Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es werden weitere Funktionen (Squad Overview und Player Origin) freigeschaltet.
 
-![Mehrere Ligen](GIFs/Startpage_4.gif) ![Klick auf Logo](GIFs/Startpage_1.gif)
-
-![Mehrere Ligen](GIFs/Startpage_4.gif) ![Klick auf Logo](GIFs/Startpage_1.gif)
+![Mehrere Ligen](GIFs/Startpage_1.gif)
+![Mehrere Ligen](GIFs/Startpage_2.gif)
+![Mehrere Ligen](GIFs/Startpage_3.gif)
+![Mehrere Ligen](GIFs/Startpage_5.gif)
 
 ## Squad Overview
 <div id="squad-overview"></div>
