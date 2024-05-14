@@ -14,3 +14,6 @@ Deshalb richtet sich die Football Map auf geografische Daten, in einem Bereich, 
 Die Football Map unterstützt derzeit die Funktionen Squad Overview, Player Origin und Transfer History ausschliesslich für die Schweizer Super League, da die zugrundeliegende Datenbank momentan nur Spielerdaten aus der Schweiz enthält. Die Datenbankstruktur ist jedoch so aufgebaut, dass sie problemlos mit Daten aus allen Ländern erweitert werden kann.
 
 In den Nachfolgenden Kapiteln werden alle Funktionen, das verwendete Konzept, die Architektur, das Backend/Frontend und die verwendeten Methoden der Football Map vorgestellt.
+
+
+[Zurück nach oben](#top)
