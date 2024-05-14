@@ -8,8 +8,6 @@ In diesem Kapitel werden die ersten Ideen und Entwürfe des Aufbaus und der Gest
 
 ### Mockup
 
-![mockup1](Bilder/mockup1.png)
->>>>>>> dcc15354569f07f60de0d0206d9a71445618a7a1
 ![mockup2](Bilder/mockup2.png)
 ![mockup1](Bilder/mockup1.png)
 
