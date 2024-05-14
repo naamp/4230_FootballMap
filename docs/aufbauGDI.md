@@ -1,6 +1,8 @@
 # Aufbau Geodateninfrastruktur (GDI)
 <a id="top"></a>
+
 Eine komplette Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend und den verwendeted Libraries und API Schnittstellen. Das folgende Schema zeigt die aufgebaute und verwendete Geodateninfrasturktur der FootballMap auf.
+<div id="gdi-final"></div>
 
 ![GDI Architektur Schema](Bilder/GDI_Architektur_final.png)
 
@@ -51,7 +53,7 @@ Die Liga- und Vereinsdaten der FootballMap-Datenbank wurden über die Transferma
   - Jeder Club wird abgefragt, um ein Clubprofil mit Attributen wie Clubname, Stadionname und Adresse zu erstellen
 
 Im File 02 wird pro Club das Clubprofil abgerufen und die jeweiligen Attribute wie Clubname, Stadionname, Adresse werden abgefragt. Die Adresse und der Stadionname werden als Parameter einer Abfrage der [Nominatim API](https://nominatim.org/release-docs/develop/api/Search/) hinzugefügt. Die Nominatim API von Open Street Map lokalisiert die Stadien und die passenden Koordinaten werden im Clubprofil gespeichert. Falls mit den Parametern (Stadt, Stadionname und Typ="stadium") kein Eintrag gefunden wird, wird das Attribut Stadium_Coordinates mit dem Wert "None" abgefüllt. Die folgenden drei Python-Skripts verwenden andere Parameter, um einen passenden Eintrag zum jeweiligen Stadionnamen zu finden.
-
+<div id="Koordinatenzuweisung"></div>
 - `03_Koord_request_Nominatim_v1.py`
   - ***Parameter:*** Stadionname und Typ="stadium"
 
@@ -100,7 +102,7 @@ Mit den Funktionen von [requests](https://pypi.org/project/requests/) wird pro S
 <div id="web-scraping-transfer-history"></div>
 Für die Seite `Transfer History` werden die Transferdaten jedes Spielers von der spezifischen Abfrage-URL "https://www.transfermarkt.ch/spielername/transfers/spieler/{Spieler_nr}" extrahiert. Die Standardabfrage mittels [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/) stösst jedoch aufgrund eines speziellen HTML-Elements (`<tm-transfer-history player-id="{spieler_nr}"></tm-transfer-history>`) auf Herausforderungen. Das HTML-Element `<tm-transfer-history>` . Daher wird für das Web-Scraping eine Kombination aus [Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/) verwendet.
 
-Der Web-Scraping-Prozess erfolgt durch ein [Jupyter Notebook](https://docs.jupyter.org/en/latest/) und nutzt Funktionen der Libraries Selenium und BeautifulSoup:
+Der Web-Scraping-Prozess erfolgt durch ein [Jupyter Notebook](https://docs.jupyter.org/en/latest/) und nutzt Funktionen der Libraries [Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/):
 
 - ***Notebook:*** `01_Transfermarkt_Transferdata_Notebook.ipynb`
   - ***Ausgangsdatei:*** Liste der Spielernummern (Spieler_nr)
@@ -111,10 +113,10 @@ Mit Selenium wird ein automatisierter Webdriver betrieben, der durch das Jupyter
 Die Attribute für das Ursprungs- und Zielland der Clubs (`old_club_country` und `new_club_country`) wurden manuell zu jedem Transfer hinzugefügt, da diese nicht direkt aus der Tabelle entnommen werden konnten. Eine Erweiterung des Jupyter Notebooks könnte eine verbesserte Navigation einschließen, um diese Informationen automatisch aus den Clubseiten auf [Transfermarkt](https://www.transfermarkt.ch/{Vereinsname}/stadion/verein/{Club_nr}/saison_id/2023) zu ziehen. Ein weiterer Ansatz, das Land des Clubs mittels der [Nominatim API](https://nominatim.org/release-docs/develop/api/Search/) zu ermitteln, schlug fehl, da nur für etwa 10% der Clubs entsprechende Einträge gefunden wurden. Diese Verknüpfung des Landes mit dem Club ist in der Datenbank vorhanden, jedoch sind nicht alle globalen Vereine in der FootballMap-Datenbank erfasst, was bei der Darstellung der Transferhistorie zu Datenlücken führen kann.
 
 #### Web-Scraping aktuelle Liga Tabelle
-Ziel ist es, die aktuelle Tabelle der Schweizer Superleague mit einem [Web-Scraping] (https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) zu erhalten, da diese Daten nicht mit der [Transfermarkt-API](https://transfermarkt-api.vercel.app/)bezogen werden konnten. Es sollen die Attribute Rang, Club, Anz. Spiele, gewonnen, verloren, unentschieden, Anz. Tore, Gegentore und die Anzahl Punkte als Attribute von [Transfermarkt](https://www.transfermarkt.ch) bezogen werden. 
+Ziel ist es, die aktuelle Tabelle der Schweizer Superleague mit einem [Web-Scraping] (https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) zu erhalten, da diese Daten nicht mit der [Transfermarkt-API](https://transfermarkt-api.vercel.app/)bezogen werden konnten. Es sollen die Attribute Rang, Club, Anz. Spiele, gewonnen, verloren, unentschieden, Anz. Tore, Gegentore und die Anzahl Punkte als Attribute von [Transfermarkt](https://www.transfermarkt.ch) bezogen werden.
 
 - `01_scrape_table.py`
-  - **Abfrage-URL:** [Transfermark](https://www.transfermarkt.ch/super-league/tabelle/wettbewerb/C1/saison_id/2023)
+  - **Abfrage-URL:** "https://www.transfermarkt.ch/super-league/tabelle/wettbewerb/C1/saison_id/2023"
   - **Ziel:** JSON mit der aktuellen Tabelle
 
 Das Skript verwendet die Python-Bibliotheken [requests](https://pypi.org/project/requests/) und [BeautifulSoup]( https://beautiful-soup-4.readthedocs.io/en/latest/), um Daten von der Webseite "Transfermarkt" zu extrahieren, die es anschliessend in einer JSON-Datei speichert.
@@ -140,7 +142,7 @@ Die dazugehörige SQL-Definition ist im "preprocessing/Database/db_footballmap_v
 
 Es ist zu erwähnen, dass die Position der Stadien als geographische Koordinaten (lat / lon) erfasst sind und nicht als Punktgeometrien.
 
-Die einzigen Geometrien in der sogenannten Geodatenbank sind in der Tabelle "land" mit den Ländergrenzen (multipolygon) und den Zentren der Ländern (point) enthalten. 
+Die einzigen Geometrien in der sogenannten Geodatenbank sind in der Tabelle "land" mit den Ländergrenzen (multipolygon) und den Zentren der Ländern (point) enthalten.
 
 #### Tabelle land und Abfrage von Länder-Flaggen
 Die Tabelle "land" enthält die Grundlagedaten der Länder, welche zum einten als Hintergrundkarte bei Player Origin wie auch teilweise für die Darstellung von Transferlinien verwendet wird.
@@ -189,4 +191,4 @@ Das User Interface (UI) Design konzentriert sich darauf, wie die Website optisch
 Das User Experience (UX) Design der Footballmap zielt darauf ab, eine nahtlose und engagierte Nutzererfahrung zu schaffen. Dies wird durch eine durchdachte Benutzerführung erreicht, die es den Nutzern ermöglicht, schnell und effizient durch die verschiedenen Funktionen der Plattform zu navigieren. Die interaktiven Elemente, wie das Klicken auf Clublogos, um detaillierte Informationen zu einem Club oder Spieler zu erhalten, sind logisch und vorhersehbar gestaltet. Der Übergang zwischen den einzelnen Seiten und Funktionen ist fließend, wodurch die Nutzer engagiert bleiben und leicht verstehen können, wie sie die benötigten Informationen abrufen können. Die Anpassung der Informationsdarstellung an die Bedürfnisse der Benutzer, wie z.B. die Filterung nach Ligen oder Ländern, verbessert das Gesamterlebnis und erhöht die Benutzerzufriedenheit.
 
 
-[Zurück nach oben](#top)
+[↑](#top)

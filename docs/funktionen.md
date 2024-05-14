@@ -16,7 +16,7 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 - Tabelle aller Stadion innerhalb einer Liga geordnet nach Stadionkapazität
 ![Mehrere Ligen](GIFs/Startpage_2.gif)
 
-- Filtern nach Land 
+- Filtern nach Land
 ![Mehrere Ligen](GIFs/Startpage_3.gif)
 
 - Filtern nach Land und Liga mit der Möglichkeit mehrere Ligen eines Landes einzublenden
@@ -72,4 +72,4 @@ Durch Klicken auf den Button „Player Origin“, wie im Kapitel „Startpage“
 ![player origin](GIFs/PlayerOrigin_3.gif)
 
 
-[Zurück nach oben](#top)
+[↑](#top)

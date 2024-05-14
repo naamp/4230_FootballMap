@@ -1,9 +1,12 @@
 # Ursprüngliches Konzept
 <a id="top"></a>
-In diesem Kapitel werden die ersten Ideen und Entwürfe des Aufbaus und der Gestaltung
+
+In diesem Kapitel werden die ersten Ideen des Aufbaus und der Gestaltung der FootballMap beschrieben. Die Konzeptphase erfolgte vor der Datenbeschaffung und der Entwicklung des Frontend.
 
 ### Aufbau Geodateninfrastruktur (GDI)
 <div id="gdi"></div>
+
+Im folgenden Bild ist ein erster Entwurf der Architektur der GDI zu sehen. Während der beschaffung der Daten und des Erstellens der Oberfläche entstanden Herausforderungen, die schlussendlich anders als geplant gelöst wurden. Auch konnten einige Prozesse einfacher als geplant gelöst werden. Die finale Architektur der GDI ist [hier](#gdi-final) sichtbar.
 ![GDI Konzept](Bilder/GDI_Architektur_konzept.png)
 
 ### Mockup
@@ -21,7 +24,7 @@ Bevor mit der technischen Umsetzung des Frontends begonnen wurde, wurde zunächs
 
 
 ### Visualisierungsideen
-<div id="visualisierungsideen"></div>
+Es wurden Visualisierungsideen aus den sozialen Medien und aus dem Internet gesammelt. Vorallem die Funktion und Anzeige der [Transferhistorie](transfer-history) ist durch die Inspiration von statischen Visualisierungen der Transferhistorie einzelner Spieler entstanden. Es war die Idee von Spielern der Schweizer Super League eine dynamische Karte der Transferwege zu erstellen.
 
 
-[Zurück nach oben](#top)
+[↑](#top)
