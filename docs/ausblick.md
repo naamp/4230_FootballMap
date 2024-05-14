@@ -3,6 +3,7 @@
 
 ### Allgemein
 <div id="allgemein"></div>
+
 ### Startpage
 Für die [Startpage](#startpage) bestehen folgenden Punkte und Fuktionen für Erweiterungen in der Zukunft.
   -***Weitere Länder und Ligen in den Dropdowns zur Verfügung***

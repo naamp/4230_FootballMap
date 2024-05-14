@@ -8,6 +8,8 @@ In diesem Kapitel werden die ersten Ideen und Entwürfe des Aufbaus und der Gest
 
 ### Mockup
 
+Bevor mit der technischen Umsetzung des Frontends begonnen wurde, wurde zunächst ein Konzept für das User-Interface skizziert. Besondere Aufmerksamkeit wurde der Gestaltung der Visualisierungen gewidmet, um sicherzustellen, dass diese für die Anwender intuitiv, einfach und vor allem verständlich sind. Da viele Überlegungen bei der Erstellung des Mockups gemacht wurden, wurde die Entwicklung des Frontends erheblich vereinfacht. Zudem ist anzumerken, dass das Ergebnis nicht stark vom skizzierten Mockup abweicht. Die nachfolgenden Abbildungen zeigen das Mockup, wobei sich einige Features und Darstellungsmerkmale in der endgültigen Version noch unterscheiden können.
+
 ![mockup2](Bilder/mockup2.png)
 ![mockup1](Bilder/mockup1.png)
 
