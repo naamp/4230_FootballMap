@@ -11,6 +11,7 @@ def lade_spieler_ids(dateipfad):
 # Funktion zum Abrufen und Verarbeiten der Spielerdaten
 def verarbeite_spieler(id):
     url = f'https://www.transfermarkt.com/spielername/profil/spieler/{id}'
+    # User-Agent bezieht sich auf den verwendeten Browser und muss angepasst werden #WARNING
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
     response = requests.get(url, headers=headers)
@@ -106,7 +107,7 @@ def verarbeite_spieler(id):
     else:
         print(f"Fehler beim Abrufen der Webseite: Statuscode {response.status_code}")
 
-dateipfad = 'alle_Spieler_Nr.json'
+dateipfad = 'alle_Spieler_Nr.json'                                                          # (INPUT) Dateiname kann angepasst werden #WARNING
 spieler_ids = lade_spieler_ids(dateipfad)
 alle_spieler_daten = []
 
@@ -116,5 +117,5 @@ for spieler_id in spieler_ids:
         alle_spieler_daten.append(daten)
 
 # Speichere die Daten in einer JSON-Datei
-with open('alle_spieler_daten.json', 'w', encoding='utf-8') as file:
+with open('alle_spielerdaten.json', 'w', encoding='utf-8') as file:                       # (OUTPUT) Dateiname kann angepasst werden #WARNING
     json.dump(alle_spieler_daten, file, ensure_ascii=False, indent=4)
