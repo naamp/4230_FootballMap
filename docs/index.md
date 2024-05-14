@@ -184,9 +184,15 @@ Alle Spieler Nummern (Spieler_nr) von Spielern in der Schweizer Super League wur
 
 #### Web-Scraping Squad Overview
 
+Das Ziel der Seite Squad Overview ist es, alle Spieler eines ausgewählten Vereins anzuzeigen. Von den Spielern sollten mehrere Informationen in einer Tabelle angezeigt werden, wie die Nationalität, Position, Trikotnummer, starker Fuss und Geburtsdatum. Die geforderten Informationen können nicht mehr über die API-Schnittstelle bezogen werden. Als Alternative wird die Technik [Web-Scraping](https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) angewendet. Es werden Daten von Webseiten über den HTML Code und den CSS-Klassen identifiziert und strukturiert abgespeichert. Für die Spielerdaten der FootballMap wurden die Inhalte von Transfermarkt.ch verwendet. Somit können die bestehenden Daten und die bereits verwendeten ID's von Transfermarkt.ch (Spieler_nr) weiterverwendet werden.
 
+Um die oben beschriebenen Daten aus der Webseite zu extrahieren werden die Libraries [beautifulsoup](https://beautiful-soup-4.readthedocs.io/en/latest/), [requests](https://pypi.org/project/requests/) und [json](https://docs.python.org/3/library/json.html)
+
+https://www.transfermarkt.ch/max-meyer/transfers/spieler/146164
 
 #### Web-Scraping Transfer History
+
+Der Prozess des Web-Scrapings wird mit einem [Jupyter Notebook]() und Funktionen der Libraries [selenium](https://selenium-python.readthedocs.io/) und [beautifulsoup](https://beautiful-soup-4.readthedocs.io/en/latest/) durchgeführt.
 
 #### Web-Scraping aktuelle Liga Tabelle
 
