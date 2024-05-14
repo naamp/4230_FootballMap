@@ -1,4 +1,5 @@
 # Einleitung
+<a id="top"></a>
 Im Vertiefungsmodul 4230 „Geoinformatik & Raumanalyse I“ des Bachelorstudiengangs Geomatik an der Fachhochschule Nordwestschweiz (FHNW) wurde eine Geodateninfrastruktur entwickelt. Das Thema konnte frei gewählt werden, musste jedoch räumlich-zeitliche Inhalte umfassen.
 
 Diese GitHub-Page widmet sich der Geodateninfrastruktur „Football Map“. Fussball ist enorm populär und generiert eine riesige Datenmenge. Allein die Deutsche Bundesliga erfasst laut DFL Deutsche Fussball Liga GmbH 2024 pro Spiel 3,6 Millionen Positionsdatenpunkte. Obwohl zahlreiche Portale und Applikationen diese Daten in Echtzeit in Tabellen und Spielberichten präsentieren, gibt es kaum Webseiten oder Applikationen, die diese geografischen Daten nutzen und auf einer interaktiven Karte visualisieren.
