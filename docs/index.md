@@ -9,11 +9,17 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
 
 ![GDI Projekt Screenshot](Bilder/Startpage1.png)
 
+#### Projektteam
+
+- [Nando Amport](https://github.com/naamp)
+- [Stefan Sidler](https://github.com/StefanSidler95)
+- [Silvan Baumeler](https://github.com/SilvanBaumeler)
+
 # Inhaltsverzeichnis
 - [GDI Projekt - Footballmap](#gdi-projekt---footballmap)
+      - [Projektteam](#projektteam)
 - [Inhaltsverzeichnis](#inhaltsverzeichnis)
 - [Einleitung](#einleitung)
-    - [Projektteam](#projektteam)
 - [Erklärung der Funktionen von Football Map](#erklärung-der-funktionen-von-football-map)
   - [Startpage](#startpage)
     - [Funktionen:](#funktionen)
@@ -58,12 +64,6 @@ Die Fussballmap ist ein Analyseplattform, welche speziell für Fussballfans entw
 Die Football Map unterstützt derzeit die Funktionen Squad Overview, Player Origin und Transfer History ausschliesslich für die Schweizer Super League, da die zugrundeliegende Datenbank momentan nur Spielerdaten aus der Schweiz enthält. Die Datenbankstruktur ist jedoch so aufgebaut, dass sie problemlos mit Daten aus allen Ländern erweitert werden kann.
 
 In den Nachfolgenden Kapiteln werden alle Funktionen der Football Map vorgestellt...
-
-### Projektteam
-
-- [Nando Amport](https://github.com/naamp)
-- [Stefan Sidler](https://github.com/StefanSidler95)
-- [Silvan Baumeler](https://github.com/SilvanBaumeler)
 
 # Erklärung der Funktionen von Football Map
 In diesem Abschnitt werden die Funktionen und Interaktionen der Fussballmap beschrieben
@@ -225,6 +225,12 @@ Die Attribute für das Ursprungs- und Zielland der Clubs (`old_club_country` und
 
 ## Frontend
 
+### React
+Wie greift React mit Axios auf die Daten(Geoserver) zu
+
+### Open Layers
+Wie werden die Daten des Geoservers mit OL dargestellt?
+
 ### UI Design
 
 Das User Interface (UI) Design konzentriert sich darauf, wie die Website optisch gestaltet ist und wie die Benutzerelemente angeordnet sind. Für die Footballmap wurde ein klares, sportliches Design gewählt, das durch die Verwendung von dynamischen Karten und Clublogos, die geografische Daten repräsentieren, verstärkt wird. Die visuelle Darstellung auf der Startseite und in den verschiedenen Funktionsbereichen wie "Squad Overview" und "Transfer History" verwendet eine Kombination aus Icons, Menüleisten und interaktiven Karten, die intuitiv und leicht zugänglich sind. Farben und Schriftarten sind so gewählt, dass sie Lesbarkeit verbessern und gleichzeitig ein Gefühl von Energie und Bewegung vermitteln.
@@ -251,6 +257,21 @@ In diesem Kapitel werden die ersten Ideen und Entwürfe des Aufbaus und der Gest
 ### User Persona
 
 # Ausblick und Erweiterungsmöglichkeiten
+
+### Allgemein
+
+### Startpage
+Für die [Startpage](#startpage) bestehen folgenden Punkte und Fuktionen für Erweiterungen in der Zukunft.
+  -***Weitere Länder und Ligen in den Dropdowns zur Verfügung***
+  -***Map Control: "Extend to Features" Ausdehnung der Karte auf ausgewählte Daten anpassen***
+  -
+
+### Squad Overview
+[Squad Overview](#squad-overview)
+
+### Transfer History
+[Transfer History](#transfer-history)
+
 
 360 Spieler
 
