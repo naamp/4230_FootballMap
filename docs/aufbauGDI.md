@@ -1,19 +1,19 @@
 # Aufbau Geodateninfrastruktur (GDI)
-
+<a id="top"></a>
 Eine komplette Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend und den verwendeted Libraries und API Schnittstellen. Das folgende Schema zeigt die aufgebaute und verwendete Geodateninfrasturktur der FootballMap auf.
 
 ![GDI Architektur Schema](Bilder/GDI_Architektur_final.png)
 
 ## Backend
-
+<div id="backend"></div>
 Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu gehört auch der Bezug von Geodaten und sonstigen Daten über eine API-Schnittstelle oder per Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver ist das Bindeglied und der Bereitsteller der Datenbank. Mit Java Script React wird über den Geoserver auf die Daten zugegriffen und schlussendlich im Frontend dargestellt.
 
 ### Grundlagedaten
-
+<div id="grundlagedaten"></div>
 Um die erwähnten Funktionen der FootballMap umsetzten zu können, werden Fussballdaten benötigt. Ligen, Vereine, Stadien, Spieler und deren Transfers sollen in Form von strukturierten Daten erfasst und gespeichert werden. Transfermarkt.ch bietet seit 2001 eine Webseite mit umfassenden Daten rund um den Sport Fussball an. Die Grundlagedaten für die FootballMap beruhen deshalb auf Daten von Transfermarkt.ch.
 
 #### Datenabfrage über API-Schnittstelle
-
+<div id="datenabfrage-über-api-schnittstelle"></div>
 Die Daten von Transfermarkt.ch konnten bis am 31. März 2024 über die API-Schnittstelle [Transfermarkt-API](https://transfermarkt-api.vercel.app/) bezogen werden. Liga-, Vereins- und Spielerdaten konnten über folgende Abfragen gefiltert und angezeigt werden. Der Zugang zu dieser API wurde nach dem 31. März 2024 geschlossen. Die Daten zu den Ligen, Vereinen und Stadien sind die Grundlage zur Darstellung der Club Logos auf der Startseite der FootballMap. Ausserdem werden diese Daten auch für die weiteren Funktionen [Squad Overview](#squad-overview) und [Transfer History](#transfer-history) benötigt.
 
 ***Beispielabfragen:***
@@ -85,7 +85,7 @@ Alle Spieler Nummern (Spieler_nr) von Spielern in der Schweizer Super League wur
   - Es wurden alle Spieler der Schweizer Super League in der Datenbank der FootballMap integriert. Die wirklich genutzten Spielerdaten stammen jedoch aus dem [Web-Scraping Sqad Overview](#web-scraping-squad-overview)
 
 #### Web-Scraping Squad Overview
-
+<div id="web-scraping-squad-overview"></div>
 Das Ziel der Seite Squad Overview ist es, alle Spieler eines ausgewählten Vereins anzuzeigen. Von den Spielern sollten mehrere Informationen in einer Tabelle angezeigt werden, wie die Nationalität, Position, Trikotnummer, starker Fuss und Geburtsdatum. Die geforderten Informationen können nicht mehr über die API-Schnittstelle bezogen werden. Als Alternative wird die Technik [Web-Scraping](https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) angewendet. Es werden Daten von Webseiten über den HTML Code und den CSS-Klassen identifiziert und strukturiert abgespeichert. Für die Spielerdaten der FootballMap wurden die Inhalte von Transfermarkt.ch verwendet. Somit können die bestehenden Daten und die bereits verwendeten ID's von Transfermarkt.ch (Spieler_nr) weiterverwendet werden.
 
 Um die oben beschriebenen Daten aus der Webseite zu extrahieren werden die Libraries [beautifulsoup](https://beautiful-soup-4.readthedocs.io/en/latest/), [requests](https://pypi.org/project/requests/) und [json](https://docs.python.org/3/library/json.html) verwendet.
@@ -97,7 +97,7 @@ Um die oben beschriebenen Daten aus der Webseite zu extrahieren werden die Libra
 Mit den Funktionen von [requests](https://pypi.org/project/requests/) wird pro Spieler die URL mit der Spieler_nr aufgerufen. Abfrage-URL: https://www.transfermarkt.ch/spielername/profil/spieler/{Spieler_nr}. Die Antwort der URL Abfrage wird mit [beautifulsoup](https://beautiful-soup-4.readthedocs.io/en/latest/) umgewandelt, sodass Daten aus den einzelnen HTML Elementen extrahiert werden können.
 
 #### Web-Scraping Transfer History
-
+<div id="web-scraping-transfer-history"></div>
 Für die Seite `Transfer History` werden die Transferdaten jedes Spielers von der spezifischen Abfrage-URL [Transfermarkt](https://www.transfermarkt.ch/spielername/transfers/spieler/{Spieler_nr}) extrahiert. Die Standardabfrage mittels [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/) stösst jedoch aufgrund eines speziellen HTML-Elements (`<tm-transfer-history player-id="{spieler_nr}"></tm-transfer-history>`) auf Herausforderungen. Das HTML-Element `<tm-transfer-history>` . Daher wird für das Web-Scraping eine Kombination aus [Selenium](https://selenium-python.readthedocs.io/) und BeautifulSoup verwendet.
 
 Der Web-Scraping-Prozess erfolgt durch ein [Jupyter Notebook](https://docs.jupyter.org/en/latest/) und nutzt Funktionen der Libraries Selenium und BeautifulSoup:
@@ -112,26 +112,43 @@ Die Attribute für das Ursprungs- und Zielland der Clubs (`old_club_country` und
 
 
 #### Web-Scraping aktuelle Liga Tabelle
+<<<<<<< HEAD
+Ziel ist es, die aktuelle Tabelle der Schweizer Superleague mit einem [Web-Scraping] (https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) zu erhalten, da diese Daten nicht mit der [Transfermarkt-API](https://transfermarkt-api.vercel.app/)bezogen werden konnten. Dabei sollen die Attribute Rang, Club, Anz. Spiele, gewonnen, verloren, unentschieden, Anz. Tore, Gegentore und die anzahl Punkte von [Transfermarkt](https://www.transfermarkt.ch/super-league/tabelle/wettbewerb/C1/saison_id/2023) bezogen werden. 
+
+- `01_scrape_table.py`
+  - **Grundlagedatei:** Keine
+  - **Ziel:** JSON mit der aktuellen Tabelle
+  
+Das Skript verwendet die Python-Bibliotheken [requests](https://pypi.org/project/requests/) und [BeautifulSoup]( https://beautiful-soup-4.readthedocs.io/en/latest/), um Daten von der Webseite "Transfermarkt" zu extrahieren, die es anschliessend in einer JSON-Datei speichert.
+Jedoch wurde dieses Skript nicht mehr weiter verwendet [siehe Kapitel Mockup](#Mockup)
+
+=======
+<div id="web-scraping-aktuelle-liga-tabelle"></div>
+>>>>>>> dcc15354569f07f60de0d0206d9a71445618a7a1
 
 ### Datenbank und Datenbankschema
+<div id="datenbank-und-datenbankschema"></div>
 
 ![Datenbankschema](Bilder/Datenbankschema_1.png)
 
 ### Geoserver
-
+<div id="geoserver"></div>
 
 ## Frontend
+<div id="frontend"></div>
 
 ### React
+<div id="react"></div>
 Wie greift React mit Axios auf die Daten(Geoserver) zu
 
 ### Open Layers
+<div id="open-layers"></div>
 Wie werden die Daten des Geoservers mit OL dargestellt?
 
 ### UI Design
-
+<div id="ui-design"></div>
 Das User Interface (UI) Design konzentriert sich darauf, wie die Website optisch gestaltet ist und wie die Benutzerelemente angeordnet sind. Für die Footballmap wurde ein klares, sportliches Design gewählt, das durch die Verwendung von dynamischen Karten und Clublogos, die geografische Daten repräsentieren, verstärkt wird. Die visuelle Darstellung auf der Startseite und in den verschiedenen Funktionsbereichen wie "Squad Overview" und "Transfer History" verwendet eine Kombination aus Icons, Menüleisten und interaktiven Karten, die intuitiv und leicht zugänglich sind. Farben und Schriftarten sind so gewählt, dass sie Lesbarkeit verbessern und gleichzeitig ein Gefühl von Energie und Bewegung vermitteln.
 
 ### UX Design
-
+<div id="ux-design"></div>
 Das User Experience (UX) Design der Footballmap zielt darauf ab, eine nahtlose und engagierte Nutzererfahrung zu schaffen. Dies wird durch eine durchdachte Benutzerführung erreicht, die es den Nutzern ermöglicht, schnell und effizient durch die verschiedenen Funktionen der Plattform zu navigieren. Die interaktiven Elemente, wie das Klicken auf Clublogos, um detaillierte Informationen zu einem Club oder Spieler zu erhalten, sind logisch und vorhersehbar gestaltet. Der Übergang zwischen den einzelnen Seiten und Funktionen ist fließend, wodurch die Nutzer engagiert bleiben und leicht verstehen können, wie sie die benötigten Informationen abrufen können. Die Anpassung der Informationsdarstellung an die Bedürfnisse der Benutzer, wie z.B. die Filterung nach Ligen oder Ländern, verbessert das Gesamterlebnis und erhöht die Benutzerzufriedenheit.
