@@ -6,7 +6,7 @@ Eine komplette Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend
 
 ## Backend
 
-Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu gehört auch der Bezug von Geodaten und sonstigen Daten über eine API-Schnittstelle oder per Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver ist das Bindeglied und der Bereitsteller der Datenbank. Mit Java Script React wird über den Geoserver auf die Daten zugegriffen und schlussendlich im Frontend dargestellt.
+Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu gehört auch der Bezug von Geodaten und sonstigen Daten über eine API-Schnittstelle oder per Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver ist das Bindeglied und der Bereitsteller der Datenbank. Mit Java Script React wird über den Geoserver auf die Daten zugegriffen und schlussendlich im Frontend dargestellt. 
 
 ### Grundlagedaten
 
@@ -110,15 +110,46 @@ Mit Selenium wird ein automatisierter Webdriver betrieben, der durch das Jupyter
 
 Die Attribute für das Ursprungs- und Zielland der Clubs (`old_club_country` und `new_club_country`) wurden manuell zu jedem Transfer hinzugefügt, da diese nicht direkt aus der Tabelle entnommen werden konnten. Eine Erweiterung des Jupyter Notebooks könnte eine verbesserte Navigation einschließen, um diese Informationen automatisch aus den Clubseiten auf [Transfermarkt](https://www.transfermarkt.ch/{Vereinsname}/stadion/verein/{Club_nr}/saison_id/2023) zu ziehen. Ein weiterer Ansatz, das Land des Clubs mittels der [Nominatim API](https://nominatim.org/release-docs/develop/api/Search/) zu ermitteln, schlug fehl, da nur für etwa 10% der Clubs entsprechende Einträge gefunden wurden. Diese Verknüpfung des Landes mit dem Club ist in der Datenbank vorhanden, jedoch sind nicht alle globalen Vereine in der FootballMap-Datenbank erfasst, was bei der Darstellung der Transferhistorie zu Datenlücken führen kann.
 
-
 #### Web-Scraping aktuelle Liga Tabelle
 
-### Datenbank und Datenbankschema
+### Datenbank
+Die folgenden Unterkapitel beschreiben den Aufbau der Datenbank "footballmap" und der Import der Daten.
 
-![Datenbankschema](Bilder/Datenbankschema_1.png)
+#### Datenbankschema
+Die Datenbank wurde technisch in postgresql / postgis umgesetzt und enthält folgende Tabellen: liga, club, stadium, transfer, spieler und land. Die Attribute und die Beziehungen sind in der folgenden Abbildung zu sehen:
+
+![Datenbankschema](Bilder/db_footballmap_v4_uml.png)
+
+Die dazugehörige SQL-Definition ist im [File](preprocessing/Database/db_footballmap_v4.sql) einzusehen.
+
+Es ist zu erwähnen, dass die Position der Stadien als geographische Koordinaten (lat / lon) erfasst sind und nicht als Punktgeometrie.
+
+Die einzigen Geometrien sind in der Tabelle land mit den Ländergrenzen (multipolygon) und den Zentren der Ländern (point) enthalten. 
+
+#### Tabelle land und Abfrage von Länder-Flaggen
+Die Tabelle land enthält die Grundlagedaten der Länder, welche zum einten als Hintergrundkarte bei Player Origin wie auch für die Darstellung von Transferlinien teilweise verwendet wird.
+
+Aus Fussball-Technischen Gründen wurde Grossbritannien in die Länder England, Schottland, Wales und Nordirland aufgeteilt. Ansonsten wurden die Länder-Grenzen unverändert von "Natural Earth" übernommen und in die Datenbank importiert. Für politische Ungereimtheiten bei den Landesgrenzen wird keine Verantwortung übernommen. Die Tabelle land wurde mit den ISO 3166-Ländercodes erweitert, welche als Identifikation für die Abfrage der Länder-Flaggen verwendet wurde. Die Flaggen wurden von der [API]("https://www.welt-flaggen.de/herunterladen/api") bezogen. Der Import in die Datenbank wurde mit dem File "preprocessing/Database/flag2db.ipynb" grösstenteils mittels Python erledigt. Die Flaggen wurden als Binär-Bild, als online-Link und als lokalen Pfad in die Datenbank abgespeichert.
+
+#### Import Fussballdaten in die Datenbank
+Die Daten aus dem Scraping entstandenen Zieldateien (.json) wurden in die Datenbank importiert. Als Schnittstelle wurde das File "preprocessing/Database/json2db.ipynb" verwendet, welches grösstenteils die Daten mittels Python direkt in die Datenbank schreibt. Das File ist Schrittweise aufgebaut und erlaubt dem Benutzer, die Daten Schritt für Schritt in der Datenbank entweder gesamthaft oder nach einzelnen Tabellen zu aktualisieren. Dabei ist zu erwähnen dass die gescrapten Daten teilweise unenheitlich und schlecht strukturiert waren. Einige Spezialfälle wurden bereits abgedeckt, jedoch tauchten bei jeder Aktualisierung wieder neue Probleme auf, die eine vollständige Automatisierung verunmöglichte. Beispielsweise wurde der Marktwert als "600 Tsd." gescrapt, diese Art von Zahlen mussten in eine numerische Zahl (600000) umgewandelt werden. Ein weiteres Beispiel stellen die erfassten Daten dar. Diese mussten von der Form "Dec 31, 1998" nach "31.12.1998" umgewandelt werden.
+
+Auf diese Art können die Tabellen stadium, liga, club, spieler und transfer aktualisiert werden.
+
+#### Datenbankabfragen (DB-Views)
+Insgesamt wurden 4 DB-Views definiert, welche als Schnittstelle zwischen den Daten in den Datentabellen und dem Frontend dienen werden:
+- vw_club_all
+- vw_spielerdaten
+- vw_spieler_geburtsland
+- vw_transferlinien
+
+Die DB-Views dienen zum einen für die Abfrage und die Filterung von Daten aus mehreren Tabellen und zum anderen für die Erstellung von Geometrien mittels Postgis-Befehlen. Mittels Postgis-Befehl "ST_MakePoint" werden die Standorte der Stadien im View "vw_club_all" von lat/lon als Geometrie (point) umgewandelt. 
+
+Die Transferlinien werden als Geometrie (line) mittels Postgis-Befehlen "ST_MakePoint" und "ST_MakeLine" im View "vw_transferlinien" gezeichnet. Es werden grundsätzlich die Linien zwischen den Club-Positionen "von_club" nach "nach_club" definiert. Sind die Clubs jedoch "unbekannt" (Nummer 999999), dann werden als Ersatz die Zentren der Länder verwendet. Weiter werden Transferlinien mit der Länge von 0 weggefiltert. Dies ist der Fall, wenn ein Spieler von einem unbekannten zu einem anderen unbekannten Club innerhalb des gleichen Landes wechselt. In den meisten Fällen betrifft dies den Wechsel innerhalb Jugendmannschaften (z.B. Sparta Praha U18 nach Sparta Praha U19). Diese Transfers sollen bewusst nicht dargestellt werden.
+
 
 ### Geoserver
-
+Die 4 vorher beschriebenen DB-Views wurden mittels Geoserver freigegeben.
 
 ## Frontend
 
