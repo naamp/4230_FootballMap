@@ -9,9 +9,6 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
 ### Ansicht der Startseite
 ![GDI Projekt Screenshot](Bilder/Startpage1.png)
 
-### Demovideo FootballMap
-![GDI Projekt Demovideo](Videos/FootballMap_AlleFunktionen.mp4)
-
 #### Projektteam
 - [Nando Amport](https://github.com/naamp)
 - [Stefan Sidler](https://github.com/StefanSidler95)

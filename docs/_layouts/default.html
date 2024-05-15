@@ -26,50 +26,42 @@
 </head>
 <body>
 <div class="wrapper">
-  <header>
-    <div class="header-content">
-      {% if site.logo %}
-      <img src="{{ site.logo | relative_url }}" alt="Logo">
-      {% endif %}
-      <h2>Dokumentation FootballMap</h2>
-    </div>
-    <nav>
-        <ul>
-            <li><a href="https://naamp.github.io/4230_FootballMap/index.html">FootballMap</a></li>
-            <li><a href="https://naamp.github.io/4230_FootballMap/einleitung.html">Einleitung</a></li>
-            <li class="dropdown">
-                <a href="https://naamp.github.io/4230_FootballMap/funktionen.html">Erklärung der Funktionen</a>
-                <div class="dropdown-content">
-                    <a href="https://naamp.github.io/4230_FootballMap/funktionen.html#startpage">Startpage</a>
-                    <a href="https://naamp.github.io/4230_FootballMap/funktionen.html#squad-overview">Squad Overview</a>
-                    <a href="https://naamp.github.io/4230_FootballMap/funktionen.html#transfer-history">Transfer History</a>
-                </div>
-            </li>
-            <li class="dropdown">
-                <a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html">Aufbau GDI</a>
-                <div class="dropdown-content">
-                    <a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#backend">Backend</a>
-                    <a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#grundlagedaten">Grundlagedaten</a>
-                    <a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#datenbank-und-datenbankschema">Datenbank und Datenbankschema</a>
-                    <a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#geoserver">Geoserver</a>
-                    <a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#frontend">Frontend</a>
-                </div>
-            </li>
-            <li class="dropdown">
-                <a href="https://naamp.github.io/4230_FootballMap/konzept.html">Konzept und Ideen</a>
-                <div class="dropdown-content">
-                    <a href="https://naamp.github.io/4230_FootballMap/konzept.html#gdi">Aufbau GDI</a>
-                    <a href="https://naamp.github.io/4230_FootballMap/konzept.html#mockup">Mockup</a>
-                    <a href="https://naamp.github.io/4230_FootballMap/konzept.html#visualisierungsideen">Visualisierungsideen</a>
-                </div>
-            </li>
-            <li><a href="https://naamp.github.io/4230_FootballMap/ausblick.html">Erweiterungsmöglichkeiten</a></li>
-        </ul>
-    </nav>
-</header>
-    <section>
-        {{ content }}
-    </section>
+  <nav>
+    <ul>
+        <li><a href="https://naamp.github.io/4230_FootballMap/index.html">FootballMap</a></li>
+        <li><a href="https://naamp.github.io/4230_FootballMap/einleitung.html">Einleitung</a></li>
+        <li class="dropdown">
+            <a href="https://naamp.github.io/4230_FootballMap/funktionen.html">Erklärung der Funktionen</a>
+            <div class="dropdown-content">
+                <div><a href="https://naamp.github.io/4230_FootballMap/funktionen.html#startpage">Startpage</a></div>
+                <div><a href="https://naamp.github.io/4230_FootballMap/funktionen.html#squad-overview">Squad Overview</a></div>
+                <div><a href="https://naamp.github.io/4230_FootballMap/funktionen.html#transfer-history">Transfer History</a></div>
+            </div>
+        </li>
+        <li class="dropdown">
+            <a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html">Aufbau GDI</a>
+            <div class="dropdown-content">
+                <div><a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#backend">Backend</a></div>
+                <div><a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#grundlagedaten">Grundlagedaten</a></div>
+                <div><a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#datenbank-und-datenbankschema">Datenbank und Datenbankschema</a></div>
+                <div><a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#geoserver">Geoserver</a></div>
+                <div><a href="https://naamp.github.io/4230_FootballMap/aufbauGDI.html#frontend">Frontend</a></div>
+            </div>
+        </li>
+        <li class="dropdown">
+            <a href="https://naamp.github.io/4230_FootballMap/konzept.html">Konzept und Ideen</a>
+            <div class="dropdown-content">
+                <div><a href="https://naamp.github.io/4230_FootballMap/konzept.html#gdi">Aufbau GDI</a></div>
+                <div><a href="https://naamp.github.io/4230_FootballMap/konzept.html#mockup">Mockup</a></div>
+                <div><a href="https://naamp.github.io/4230_FootballMap/konzept.html#visualisierungsideen">Visualisierungsideen</a></div>
+            </div>
+        </li>
+        <li><a href="https://naamp.github.io/4230_FootballMap/ausblick.html">Erweiterungsmöglichkeiten</a></li>
+    </ul>
+</nav>
+<section>
+    {{ content }}
+</section>
 </div>
 <script src="{{ '/assets/js/scale.fix.js' | relative_url }}"></script>
 </body>
