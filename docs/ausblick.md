@@ -10,7 +10,8 @@ Für die Kartenelemente sind folgende Funktionen für zukünftige Versionen ange
   - Map Control: Button "Extend to selected Features", Ausdehnung der Karte auf ausgewählte Daten anpassen
   - Hintergrundkarte: Eine Hintergrundkarte mit eigenem Stil (gemäss Gestaltungskonzept FootballMap). Die Umsetzung einer solchen Hitergrundkarte ist mit [MapBox](https://docs.mapbox.com/api/maps/styles/) möglich.
 Betreffen der Datenmenge und Qualität
-  - ***Frontend:*** Weitere Länder und Ligen in den Dropdowns zur Verfügung stellen. ***Umsetzung Backend:*** Weitere Daten mit der Web-Scraping Methode wie in [Web-Scraping Transfer History](#web-scraping-transfer-history) extrahieren und speichern.[Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/). Die zusätzlichen Daten können problemlos in die bestehende Datenbank und Geodateninfrasturktur eingepflegt werden. Es können bestehende Python-Skripts verwendet werden.
+  - ***Frontend:*** Weitere Länder und Ligen in den Dropdowns zur Verfügung stellen.
+    ***Umsetzung Backend:*** Weitere Daten mit der Web-Scraping Methode wie in [Web-Scraping Transfer History](#web-scraping-transfer-history) extrahieren und speichern.[Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/). Die zusätzlichen Daten können problemlos in die bestehende Datenbank und Geodateninfrasturktur eingepflegt werden. Es können bestehende Python-Skripts verwendet werden.
   - ***Backend:*** Datenüberprüfung, stimmen die Koordinaten der Vereine? -> Verfeinerung der [Koordinatenzuweisung](#koordinatenzuweisung).
 
 ### Startpage
