@@ -127,7 +127,7 @@ Jedoch wurde dieses Skript nicht mehr weiter verwendet (siehe Kapitel Mockup)
 ### Datenbank
 
 #### Datenbankschema
-Das Datenbankschema wurde möglichst auf die vorhandenen Daten und auf die Nutzung der Daten abgestimmt. Nicht alles ist Datenbank-technisch optimal umgesetzt, da z.B. Redundanzen in den Daten vorhanden sind. Ausserdem gibt es fehlende Beziehungen, die technisch zwar möglich sind, aber bei der Erfassung der Daten zu vielen Problemen führten, nicht definiert.
+Das Datenbankschema wurde möglichst auf die vorhandenen Daten und auf die Nutzung der Daten abgestimmt. Nicht alles ist Datenbank-technisch optimal umgesetzt, da z.B. Redundanzen in den Daten vorhanden sind. Ausserdem gibt es fehlende Beziehungen, die technisch zwar möglich sind, aber bei der Erfassung der Daten zu vielen Problemen führten. Diese wurden bewusst nicht definiert.
 
 Die Datenbank "footballmap" wurde technisch in postgresql / postgis umgesetzt. Es wurden folgende Entitäten (Tabellen) definiert. Die wichtigsten Inhalte sind in den Klammern aufgelistet.
 - land (Ländergrenzen, Flaggen, etc.)
@@ -142,6 +142,8 @@ Die detaillierten Attribute sind im nachfolgenden Datenbankschema abgebildet:
 
 Die dazugehörige SQL-Definition ist im "preprocessing/Database/db_footballmap_v4.sql" einzusehen.
 
+Als Primärschlüssel (PK) wurde jeweils eine automatisch aufnummerierte ID vergeben. Als Verknüpfungsattribut (FK) wurde jedoch die offiziell von Transfermarkt verwendete Nummer in die Datenbank eingeführt. Die jeweiligen Schlüsselattribute sind mit _id bzw. _nr gekennzeichnet.
+
 Es ist zu erwähnen, dass die Position der Stadien als geographische Koordinaten (lat / lon) erfasst sind und nicht als Punktgeometrien.
 
 Die einzigen Geometrien in der sogenannten Geodatenbank sind in der Tabelle "land" mit den Ländergrenzen (multipolygon) und den Zentren der Ländern (point) enthalten.
@@ -154,9 +156,9 @@ Aus Fussball-Technischen Gründen wurde Grossbritannien in die Länder England, 
 Die Tabelle "land" weist technisch keine Beziehung zu den anderen Tabellen auf, was aus Datenbank-technischer Sicht nicht optimal ist. Jedoch wurde dies so umgesetzt, da die Importe der extrahierten Daten ansonsten infolge Fremdschlüssel-Bedingungen zu vielen Problemen führten, da die Schreibweise der Länder oft unterschiedlich war. Bei für die Abfragen entscheidenden Attributen wie das Geburtsland oder die Nationalität der Spieler wurde darauf geachtet, dass die Schreibweise der Fussballdaten mit den Namen in der Tabelle "land" übereinstimmen. Dies musste manuell korrigiert werden. Bei Attributen, wo das Land lediglich als Information für den User genutzt wird, wurde die Schreibweise der Länder von den extrahierten Daten unverändert übernommen. Grundsätzlich wurde jedoch die Englische Schreibweise der Länder-Namen verwendet.
 
 #### Import Fussballdaten in die Datenbank
-Die Daten aus dem Scraping entstandenen Zieldateien (.json) wurden in die Datenbank importiert. Als Schnittstelle wurde das File "preprocessing/Database/json2db.ipynb" verwendet, welches grösstenteils die Daten mittels Python direkt in die Datenbank schreibt. Das File ist Schrittweise aufgebaut und erlaubt dem Benutzer, die Daten Schritt für Schritt in der Datenbank entweder gesamthaft oder nach einzelnen Tabellen zu aktualisieren. Dabei ist zu erwähnen, dass die gescrapten Daten teilweise unenheitlich und schlecht strukturiert waren. Einige Spezialfälle wurden bereits abgedeckt, jedoch tauchten bei jeder Aktualisierung wieder neue Probleme auf, die eine vollständige Automatisierung verunmöglichte. Beispielsweise wurde der Marktwert als "600 Tsd." extrahiert, diese Art von Zahlen mussten in eine numerische Zahl (600000) umgewandelt werden. Ein weiteres Beispiel stellen die extrahierten Daten dar. Diese mussten von der Form "Dec 31, 1998" nach "31.12.1998" umgewandelt werden.
+Die Daten aus dem Scraping entstandenen Zieldateien (.json) wurden in die Datenbank importiert. Als Schnittstelle wurde das File "preprocessing/Database/json2db.ipynb" verwendet, welches grösstenteils die Daten mittels Python direkt in die Datenbank schreibt. Das File ist Schrittweise aufgebaut und erlaubt dem Benutzer, die Daten Schritt für Schritt in der Datenbank entweder gesamthaft oder nach einzelnen Tabellen zu aktualisieren. Dabei ist zu erwähnen, dass die gescrapten Daten teilweise unenheitlich und schlecht strukturiert waren. Einige Spezialfälle wurden bereits abgedeckt, jedoch tauchten bei jeder Aktualisierung wieder neue Probleme auf, die eine vollständige Automatisierung verunmöglichte. Beispielsweise wurde der Marktwert als "600 Tsd." extrahiert, diese Art von Zahlen mussten in eine numerische Zahl (600000) umgewandelt werden. Ein weiteres Beispiel stellen die extrahierten Zeitstempel dar. Diese mussten von der Form "Dec 31, 1998" nach "31.12.1998" umgewandelt werden.
 
-Alle Bilddateien (Spielerbilder und Club-Logos) wurden, wie die Flaggen bei der Tabelle "land" als Binär-Bild, als online-Link und als lokalen Pfad in der Datenbank erfasst.
+Alle Bilddateien (Spielerbilder und Club-Logos) wurden, wie die Flaggen bei der Tabelle "land", als Binär-Bild, als online-Link und als lokalen Pfad in der Datenbank erfasst.
 
 #### Datenbankabfragen (DB-Views)
 Insgesamt wurden 4 DB-Views definiert, welche als Schnittstelle zwischen den Daten in den Datentabellen und dem Frontend dienen werden:
@@ -165,7 +167,7 @@ Insgesamt wurden 4 DB-Views definiert, welche als Schnittstelle zwischen den Dat
 - vw_spieler_geburtsland
 - vw_transferlinien
 
-Die DB-Views dienen zum einen für die Abfrage und die Filterung von Daten aus mehreren Tabellen und zum anderen für die Erstellung von Geometrien mittels Postgis-Befehlen. Mittels Postgis-Befehl "ST_MakePoint" werden die Standorte der Stadien im View "vw_club_all" von lat/lon als Geometrie (point) umgewandelt. 
+Die DB-Views dienen zum einen für die Abfrage und die Filterung von Daten aus mehreren Tabellen und zum anderen für die Erstellung von Geometrien mittels Postgis-Befehlen. Mittels Postgis-Befehl "ST_MakePoint" werden die Standorte der Stadien im View "vw_club_all" von lat/lon in eine Geometrie (point) umgewandelt. 
 
 Die Transferlinien werden als Geometrie (line) mittels Postgis-Befehlen "ST_MakePoint" und "ST_MakeLine" im View "vw_transferlinien" gezeichnet. Es werden grundsätzlich die Linien zwischen den Club-Positionen "von_club" nach "nach_club" definiert. Sind die Clubs jedoch "unbekannt" (Nummer 999999), dann werden als Ersatz die Zentren der Länder verwendet. Weiter werden Transferlinien mit der Länge von 0 weggefiltert. Dies ist der Fall, wenn ein Spieler von einem unbekannten zu einem anderen unbekannten Club innerhalb des gleichen Landes wechselt. In den meisten Fällen betrifft dies den Wechsel innerhalb Jugendmannschaften (z.B. Sparta Praha U18 nach Sparta Praha U19). Diese Transfers sollen bewusst nicht dargestellt werden.
 
