@@ -1,14 +1,14 @@
 # Aufbau Geodateninfrastruktur (GDI)
 <a id="top"></a>
 
-Eine komplette Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend und den verwendeted Libraries und API Schnittstellen. Das folgende Schema zeigt die aufgebaute und verwendete Geodateninfrasturktur der FootballMap auf.
+Eine vollständige Geodateninfrastruktur (GDI) besteht aus dem Backend, dem Frontend und den verwendeted Libraries und API Schnittstellen. Das folgende Schema zeigt die aufgebaute und verwendete Geodateninfrasturktur der FootballMap auf.
 <div id="gdi-final"></div>
 
 ![GDI Architektur Schema](Bilder/GDI_Architektur_final.png)
 
 ## Backend
 
-Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu gehört auch der Bezug von Geodaten und sonstigen Daten über eine API-Schnittstelle oder per Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver ist das Bindeglied und der Bereitsteller der Datenbank. Mit Java Script React wird über den Geoserver auf die Daten zugegriffen und schlussendlich im Frontend dargestellt.
+Das Backend beinhaltet alle unsichtbaren Inhalte und Daten, die sich auf dem Server (bei uns Raspberry Pi) befinden. Dazu zählt auch der Bezug von Geodaten und weiteren Daten über API-Schnittstellen oder mittels Web-Scraping. Das konzipierte Datenbankschema (siehe Bild unten) wurde mit postgres und postgis erstellt und die Daten wurden mittels Python-Skripts in die Datenbank eingepflegt. Der Geoserver ist das Bindeglied und der Bereitsteller der Datenbank. Mit Java Script React wird über den Geoserver auf die Daten zugegriffen und schlussendlich im Frontend dargestellt.
 
 ### Grundlagedaten
 <div id="grundlagedaten"></div>
@@ -115,14 +115,14 @@ Mit Selenium wird ein automatisierter Webdriver betrieben, der durch das Jupyter
 Die Attribute für das Ursprungs- und Zielland der Clubs (`old_club_country` und `new_club_country`) wurden manuell zu jedem Transfer hinzugefügt, da diese nicht direkt aus der Tabelle entnommen werden konnten. Eine Erweiterung des Jupyter Notebooks könnte eine verbesserte Navigation einschließen, um diese Informationen automatisch aus den Clubseiten auf [Transfermarkt](https://www.transfermarkt.ch/{Vereinsname}/stadion/verein/{Club_nr}/saison_id/2023) zu ziehen. Ein weiterer Ansatz, das Land des Clubs mittels der [Nominatim API](https://nominatim.org/release-docs/develop/api/Search/) zu ermitteln, schlug fehl, da nur für etwa 10% der Clubs entsprechende Einträge gefunden wurden. Diese Verknüpfung des Landes mit dem Club ist in der Datenbank vorhanden, jedoch sind nicht alle globalen Vereine in der FootballMap-Datenbank erfasst, was bei der Darstellung der Transferhistorie zu Datenlücken führen kann.
 
 #### Web-Scraping aktuelle Liga Tabelle
-Ziel ist es, die aktuelle Tabelle der Schweizer Superleague mit einem [Web-Scraping](https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) zu erhalten, da diese Daten nicht mit der [Transfermarkt-API](https://transfermarkt-api.vercel.app/)bezogen werden konnten. Es sollen die Attribute Rang, Club, Anz. Spiele, gewonnen, verloren, unentschieden, Anz. Tore, Gegentore und die Anzahl Punkte als Attribute von [Transfermarkt](https://www.transfermarkt.ch) bezogen werden.
+Ziel ist es, die aktuelle Tabelle der Schweizer Superleague mit einem [Web-Scraping](https://www.ionos.de/digitalguide/websites/web-entwicklung/was-ist-web-scraping/) zu erhalten, da diese Daten nicht mit der [Transfermarkt-API](https://transfermarkt-api.vercel.app/) bezogen werden konnten. Es sollen die Attribute Rang, Club, Anz. Spiele, gewonnen, verloren, unentschieden, Anz. Tore, Gegentore und die Anzahl Punkte als Attribute von [Transfermarkt](https://www.transfermarkt.ch) bezogen werden. Um die Daten zu beziehen, wurde ein Python-Skript verwendet, welches nachffolgend aufgelistet ist.
 
 - `01_scrape_table.py`
   - **Abfrage-URL:** `https://www.transfermarkt.ch/super-league/tabelle/wettbewerb/C1/saison_id/2023`
   - **Ziel:** JSON mit der aktuellen Tabelle
 
 Das Skript verwendet die Python-Bibliotheken [requests](https://pypi.org/project/requests/) und [BeautifulSoup]( https://beautiful-soup-4.readthedocs.io/en/latest/), um Daten von der Webseite Transfermarkt zu extrahieren, die es anschliessend in einer JSON-Datei speichert.
-Jedoch wurde dieses Skript nicht mehr weiter verwendet [siehe Kapitel Mockup](#Mockup)
+Jedoch wurde dieses Skript nicht mehr weiter verwendet (siehe Kapitel Mockup)
 
 ### Datenbank
 

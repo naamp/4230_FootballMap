@@ -14,7 +14,7 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 
 ![Mehrere Ligen](GIFs/Startpage_1.gif)
 
-- Tabelle aller gewählten Vereine sind nach Stadionkapazität geordnet
+- Tabelle aller gewählten Vereine aus einer Liga (sortiert nach Stadionkapazität)
 
 ![Mehrere Ligen](GIFs/Startpage_2.gif)
 
@@ -29,7 +29,7 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 
 ## Squad Overview
 <div id="squad-overview"></div>
-Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel Startpage beschrieben wurde, öffnet sich eine weitere Seite. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden (siehe Bild). Insgesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
+Durch den entsprechenden Klick auf den Button Squadoverview, öffnet sich eine weitere Seite. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden. Insgesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
 
 ![squad overview](GIFs/SquadOverview_1.gif)
 
@@ -65,7 +65,7 @@ Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine n
 ![Transferhistory](GIFs/TransferHistory_1.gif)
 
 ## Player Origin
-Durch Klicken auf den Button „Player Origin“, wie im Kapitel „Startpage“ beschrieben, öffnet sich ein neues Fenster. Diese Seite bietet die Möglichkeit, die Herkunft eines Teams anhand einer thematischen Karte zu betrachten, die in geeignete Klassen unterteilt und mit einer passenden Legende versehen ist. Es ist dabei wichtig zu beachten, dass die Herkunft eines Spielers aufgrund seines Geburtslandes ermittelt wurde. Dieser Ansatz wurde gewählt, weil das Geburtsland ein eindeutiger Wert ist und die Angabe der Nationalität mehrere Einträge umfassen kann.
+Durch Klicken auf den Button „Player Origin“, wie im Kapitel „Startpage“ beschrieben, öffnet sich ein neues Fenster. Diese Seite bietet die Möglichkeit, die Herkunft eines Teams anhand einer thematischen Karte zu betrachten, die in geeignete Klassen unterteilt und mit einer passenden Legende versehen ist. Es ist dabei wichtig zu beachten, dass die Herkunft eines Spielers aufgrund seines Geburtslandes ermittelt wurde. Dieser Ansatz wurde gewählt, weil das Geburtsland ein eindeutiger Wert aufweist und die Nationalität mehrdeutig ist.
 
 ![player origin](GIFs/PlayerOrigin_1.gif)
 
