@@ -13,19 +13,19 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 - Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es werden weitere Funktionen (Squad Overview und Player Origin) freigeschaltet.
 ![Mehrere Ligen](GIFs/Startpage_1.gif)
 
-- Tabelle aller Stadion innerhalb einer Liga geordnet nach Stadionkapazität
+- Tabelle aller gewählten Vereine sind nach Stadionkapazität geordnet
 ![Mehrere Ligen](GIFs/Startpage_2.gif)
 
-- Filtern nach Land 
+- Dropdownauswahl nach Land
 ![Mehrere Ligen](GIFs/Startpage_3.gif)
 
-- Filtern nach Land und Liga mit der Möglichkeit mehrere Ligen eines Landes einzublenden
+- Dropdownauswahl nach Ligen, die in gewähltem Land verfügbar sind. Möglichkeit mehrere Ligen eines Landes einzublenden
 ![Mehrere Ligen](GIFs/Startpage_5.gif)
 
 
 ## Squad Overview
 <div id="squad-overview"></div>
-Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel Startpage beschrieben wurde, öffnet ein weiteres Fenster. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden (siehe Bild). Insgesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
+Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel Startpage beschrieben wurde, öffnet sich eine weitere Seite. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden (siehe Bild). Insgesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
 
 ![squad overview](GIFs/SquadOverview_1.gif)
 
@@ -34,12 +34,15 @@ Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel S
 - Dynamische Karte mit Zoomfunktion auf Club
 - Button, um zur Startseite zurückzukehren
 - Tabelle mit Spielern des Clubs und Spielerinformationen (Shirt Nr., Name, Position, Foot, Height, Marketvalue, Age, Born)
+
 ![squad overview](GIFs/SquadOverview_2.gif)
 
 - Ändern der Teamübersicht auf einen anderen Club mittels Auswahlmenü in der Toolbar
+
 ![squad overview](GIFs/SquadOverview_3.gif)
 
 - Wenn der Mauszeiger über die Flagge des Herkunftslandes in der Tabelle bewegt wird, erscheint der Name des Landes.
+
 ![squad overview](GIFs/SquadOverview_5.gif)
 
 Bemerkung: Diese Informationen und Funktionen sind nur für Clubs aus der schweizerischen Super League, sowie deren Spieler möglich.
@@ -66,10 +69,12 @@ Durch Klicken auf den Button „Player Origin“, wie im Kapitel „Startpage“
 - Thematische Kartendarstellung zur Visualisierung der Spielerherkunft
 - Tabelle, sortiert nach der Anzahl der Spieler aus jedem Herkunftsland
 - Automatische Anzeige des Landnamens, wenn der Mauszeiger über ein Land bewegt wird
+
 ![player origin](GIFs/PlayerOrigin_2.gif)
 
 - Möglichkeit das Team zu wechseln
+
 ![player origin](GIFs/PlayerOrigin_3.gif)
 
 
-[Zurück nach oben](#top)
+[↑](#top)

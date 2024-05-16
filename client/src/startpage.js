@@ -330,7 +330,7 @@ const zoomToClub = (clubName) => {
         // Darstellen der Karte
         const newMap = new Map({
             layers: [
-                osmStandard,
+                MapBoxLight,
                 newVectorLayer
             ],
             view: new View({
