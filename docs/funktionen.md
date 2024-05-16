@@ -4,13 +4,13 @@ In diesem Abschnitt werden die Funktionen und Interaktionen der Football Map bes
 
 ## Startpage
 <div id="startpage"></div>
-Auf der Startseite erscheint eine dynamische Karte, die auf die Schweiz fokussiert ist. Es werden die Clublogos entsprechend iherer geografischen Lage (Stadion) angezeit. Über die Toolbar können die Nutzenden aus 30 Ländern und 70 Ligen Clubs auswählen und filtern. Insgesamt sind 1060 Clubs in der Datenbank vorhanden.
+Auf der Startseite erscheint eine dynamische Karte, die auf die Schweiz fokussiert ist. Es werden die Clublogos entsprechend iherer geografischen Lage (Stadion) angezeit. Über die Toolbar können die Nutzenden aus 30 Ländern und 70 Ligen, Clubs auswählen und filtern. Insgesamt sind 1060 Clubs in der Datenbank vorhanden.
 
 Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fussballnationen sind die drei obersten Ligen verfügbar. Bei Ländern mit mittlerem Fussballniveau wurden die zwei höchsten Ligen einbezogen. In anderen Nationen ist jeweils nur die oberste Liga vertreten. Für die Schweiz hingegen wurden die fünf höchsten Ligen aufgenommen. Die Gewichtung wurde aus der UEFA Rankingliste [UEFA Ranking](https://www.uefa.com/nationalassociations/uefarankings/country/?year=2024) entnommen.
 
 
 ### Funktionen:
-- Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es werden weitere Funktionen (Squad Overview und Player Origin) freigeschaltet.
+- Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es werden weitere Funktionen (Squad Overview und Player Origin) freigeschaltet
 
 ![Mehrere Ligen](GIFs/Startpage_1.gif)
 
@@ -18,7 +18,7 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 
 ![Mehrere Ligen](GIFs/Startpage_2.gif)
 
-- Dropdownauswahl nach Land
+- Dropdownauswahl nach Land, wobei die Funktionen "Squad Overview" und "Player Origin" nur für die [Schweizer Super League](https://sfl.ch/de/de) funktionieren
 
 ![Mehrere Ligen](GIFs/Startpage_3.gif)
 
@@ -45,11 +45,11 @@ Durch den entsprechenden Klick auf den Button Squadoverview, wie es im Kapitel S
 
 ![squad overview](GIFs/SquadOverview_3.gif)
 
-- Wenn der Mauszeiger über die Flagge des Herkunftslandes in der Tabelle bewegt wird, erscheint der Name des Landes.
+- Wenn der Mauszeiger über die Flagge des Herkunftslandes in der Tabelle bewegt wird, erscheint der Name des Landes
 
 ![squad overview](GIFs/SquadOverview_5.gif)
 
-Bemerkung: Diese Informationen und Funktionen sind nur für Clubs aus der schweizerischen Super League, sowie deren Spieler möglich.
+Bemerkung: Die Spielerinformationen und Funktionen sind nur für Clubs aus der schweizerischen Super League, sowie deren Spieler möglich
 
 ## Transfer History
 <div id="transfer-history"></div>
