@@ -25,7 +25,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-import HomeIcon from '@mui/icons-material/Home';
 import appbarstyle from './appbarstyle.js';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
@@ -216,22 +215,22 @@ newMap.on('pointermove', function (event) {
         };
     }, [playerCounts]);
 
-    const handleRowClick = (nationality) => {
-        const countryFeature = VectorSource.getFeatures();
+    // const handleRowClick = (nationality) => {
+    //     const countryFeature = VectorSource.getFeatures();
 
-        if (!countryFeature) {
-            console.error("vectorSource is not defined.");
-            return;
-        }
+    //     if (!countryFeature) {
+    //         console.error("vectorSource is not defined.");
+    //         return;
+    //     }
 
-        if (countryFeature) {
-            const extent = countryFeature.getGeometry().getExtent();
-            newMap.getView().fit(extent, {
-                duration: 1000, // Smooth zooming
-                padding: [50, 50, 50, 50] // Optional padding around the fit
-            });
-        }
-    };
+    //     if (countryFeature) {
+    //         const extent = countryFeature.getGeometry().getExtent();
+    //         newMap.getView().fit(extent, {
+    //             duration: 1000, // Smooth zooming
+    //             padding: [50, 50, 50, 50] // Optional padding around the fit
+    //         });
+    //     }
+    // };
 
     const generateColorBoxes = () => {
         return (
@@ -275,9 +274,9 @@ newMap.on('pointermove', function (event) {
       };
 
     const tableRows = Object.entries(playerCounts)
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])) //old: <tr key={nationalität} onClick={() => handleRowClick(nationalität)}>
     .map(([nationalität, playerCount]) => (
-        <tr key={nationalität} onClick={() => handleRowClick(nationalität)}>
+        <tr key={nationalität}>
             <td>
                 <img src={countryFlags[nationalität]} alt={nationalität} style={{ width: 'auto', height: '20px' }} />
             </td>
