@@ -6,7 +6,7 @@ Im Vertiefungsmodul 4230 „Geoinformatik & Raumanalyse I“ des Bachelorstudien
 
 Diese GitHub-Page widmet sich der Geodateninfrastruktur „Football Map“. Fussball ist enorm populär und generiert eine riesige Datenmenge. Allein die Deutsche Bundesliga erfasst laut DFL Deutsche Fussball Liga GmbH 2024 pro Spiel 3,6 Millionen Positionsdatenpunkte. Obwohl zahlreiche Portale und Applikationen diese Daten in Echtzeit in Tabellen und Spielberichten präsentieren, gibt es kaum Webseiten oder Applikationen, die diese geografischen Daten nutzen und sie räumlich visualisiert.
 
-Deshalb konzentriert sich die Football Map speziell auf öffentliche geografische Fussballdaten, für die es bisher keine vergleichbaren Anwendungen gibt. Die Football Map ist ein Analyseplattform, welche speziell für Fussballfans entwickelt wurde. Diese dynamische thematische Karte ermöglicht es, Fussballvereine aus den Top-Ligen Europas zu entdecken. Mit der Football Map können Sie:
+Deshalb konzentriert sich die Football Map speziell auf öffentliche geografische Fussballdaten, für die es bisher keine vergleichbaren Anwendungen gibt. Die Football Map ist ein Analyseplattform, welche speziell für Fussballfans entwickelt wurde. Diese dynamische thematische Karte ermöglicht es, Fussballvereine aus den Top-Ligen Europas zu entdecken. Mit der Football Map kannst du:
 
 - **Geografische Betrachtung aller Clubs:** Betrachte die Fussballvereine auf einer Weltkarte und entdecke Clubs die dir noch unbekannt sind.
 - **Vereinsdetails erkunden:** Blende das Spielerkader eines jeden Vereins ein und erhalte Zugriff auf spannende Informationen.
