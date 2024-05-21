@@ -12,6 +12,7 @@ import Style from 'ol/style/Style.js';
 import Point from 'ol/geom/Point.js';
 import Attribution from 'ol/control/Attribution';
 import Zoom from 'ol/control/Zoom';
+import { XYZ } from 'ol/source.js';
 import {extend as extendExtent, createEmpty as createEmptyExtent} from 'ol/extent';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
@@ -553,9 +554,21 @@ const Transferhistory = () => {
                 <tr key={index} onClick={() => handleTableRowClick(transfer.id)} className={selectedTransferIds.includes(transfer.id) ? 'selected-row' : 'table-row'}>
                   <td>{index + 1}</td>
                   <td>{transfer.date}</td>
-                  <td><img src={countryFlags[transfer.fromClubCountry]} alt={transfer.fromClubCountry} style={{ width: 'auto', height: '20px' }} /></td>
+                  <td>
+                    <img
+                    src={countryFlags[transfer.fromClubCountry]}
+                    alt={transfer.fromClubCountry}
+                    title={transfer.fromClubCountry}
+                    style={{ width: 'auto', height: '20px' }} />
+                  </td>
                   <td>{transfer.fromClub}</td>
-                  <td><img src={countryFlags[transfer.toClubCountry]} alt={transfer.toClubCountry} style={{ width: 'auto', height: '20px' }} /></td>
+                  <td>
+                    <img
+                    src={countryFlags[transfer.toClubCountry]}
+                    alt={transfer.toClubCountry}
+                    title={transfer.toClubCountry}
+                    style={{ width: 'auto', height: '20px' }} />
+                  </td>
                   <td>{transfer.toClub}</td>
                   <td>{transfer.marketValue}</td>
                   <td>{transfer.transferFee}</td>

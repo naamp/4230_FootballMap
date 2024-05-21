@@ -299,7 +299,7 @@ const zoomToClub = (clubName) => {
             source: new OSM({attributions: attributionsOSM}),
         });
 
-        // Erstellen OSM Hintergrundlayer
+        // Erstellen MapBox Hintergrundlayer
         const MapBoxLight = new TileLayer({
             source: new XYZ({
                 attributions: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> contributors',
@@ -518,7 +518,12 @@ const zoomToClub = (clubName) => {
                     <tbody>
                         {selectedItems.map((item, index) => (
                             <tr key={index} onClick={() => zoomToClub(item.name)}>
-                                <td><img src={item.logo_link} alt={item.name} style={{ width: '25px', height: 'auto' }} /></td>
+                                <td>
+                                    <img
+                                    src={item.logo_link}
+                                    alt={item.name}
+                                    style={{ width: '25px', height: 'auto' }} />
+                                </td>
                                 <td>{item.name}</td>
                                 <td>{item.kapazität}</td>
                             </tr>
