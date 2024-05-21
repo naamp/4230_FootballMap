@@ -1,26 +1,34 @@
-# Erweiterungsmöglichkeiten
 <a id="top"></a>
+
+# Erweiterungsmöglichkeiten
 
 Im folgenden Abschnitt werden für jede Seite und Funktion Verbesserungs- und Erweiterungsvorschläge genannt, welche Vorteile für die User Experience (User Erfahrung) bieten oder die Funktionen der FootballMap erweitern. Die Ideen sind der Wichtigkeit nach geordnet (von oben nach unten).
 
-### Allgemein
 <div id="allgemein"></div>
+
+### Allgemein
 
 Für die Kartenelemente sind folgende Funktionen für zukünftige Versionen angedacht und sinnvoll:
   - Map Control: Button "Extend to selected Features", Ausdehnung der Karte auf ausgewählte Daten anpassen
   - Hintergrundkarte: Eine Hintergrundkarte mit eigenem Stil (gemäss Gestaltungskonzept FootballMap). Die Umsetzung einer solchen Hitergrundkarte ist mit [MapBox](https://docs.mapbox.com/api/maps/styles/) möglich.
 Betreffen der Datenmenge und Qualität
   - ***Frontend:*** Weitere Länder und Ligen in den Dropdowns zur Verfügung stellen.
+<<<<<<< Updated upstream
     ***Umsetzung Backend:*** Weitere Daten mit der Web-Scraping Methode wie in [Web-Scraping Transfer History](#web-scraping-transfer-history) extrahieren und speichern.[Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/). Die zusätzlichen Daten können problemlos in die bestehende Datenbank und Geodateninfrasturktur eingepflegt werden. Es können bestehende Python-Skripts verwendet werden.
+=======
+    ***Umsetzung Backend:*** Weitere Daten mit der Web-Scraping Methode wie in [Web-Scraping Transfer History](#web-scraping-transfer-history) extrahieren und speichern. [Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/). Die zusätzlichen Daten können problemlos in die bestehende Datenbank und Geodateninfrasturktur eingepflegt werden. Es können bestehende Python-Skripts verwendet werden.
+>>>>>>> Stashed changes
   - ***Backend:*** Datenüberprüfung, stimmen die Koordinaten der Vereine? -> Verfeinerung der [Koordinatenzuweisung](#koordinatenzuweisung).
 
 ### Startpage
 
 Für die [Startpage](#startpage) sind folgende Funktionen für zukünftige Versionen angedacht und sinnvoll:
-  - Flackern der Logos beheben
+  - Flackern der Logos beheben. Ab einer bestimmten Anzahl an angezeigten Logos beginnen die Logos zu flackern. Die Fehlerquelle wurde noch nicht gefunden.
+![Flackern der Logos](GIFs/Flackern_2.gif)
+
   - Kolision der Logos vermeiden
-  ![Kolisionsvermeidung Logos](Bilder/Kolisionsvermeidung.png)
-    - Hintergrundkarte: Ergänzung Satelitenbild für die Erkundung der Stadien und deren Umgebung
+![Kolisionsvermeidung Logos](Bilder/Kolisionsvermeidung.png)
+  - Hintergrundkarte: Ergänzung Satelitenbild für die Erkundung der Stadien und deren Umgebung
 
 ### Squad Overview
 
