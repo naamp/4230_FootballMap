@@ -4,13 +4,13 @@ In diesem Abschnitt werden die Funktionen und Interaktionen der Football Map bes
 
 ## Startpage
 <div id="startpage"></div>
-Auf der Startseite erscheint eine dynamische Karte, die auf die Schweiz fokussiert ist. Es werden die Clublogos entsprechend iherer geografischen Lage (Stadion) angezeit. Über die Toolbar können die Nutzenden aus 30 Ländern und 70 Ligen, Clubs auswählen und filtern. Insgesamt sind 1060 Clubs in der Datenbank vorhanden.
+Auf der Startseite erscheint eine dynamische Karte, die auf die Schweiz fokussiert ist. Es werden die Clublogos entsprechend ihrer geografischen Lage (Stadion) angezeigt. Über die Toolbar können die Nutzenden aus 30 Ländern und 70 Ligen, Clubs auswählen und filtern. Insgesamt sind 1060 Clubs in der Datenbank vorhanden.
 
 Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fussballnationen sind die drei obersten Ligen verfügbar. Bei Ländern mit mittlerem Fussballniveau wurden die zwei höchsten Ligen einbezogen. In anderen Nationen ist jeweils nur die oberste Liga vertreten. Für die Schweiz hingegen wurden die fünf höchsten Ligen aufgenommen. Die Gewichtung wurde aus der UEFA Rankingliste [UEFA Ranking](https://www.uefa.com/nationalassociations/uefarankings/country/?year=2024) entnommen.
 
 
 ### Funktionen:
-- Mit Klick auf Clublogo wird der Stadiumname aufgerufen und es werden weitere Funktionen (Squad Overview und Player Origin) freigeschaltet
+- Mit Klick auf Clublogo wird der Stadionname aufgerufen und es werden weitere Funktionen (Squad Overview und Player Origin) freigeschaltet
 
 ![Mehrere Ligen](GIFs/Startpage_1.gif)
 
@@ -29,13 +29,13 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 
 ## Squad Overview
 <div id="squad-overview"></div>
-Durch den entsprechenden Klick auf den Button Squadoverview, öffnet sich eine weitere Seite. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden. Insgesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
+Durch den entsprechenden Klick auf den Button Squad Overview, öffnet sich eine weitere Seite. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden. Insgesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
 
 ![squad overview](GIFs/SquadOverview_1.gif)
 
 ### Funktionen:
 - Durch den Klick auf Spieler ist eine weitere Funktion (Transfer History) aufrufbar
-- Dynamische Karte mit Zoomfunktion auf Club
+- Dynamische Karte mit Zoomfunktion auf den Club
 - Button, um zur Startseite zurückzukehren
 - Tabelle mit Spielern des Clubs und Spielerinformationen (Shirt Nr., Name, Position, Foot, Height, Marketvalue, Age, Born)
 
@@ -53,10 +53,10 @@ Bemerkung: Die Spielerinformationen und Funktionen sind nur für Clubs aus der s
 
 ## Transfer History
 <div id="transfer-history"></div>
-Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine neue Seite auf. Die Seite Transfer History ermöglicht es den Transferweg eines Spielers zu betrachten Die Stationen werden durch Linien dargestellt. Fehlt ein Club in der Datenbank bei einem Transfer, wird stattdessen das Land des Clubs mit seinem Zentroid als Station verwendet. In der vorhandenen Tabelle sind alle Transfers, sortiert nach Datum, aufgelistet.
+Mit dem Entsprechenden Klick auf den Spieler (Seite Squad Overview), geht eine neue Seite auf. Die Seite Transfer History ermöglicht es den Transferweg eines Spielers zu betrachten Die Stationen werden durch Linien dargestellt. Fehlt ein Club in der Datenbank bei einem Transfer, wird stattdessen das Land des Clubs mit seinem Zentrum (Zentroid) als Station verwendet. In der vorhandenen Tabelle sind alle Transfers, sortiert nach Datum, aufgelistet.
 
 ### Funktionen:
-- Unterteilung von Leihe und Transfer mittels unterschiedlicher Liniendarstellung inklunsive Lengende
+- Unterteilung von Leihe und Transfer mittels unterschiedlicher Liniendarstellung inklunsiv Lengende
 -  Tabelle zur Darstellung der Transferhistorie, einschliesslich Details zu den beteiligten Vereinen (abgebender und aufnehmender Club), dem Datum des Transfers, dem Marktwert des Spielers sowie der Ablösesumme
 - Klick auf Transfer in Tabelle markiert den Transferweg auf der Karte
 - Klick auf Transferweg markiert Transfereintrag in Tablle
