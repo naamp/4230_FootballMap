@@ -2,7 +2,7 @@
 
 # GDI Projekt - Footballmap
 
-Das ist die FootballMap. Hier findest du alles über die vorhandenen Funktionen und die Informationen zur Erarbeitung der WebApp.
+Willkommen auf der GitHub-Page der Geodateninfarastruktur FootballMap. Hier findest du alles über die vorhandenen Funktionen und die Informationen zur Erarbeitung der WebApp.
 
 GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a/GDI_Project)
 
