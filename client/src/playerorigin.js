@@ -330,7 +330,7 @@ newMap.on('pointermove', function (event) {
             </div>
             <div className="playerorigin_table">
                 <table>
-                <caption className="playerorigin_table-caption">ⓘ Player Counts by Nationality</caption>
+                <caption className="playerorigin_table-caption">ⓘ Player Counts by birthcountry</caption>
                     <thead>
                         <tr>
                             <th></th>
