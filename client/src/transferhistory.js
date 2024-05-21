@@ -247,9 +247,17 @@ const Transferhistory = () => {
       source: new OSM({attributions: attributionsOSM}),
     });
 
+    // Erstellen MapBox Hintergrundlayer
+    const MapBoxLight = new TileLayer({
+      source: new XYZ({
+          attributions: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> contributors',
+          url: 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmFhbXAiLCJhIjoiY2x3MXV6ODI5MGdlbDJxcGhqNXlpMHZwaSJ9.yLrZYxgQjbgitKABOhmhTg'
+      }),
+    });
+
     const newMap = new Map({
       layers: [
-        osmStandard,
+        MapBoxLight,
         vectorLayer
       ],
       view: new View({
