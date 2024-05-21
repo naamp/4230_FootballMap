@@ -1,8 +1,3 @@
-// Startseite provisorisch fertig
-// Optimierungsmöglichkeiten:
-        // evtl. Luftbild als zusätzliche Karte
-        // Icons "flackern" teilweise wieder, ich glaube wegen Kollision mit anderen Icons verursacht
-
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map.js';
 import TileLayer from 'ol/layer/Tile.js';
@@ -21,13 +16,11 @@ import Zoom from 'ol/control/Zoom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-import HomeIcon from '@mui/icons-material/Home';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import './startpage.css';
 import './ol.css';
@@ -35,19 +28,6 @@ import appbarstyle from './appbarstyle.js';
 import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import { useNavigate } from "react-router-dom";
 import { XYZ } from 'ol/source.js';
-
-// => Abschnitt wird wohl nicht mehr benötigt
-// Konstanten für Menü-Styles
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 250,
-//     },
-//   },
-// };
 
 const Startpage = () => {
     // Zustandsvariablen der Komponenten

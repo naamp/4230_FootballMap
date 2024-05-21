@@ -1,9 +1,3 @@
-// Optimierungsmöglichkeiten:
-    // evtl. Luftbild als zusätzlichen Hintergrund
-    // evtl. geringfügige Design-Anpassungen
-    // evtl. Informationen zum Stadion (wie bei startpage) entweder wieder als popup oder als Liste unter der Karte
-    // evlt. Button einrichten zur Page "playerorigin"
-
 import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,8 +6,6 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
-import HomeIcon from '@mui/icons-material/Home';
-
 import axios from 'axios';
 import Map from 'ol/Map';
 import View from 'ol/View.js';
@@ -27,12 +19,10 @@ import Zoom from 'ol/control/Zoom';
 import Attribution from 'ol/control/Attribution.js';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
-
 import './squadoverview.css';
 import './ol.css';
 import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
 import appbarstyle from './appbarstyle.js';
-
 import { useNavigate, useParams } from 'react-router-dom';
 
 const Squadoverview = ({ countries, country, league, availableLeagues, setCountry, setLeague }) => {

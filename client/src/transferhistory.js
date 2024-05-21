@@ -1,14 +1,3 @@
-// hier gibt es noch ein paar ToDo's (umsetzen was geht)
-// beim Start der Seite auf die dargestellten Linien zoomen (evtl. mit button "Reset Zoom")
-// Legende zur Unterscheidung Leihe und Transfer (blau und dunkelblau) => evtl. anderst unterscheiden oder gar nicht
-// Darstellung der Linien verschönern (evtl Pfeile?), wäre gut, wenn man die "Richtung" des Transfers sieht, weil viele Stationen hin und zurück sind (v.a. bei Leihen)
-// Ich habe es nicht fertig gebracht, die Club-Icons darzustellen, es kamen immer alle Clubs, oder keine (Filterung nach angezeigten ging nie) => deshalb besser keine als alle
-// Start- und Endpunkt wären schon toll, wen die irgendwie dargestellt wären.
-// bei Bedarf kann man die Länder-Centren und Club-Positionen darstellen (Radius der Punkte grösser Null setzen), hilft evtl. beim entwickeln.
-// ausserdem habe ich das dropdown "Player" entfernt, weil sonst das Laden der Seite sehr lange ging (es musste alle Linien für alle Spieler rendern)
-// diverse Style-Verbesserungen wären gut
-// Info: Transferlinien mit Länge Null werden nicht dargestellt, auch nicht in der Tabelle (z.B. von Unbekannt nach Unbekannt im gleichen Land) => diese Transfers wurden bereits im DB-View weggefiltert
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Map from 'ol/Map.js';
@@ -20,7 +9,6 @@ import VectorSource from 'ol/source/Vector.js';
 import { fromLonLat } from 'ol/proj';
 import Feature from 'ol/Feature.js';
 import Style from 'ol/style/Style.js';
-import Icon from 'ol/style/Icon.js';
 import Point from 'ol/geom/Point.js';
 import Attribution from 'ol/control/Attribution';
 import Zoom from 'ol/control/Zoom';
@@ -29,7 +17,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import HomeIcon from '@mui/icons-material/Home';
 import './transferhistory.css';
 import './ol.css';
 import LogoFootballMap from './images/Logo_FootballMap_gelb.png'
@@ -95,8 +82,8 @@ const Transferhistory = () => {
             const transferArt = feature.properties.transferart;
             const fromLand = feature.properties.von_land;
             const toLand = feature.properties.nach_land;
-            const fromClubName = feature.properties.von_club_name;
-            const toClubName = feature.properties.nach_club_name;
+            // const fromClubName = feature.properties.von_club_name;
+            // const toClubName = feature.properties.nach_club_name;
 
             // Find the corresponding country center for from_land and to_land
             const [fromCenter, toCenter] = await Promise.all([

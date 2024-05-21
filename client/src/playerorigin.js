@@ -1,9 +1,3 @@
-// provisorisch fertig
-// Optimierungsmöglichkeiten:
-        // evtl. Design-Anpassungen
-        // Hover etwas verbessern (wenn mit der Maus die Map verlassen wird, soll z.B. der hover weg)
-        // p.s. Zoom-Funktion bei Klick auf Tabelle wurde bewusst nicht umgesetzt, da ich darin keinen grossen Mehrwert sah...
-
 import React, { useEffect, useState } from 'react';
 import Map from 'ol/Map';
 import View from 'ol/View';
