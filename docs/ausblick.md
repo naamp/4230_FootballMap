@@ -11,8 +11,8 @@ Für die Kartenelemente sind folgende Funktionen für zukünftige Versionen ange
   - Map Control: Button "Extend to selected Features", Ausdehnung der Karte auf ausgewählte Daten anpassen
   - Hintergrundkarte: Eine Hintergrundkarte mit eigenem Stil (gemäss Gestaltungskonzept FootballMap). Die Umsetzung einer solchen Hintergrundkarte ist mit [MapBox](https://docs.mapbox.com/api/maps/styles/) möglich.
   - ***Frontend:*** Weitere Länder und Ligen in den Dropdowns zur Verfügung stellen.
-    ***Umsetzung Backend:*** Weitere Daten mit der Web-Scraping Methode wie in [Web-Scraping Transfer History](#web-scraping-transfer-history) extrahieren und speichern. [Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/). Die zusätzlichen Daten können problemlos in die bestehende Datenbank und Geodateninfrastruktur eingepflegt werden. Es können bestehende Python-Skripts verwendet werden.
-  - ***Backend:*** Datenüberprüfung, stimmen die Koordinaten der Vereine? -> Verfeinerung der [Koordinatenzuweisung](#koordinatenzuweisung).
+    ***Umsetzung Backend:*** Weitere Daten mit der Web-Scraping Methode wie in [Web-Scraping Transfer History](aufbauGDI.md#web-scraping-transfer-history) extrahieren und speichern. [Selenium](https://selenium-python.readthedocs.io/) und [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/). Die zusätzlichen Daten können problemlos in die bestehende Datenbank und Geodateninfrastruktur eingepflegt werden. Es können bestehende Python-Skripts verwendet werden.
+  - ***Backend:*** Datenüberprüfung, stimmen die Koordinaten der Vereine? -> Verfeinerung der [Koordinatenzuweisung](aufbauGDI.md#koordinatenzuweisung).
 
 ### Startpage
 
@@ -53,9 +53,9 @@ Für die Seite [Player Origin](funktionen.md#player-origin) sind folgende Funkti
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <a href="funktionen.md#top">← Konzept und Ideen</a>
+    <a href="funktionen.md">← Konzept und Ideen</a>
   </div>
   <div>
-   <a href="quellenverzeichnis.md#top">Quellenverzeichnis →</a>
+   <a href="quellenverzeichnis.md">Quellenverzeichnis →</a>
   </div>
 </div>

@@ -6,60 +6,21 @@ In diesem Abschnitt werden die Funktionen und Interaktionen der Football Map bes
 <div id="startpage"></div>
 Auf der Startseite erscheint eine dynamische Karte, die auf die Schweiz fokussiert ist. Es werden die Clublogos entsprechend ihrer geografischen Lage (Stadion) angezeigt. Über die Toolbar können die Nutzenden aus 30 Ländern und 70 Ligen, Clubs auswählen und filtern. Insgesamt sind 1060 Clubs in der Datenbank vorhanden.
 
-Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fussballnationen sind die drei obersten Ligen verfügbar. Bei Ländern mit mittlerem Fussballniveau wurden die zwei höchsten Ligen einbezogen. In anderen Nationen ist jeweils nur die oberste Liga vertreten. Für die Schweiz hingegen wurden die fünf höchsten Ligen aufgenommen. Die Gewichtung wurde aus der UEFA Rankingliste [UEFA Ranking](https://www.uefa.com/nationalassociations/uefarankings/country/?year=2024) entnommen.
+Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fussballnationen sind die drei obersten Ligen verfügbar. Bei Ländern mit mittlerem Fussballniveau wurden die zwei höchsten Ligen einbezogen. In anderen Nationen ist jeweils nur die oberste Liga vertreten. Für die Schweiz hingegen wurden die fünf höchsten Ligen aufgenommen. Die Gewichtung wurde aus der UEFA Rankingliste [UEFA Ranking](https://www.uefa.com/nationalassociations/uefarankings/country/?year=2024) entnommen. Die folgende Tabelle zeigt die ersten zehn Länder und deren Anzahl Ligen, welche in der Datenbank integriert wurden.
 
-<table>
-<tr>
-<td>
+    | Land           | Anz. Ligen |
+    |----------------|------------|
+    | Schweiz        | 5          |
+    | Deutschland    | 3          |
+    | England        | 3          |
+    | Frankreich     | 3          |
+    | Italien        | 3          |
+    | Österreich     | 3          |
+    | Spanien        | 3          |
+    | Belgien        | 2          |
+    | Dänemark       | 2          |
+    | Griechenland   | 2          |
 
-        | Land           | Anz. Ligen |
-        |----------------|------------|
-        | Schweiz        | 5          |
-        | Deutschland    | 3          |
-        | England        | 3          |
-        | Frankreich     | 3          |
-        | Italien        | 3          |
-        | Österreich     | 3          |
-        | Spanien        | 3          |
-        | Belgien        | 2          |
-        | Dänemark       | 2          |
-        | Griechenland   | 2          |
-        | Israel         | 2          |
-        | Kroatien       | 2          |
-        | Niederlande    | 2          |
-        | Norwegen       | 2          |
-        | Polen          | 2          |
-        | Portugal       | 2          |
-        | Schottland     | 2          |
-        | Serbien        | 2          |
-        | Tschechien     | 2          |
-        | Türkei         | 2          |
-        | Ukraine        | 2          |
-</td>
-<td>
-        | Land           | Anz. Ligen |
-        |----------------|------------|
-        | Argentinien    | 1          |
-        | Aserbaidschan  | 1          |
-        | Australien     | 1          |
-        | Brasilien      | 1          |
-        | Bulgarien      | 1          |
-        | Finnland       | 1          |
-        | Isles of Scilly| 1          |
-        | Japan          | 1          |
-        | Kasachstan     | 1          |
-        | Kolumbien      | 1          |
-        | Kosovo         | 1          |
-        | Moldau         | 1          |
-        | Rumänien       | 1          |
-        | Russland       | 1          |
-        | Schweden       | 1          |
-        | Slowakei       | 1          |
-        | Slowenien      | 1          |
-        | Ungarn         | 1          |
-</td>
-</tr>
-</table>
 
 ### Funktionen:
 - Mit Klick auf Clublogo wird ein Popup mit Informationen zum Verein und Station aufgerufen und es werden die weiteren Funktionen (Squad Overview und Player Origin) mit Buttons im Popup freigeschaltet. Die Funktionen [Squad overview](#squad-overview) und [Player Origin](#player-origin) sind in den verlinkten Kapitel detailierter beschrieben.
@@ -81,6 +42,7 @@ Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fuss
 
 ## Squad Overview
 <div id="squad-overview"></div>
+
 Durch den entsprechenden Klick auf den Button Squad Overview, öffnet sich eine weitere Seite. In diesem Ausschnitt kann nun das entsprechende Kader betrachtet werden. Insgesamt wurden 360 Spieler und 2880 Attribute (Spielerinformationen) aus der Schweizer Super League in der Datenbank erfasst.
 
 ![squad overview](GIFs/SquadOverview_1.gif)
@@ -138,9 +100,9 @@ Durch Klicken auf den Button „Player Origin“, wie im Kapitel „Startpage“
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <a href="einleitung.md#top">← Einleitung</a>
+    <a href="einleitung.md">← Einleitung</a>
   </div>
   <div>
-    <a href="aufbauGDI.md#top">Aufbau GDI →</a>
+    <a href="aufbauGDI.md">Aufbau GDI →</a>
   </div>
 </div>
