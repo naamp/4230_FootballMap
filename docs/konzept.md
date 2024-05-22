@@ -24,7 +24,17 @@ Bevor mit der technischen Umsetzung des Frontends begonnen wurde, wurde zunächs
 
 
 ### Visualisierungsideen
-Es wurden Visualisierungsideen aus den sozialen Medien und aus dem Internet gesammelt. Vorallem die Funktion und Anzeige der [Transferhistorie](transfer-history) ist durch die Inspiration von statischen Visualisierungen der Transferhistorie einzelner Spieler entstanden. Es war die Idee von Spielern der Schweizer Super League eine dynamische Karte der Transferwege zu erstellen.
+Es wurden Visualisierungsideen aus den sozialen Medien und aus dem Internet gesammelt. Vorallem die Funktion und Anzeige der [Transferhistorie](funktionen.md#transfer-history) ist durch die Inspiration von statischen Visualisierungen der Transferhistorie einzelner Spieler entstanden. Es war die Idee von allen Spielern der Schweizer Super League eine dynamische Karte der Transferwege zu erstellen.
 
 
 [↑](#top)
+
+
+<div style="display: flex; justify-content: space-between;">
+  <div>
+    <a href="aufbauGDI.md#top">← Aufbau GDI</a>
+  </div>
+  <div>
+    <a href="ausblick.md#top">Erweiterungsmöglichkeiten →</a>
+  </div>
+</div>

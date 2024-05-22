@@ -105,7 +105,7 @@ const Transferhistory = () => {
                 geometry: new LineString([startPoint.getGeometry().getCoordinates(), endPoint.getGeometry().getCoordinates()]),
                 name: feature.properties.name,
                 id: feature.properties.id,
-                transferArt: transferArt // Transferart hinzufügen
+                transferArt: transferArt
               });
             } else {
               // No unknown clubs, proceed with regular transfer line
@@ -113,7 +113,7 @@ const Transferhistory = () => {
                 geometry: new LineString(feature.geometry.coordinates.map(coord => fromLonLat(coord))),
                 name: feature.properties.name,
                 id: feature.properties.id,
-                transferArt: transferArt // Transferart hinzufügen
+                transferArt: transferArt
               });
             }
           } else {

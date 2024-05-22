@@ -16,3 +16,12 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
 
 
 [↑](#top)
+
+
+<div style="display: flex; justify-content: space-between;">
+  <div>
+  </div>
+  <div>
+    <a href="einleitung.md#top">Konzept und Ideen →</a>
+  </div>
+</div>

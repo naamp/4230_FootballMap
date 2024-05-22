@@ -8,21 +8,73 @@ Auf der Startseite erscheint eine dynamische Karte, die auf die Schweiz fokussie
 
 Die Anzahl der Ligen pro Land variiert je nach Spielstärke. Für führende Fussballnationen sind die drei obersten Ligen verfügbar. Bei Ländern mit mittlerem Fussballniveau wurden die zwei höchsten Ligen einbezogen. In anderen Nationen ist jeweils nur die oberste Liga vertreten. Für die Schweiz hingegen wurden die fünf höchsten Ligen aufgenommen. Die Gewichtung wurde aus der UEFA Rankingliste [UEFA Ranking](https://www.uefa.com/nationalassociations/uefarankings/country/?year=2024) entnommen.
 
+<table>
+<tr>
+<td>
+
+        | Land           | Anz. Ligen |
+        |----------------|------------|
+        | Schweiz        | 5          |
+        | Deutschland    | 3          |
+        | England        | 3          |
+        | Frankreich     | 3          |
+        | Italien        | 3          |
+        | Österreich     | 3          |
+        | Spanien        | 3          |
+        | Belgien        | 2          |
+        | Dänemark       | 2          |
+        | Griechenland   | 2          |
+        | Israel         | 2          |
+        | Kroatien       | 2          |
+        | Niederlande    | 2          |
+        | Norwegen       | 2          |
+        | Polen          | 2          |
+        | Portugal       | 2          |
+        | Schottland     | 2          |
+        | Serbien        | 2          |
+        | Tschechien     | 2          |
+        | Türkei         | 2          |
+        | Ukraine        | 2          |
+</td>
+<td>
+        | Land           | Anz. Ligen |
+        |----------------|------------|
+        | Argentinien    | 1          |
+        | Aserbaidschan  | 1          |
+        | Australien     | 1          |
+        | Brasilien      | 1          |
+        | Bulgarien      | 1          |
+        | Finnland       | 1          |
+        | Isles of Scilly| 1          |
+        | Japan          | 1          |
+        | Kasachstan     | 1          |
+        | Kolumbien      | 1          |
+        | Kosovo         | 1          |
+        | Moldau         | 1          |
+        | Rumänien       | 1          |
+        | Russland       | 1          |
+        | Schweden       | 1          |
+        | Slowakei       | 1          |
+        | Slowenien      | 1          |
+        | Ungarn         | 1          |
+</td>
+</tr>
+</table>
 
 ### Funktionen:
-- Mit Klick auf Clublogo wird der Stadionname aufgerufen und es werden weitere Funktionen (Squad Overview und Player Origin) freigeschaltet
+- Mit Klick auf Clublogo wird ein Popup mit Informationen zum Verein und Station aufgerufen und es werden die weiteren Funktionen (Squad Overview und Player Origin) mit Buttons im Popup freigeschaltet. Die Funktionen [Squad overview](#squad-overview) und [Player Origin](#player-origin) sind in den verlinkten Kapitel detailierter beschrieben.
 
 ![Mehrere Ligen](GIFs/Startpage_1.gif)
 
-- Tabelle aller gewählten Vereine aus einer Liga (sortiert nach Stadionkapazität)
+- Auf der Startseite wird jeweils eine Tabelle aller Vereine aus der gewählten Liga angezeigt. (sortiert nach Stadionkapazität)
 
 ![Mehrere Ligen](GIFs/Startpage_2.gif)
 
-- Dropdownauswahl nach Land, wobei die Funktionen "Squad Overview" und "Player Origin" nur für die [Schweizer Super League](https://sfl.ch/de/de) funktionieren
+- Dropdownauswahl nach Land, wobei die Funktionen "Squad Overview" und "Player Origin" nur für die [Schweizer Super League](https://sfl.ch/de/de) freigeschaltet sind. Für die weiteren Ligen fehlen die Spielerdaten in der Datenbank.
 
 ![Mehrere Ligen](GIFs/Startpage_3.gif)
 
-- Dropdownauswahl nach Ligen, die in gewähltem Land verfügbar sind. Möglichkeit mehrere Ligen eines Landes einzublenden
+- Dropdownauswahl nach Ligen, die in gewähltem Land verfügbar sind. Es besteht die Möglichkeit mehrere Ligen eines Landes einzublenden.
 
 ![Mehrere Ligen](GIFs/Startpage_5.gif)
 
@@ -82,3 +134,13 @@ Durch Klicken auf den Button „Player Origin“, wie im Kapitel „Startpage“
 
 
 [↑](#top)
+
+
+<div style="display: flex; justify-content: space-between;">
+  <div>
+    <a href="einleitung.md#top">← Einleitung</a>
+  </div>
+  <div>
+    <a href="aufbauGDI.md#top">Aufbau GDI →</a>
+  </div>
+</div>
