@@ -1,4 +1,7 @@
 -- Datenbank "footballmap" Version 4 (final version) (14.05.2024)
+-- Datenbankschema ohne Daten und ohne DB-Views
+-- Diese Tabellen sind auch im Database-Dump "footballmap_v4_database-dump.sql" implementiert
+
 
 -- postgis aktivieren
 CREATE EXTENSION postgis;
