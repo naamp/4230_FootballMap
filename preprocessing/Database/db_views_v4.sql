@@ -1,6 +1,5 @@
 -- SQL-Code zum Erstellen von Datenbank-Sichten (DB-Views)
--- Diese Views sind in der Datenbank "footballmap_v4" implementiert
-
+-- Diese DB-Views sind auch im Database-Dump "footballmap_v4_database-dump.sql" implementiert
 
 -- Sicht mit allen Stadion-Standorten inkl. Metadaten und Club-Informationen
 CREATE OR REPLACE VIEW vw_club_all AS
