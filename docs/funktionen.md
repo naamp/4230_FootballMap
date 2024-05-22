@@ -100,9 +100,9 @@ Durch Klicken auf den Button „Player Origin“, wie im Kapitel „Startpage“
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <a href="einleitung.md">← Einleitung</a>
+    <a href="einleitung.html">← Einleitung</a>
   </div>
   <div>
-    <a href="aufbauGDI.md">Aufbau GDI →</a>
+    <a href="aufbauGDI.html">Aufbau GDI →</a>
   </div>
 </div>

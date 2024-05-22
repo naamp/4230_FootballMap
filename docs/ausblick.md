@@ -1,11 +1,13 @@
 <a id="top"></a>
 
-# Erweiterungsmöglichkeiten <div id="erweiterungsmöglichkeiten"></div>
+# Erweiterungsmöglichkeiten
+<div id="erweiterungsmöglichkeiten"></div>
 
 Im folgenden Abschnitt werden für jede Seite und Funktion Verbesserungs- und Erweiterungsvorschläge genannt, welche Vorteile für die User Experience (User Erfahrung) bieten oder die Funktionen der FootballMap erweitern. Die Ideen sind der Wichtigkeit nach geordnet (von oben nach unten).
 
 
-### Allgemein <div id="allgemein"></div>
+### Allgemein
+<div id="allgemein"></div>
 
 Für die Kartenelemente sind folgende Funktionen für zukünftige Versionen angedacht und sinnvoll:
   - Map Control: Button "Extend to selected Features", Ausdehnung der Karte auf ausgewählte Daten anpassen
@@ -53,9 +55,9 @@ Für die Seite [Player Origin](funktionen.md#player-origin) sind folgende Funkti
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <a href="funktionen.md">← Konzept und Ideen</a>
+    <a href="funktionen.html">← Konzept und Ideen</a>
   </div>
   <div>
-   <a href="quellenverzeichnis.md">Quellenverzeichnis →</a>
+   <a href="quellenverzeichnis.html">Quellenverzeichnis →</a>
   </div>
 </div>

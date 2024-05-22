@@ -58,7 +58,7 @@ Folgend sind in alle Quellen für diese Arbeit in mehrere Kategorien unterteilt 
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <a href="ausblick.md">← Erweiterungsmöglichkeiten</a>
+    <a href="ausblick.html">← Erweiterungsmöglichkeiten</a>
   </div>
   <div>
   </div>

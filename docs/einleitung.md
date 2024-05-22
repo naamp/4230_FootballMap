@@ -22,9 +22,9 @@ In den nachfolgenden Kapiteln werden alle Funktionen, der Aufbau der Geodateninf
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <a href="index.md">← FootballMap</a>
+    <a href="index.html">← FootballMap</a>
   </div>
   <div>
-    <a href="funktionen.md">Erklärung der Funktionen →</a>
+    <a href="funktionen.html">Erklärung der Funktionen →</a>
   </div>
 </div>

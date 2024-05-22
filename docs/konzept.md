@@ -32,9 +32,9 @@ Es wurden Visualisierungsideen aus den sozialen Medien und aus dem Internet gesa
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <a href="aufbauGDI.md">← Aufbau GDI</a>
+    <a href="aufbauGDI.html">← Aufbau GDI</a>
   </div>
   <div>
-    <a href="ausblick.md">Erweiterungsmöglichkeiten →</a>
+    <a href="ausblick.html">Erweiterungsmöglichkeiten →</a>
   </div>
 </div>

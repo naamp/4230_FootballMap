@@ -22,6 +22,6 @@ GitHub Repository: [https://github.com/314a/GDI_Project](https://github.com/314a
   <div>
   </div>
   <div>
-    <a href="einleitung.md">Konzept und Ideen →</a>
+    <a href="einleitung.html">Konzept und Ideen →</a>
   </div>
 </div>

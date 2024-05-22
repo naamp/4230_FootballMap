@@ -254,9 +254,9 @@ Das [User Experience (UX)](https://www.unic.com/de/magazin/was-ist-user-experien
 
 <div style="display: flex; justify-content: space-between;">
   <div>
-    <a href="funktionen.md">← Erklärung der Funktionen</a>
+    <a href="funktionen.html">← Erklärung der Funktionen</a>
   </div>
   <div>
-    <a href="konzept.md">Konzept und Ideen →</a>
+    <a href="konzept.html">Konzept und Ideen →</a>
   </div>
 </div>
