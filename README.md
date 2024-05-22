@@ -11,21 +11,21 @@ Getestet mit Node version 20.11.1, 18.15.0, 16.19.0, openlayers 9.1.0, 7.3.0, 6.
 ## Requirements
 
 - [Git](https://git-scm.com/)
-- IDE wie [Visual Studio Code](https://code.visualstudio.com/) 
+- IDE wie [Visual Studio Code](https://code.visualstudio.com/)
 - [Anaconda Distribution](https://www.anaconda.com/products/distribution) oder [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
-- Node.js und npm ([https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)) 
+- Node.js und npm ([https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm))
 
 ## Repository lokal klonen
 Mit Git in einem Terminal das GitHub Repository *Geoharvester* in ein lokales Verzeichnis klonen.
 
 ``` shell
 cd /path/to/workspace
-# Clone Repository 
+# Clone Repository
 git clone https://github.com/314a/GDI_Project.git
 ```
 
 ### Git Projekt mit Visual Studio Code lokal klonen
-Öffne ein neues Visual Studio Code Fenster und wähle unter Start *Clone Git Repository*. Alternativ öffne die Command Palette in VS Code `CTRL+Shift+P` (*View / Command Palette*) und wähle `Git: clone`. 
+Öffne ein neues Visual Studio Code Fenster und wähle unter Start *Clone Git Repository*. Alternativ öffne die Command Palette in VS Code `CTRL+Shift+P` (*View / Command Palette*) und wähle `Git: clone`.
 Füge die Git web URL `https://github.com/314a/GDI_Project.git` ein und bestätige die Eingabe mit Enter. Wähle einen Ordner in welchen das Repository *geklont* werden soll.
 
 ## Frontend installieren
@@ -33,7 +33,7 @@ Füge die Git web URL `https://github.com/314a/GDI_Project.git` ein und bestäti
 
 ``` shell
 cd client
-# aktiviere node.js (falls nvm genutzt wird) 
+# aktiviere node.js (falls nvm genutzt wird)
 # nvm use 20.11.1
 # install all the node.js dependencies
 npm install
