@@ -37,7 +37,6 @@ Folgend sind in alle Quellen für diese Arbeit in mehrere Kategorien unterteilt 
 | Requests            | [https://pypi.org/project/requests/](https://pypi.org/project/requests/)  |
 | JSON                | [https://docs.python.org/3/library/json.html](https://docs.python.org/3/library/json.html)             |
 | CSV                 | [https://docs.python.org/3/library/csv.html](https://docs.python.org/3/library/csv.html)             |
-| CSV                 | [https://docs.python.org/3/library/csv.html](https://docs.python.org/3/library/csv.html)             |
 | BeautifulSoup       | [https://beautiful-soup-4.readthedocs.io/en/latest/](https://beautiful-soup-4.readthedocs.io/en/latest/)       |
 | psycopg2            | [https://pypi.org/project/psycopg2/](https://pypi.org/project/psycopg2/)             |
 | Selenium            | [https://pypi.org/project/psycopg2/](https://pypi.org/project/psycopg2/)             |

@@ -7,8 +7,8 @@
 
 **README**: Einleitung zur Installation und Projekt ergänzen mit einem Beschrieb, was das Repository bietet mit einem klaren Verweis auf die GitHub Pages. Dann ergänzen mit den Systemanforderungen mit den genutzten Technologien in Frontend und Backend.
 
-- Vergleicht, ob die Angaben zur Architektur auf der GitHub Pages mit den Frontend Backend Angaben auf GitHub übereinstimmt.
-- Stimmen die aufgeführten Versionsangaben? und welche weiteren Libraries und Versionen werden genutzt?
+✔ Vergleicht, ob die Angaben zur Architektur auf der GitHub Pages mit den Frontend Backend Angaben auf GitHub übereinstimmt.
+✔ Stimmen die aufgeführten Versionsangaben? und welche weiteren Libraries und Versionen werden genutzt?
 - About (oben rechts) ergänzen mit GitHub Pages Link
 - Titel *GDI_Project* in Projektnamen ändern
 - Preprocessing Ordner noch genauer erläutern, Struktur / Nutzung
@@ -52,7 +52,7 @@ Kommentare zu den einzelnen Pages/Abschnitten:
   ✔ Datenbankmodell: wie sind die Beziehungen der Tabellen *land* mit den Tabellen *club*, *liga* und *transfer* umgesetzt?
   (Begründung: War schon im Text beschrieben und begründet.)
   ✔ Rechtschreibung prüfen, eher *minimales* als *simples* Design verwenden.
-  - Wie wurden die einzelnen Elemente wie OpenLayers konkret in diesem Projekt genutzt, in Ergänzung zur allgemeinen Beschreibung?
+  ✔ Wie wurden die einzelnen Elemente wie OpenLayers konkret in diesem Projekt genutzt, in Ergänzung zur allgemeinen Beschreibung?
   - Bei UI/UX Design die Umsetzung mit einem annotierten Screenshots ergänzen.
 - Konzept:
   ✔ Link zur finalen Architektur, sowie Transferhistorie funktioniert nicht.
