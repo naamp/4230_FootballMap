@@ -53,10 +53,12 @@ uvicorn app.main:app --reload
 ```
 
 3. Daten in lokale Datenbank importieren
-- Schritt 1: Räumliches Dataenbankmanagementsystem (GeoDBMS) installieren, z.B. PostgreSQL (https://www.postgresql.org/download/) mit Postgis und pgAdmin (https://postgis.net/)
+- Schritt 1: Räumliches Dataenbankmanagementsystem (GeoDBMS) installieren, z.B. PostgreSQL (https://www.postgresql.org/download/) mit PostGIS und pgAdmin (https://postgis.net/)
 
 - Schritt 2: Datenbank "footballmap" erstellen mit SQL-Statement:
+``` shell
 CREATE DATABASE footballmap
+```
 
 - Schritt 3: Datenbankschema und Daten importieren:
 SQL-Statement von der [Datei "footballmap_v4_database-dump.sql"](preprocessing/Database/) kopieren und ausführen. Bei Fehlermeldungen zu Gott beten oder ein Kaffe trinken und von vorne beginnen.
@@ -72,7 +74,7 @@ Bei der Datei unter dem Windows-Pfad C:\GeoServer\webapps\geoserver\WEB-INF\web.
 Webumgebung öffnen: http://localhost:8080/geoserver/web/
     - Arbeitsbereich "footballmap" mit URI "http://geoserver.org/footballmap" eröffnen
     - Datenspeicher "footballmap" eröffnen und Verbindung zu PostGIS aufbauen
-    - folgende Layer freigeben, dabei EPSG:4326 wählen und Boundingbox (Aus den Grenzen des Koordinatenreferenzsystems berechnen) definieren, auch wenn die Daten teilweise keine Geodaten enthalten. Dabei die nahmen genau wie folgt übernehmen:
+    - folgende Layer freigeben, dabei EPSG:4326 wählen und Boundingbox (Aus den Grenzen des Koordinatenreferenzsystems berechnen) definieren, auch wenn die Daten teilweise keine Geodaten enthalten. Dabei die Namen genau wie folgt definieren:
         - land
         - vw_club_all
         - vw_spieler_geburtsland
