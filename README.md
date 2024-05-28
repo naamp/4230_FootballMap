@@ -59,7 +59,7 @@ uvicorn app.main:app --reload
 CREATE DATABASE footballmap
 
 - Schritt 3: Datenbankschema und Daten importieren:
-SQL-Statement von der [Datei "footballmap_v4_database-dump.sql"](preprocessing\Database\footballmap_v4_database-dump.sql) kopieren und ausführen. Bei Fehlermeldungen zu Gott beten oder ein Kaffe trinken und von vorne beginnen.
+SQL-Statement von der [Datei "footballmap_v4_database-dump.sql"](preprocessing\Database\) kopieren und ausführen. Bei Fehlermeldungen zu Gott beten oder ein Kaffe trinken und von vorne beginnen.
 
 4. Daten mittels Geoserver freigeben
 - Schritt 1: Geoserver installieren (https://geoserver.org/)
