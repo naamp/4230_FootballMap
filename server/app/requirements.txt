@@ -1,7 +1,4 @@
-fastapi
-geopandas
-pandas
-uvicorn
-orjson
-psycopg2
-pydantic
+beautifulsoup4==4.9.3
+selenium==3.141.0
+requests==2.25.1
+psycopg2==2.8.6

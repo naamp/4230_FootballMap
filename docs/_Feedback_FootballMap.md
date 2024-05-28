@@ -49,7 +49,8 @@ Kommentare zu den einzelnen Pages/Abschnitten:
   - Sowie eine weitere Übersichtsgrafik, welche API, Website welche Informationen liefert und welche in Zukunft ersetzt werden muss, da die API nicht mehr zugänglich ist.
   (Begründung: Diese Informationen sind bereits im Text vorhanden)
   ✔ Bei den Python Scripts 03-05 fehlt das Ziel
-  - Datenbankmodell: wie sind die Beziehungen der Tabellen *land* mit den Tabellen *club*, *liga* und *transfer* umgesetzt?
+  ✔ Datenbankmodell: wie sind die Beziehungen der Tabellen *land* mit den Tabellen *club*, *liga* und *transfer* umgesetzt?
+  (Begründung: War schon im Text beschrieben und begründet.)
   ✔ Rechtschreibung prüfen, eher *minimales* als *simples* Design verwenden.
   - Wie wurden die einzelnen Elemente wie OpenLayers konkret in diesem Projekt genutzt, in Ergänzung zur allgemeinen Beschreibung?
   - Bei UI/UX Design die Umsetzung mit einem annotierten Screenshots ergänzen.
