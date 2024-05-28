@@ -2,11 +2,11 @@
 Server Client Projekt für eine Geodateninfrastruktur Webportal im Rahmen des Moduls 4230
 
 - **Frontend:** React.js, OpenLayers, Axios und MUI
-- **Backend:** Python-Libraries: (BeautifulSoup, Selenium, Requests) und GeoServer
+- **Backend:** Python-Libraries: (BeautifulSoup, Selenium, Requests, psycopg2, JSON, CSV), GeoServer, PostgreSQL, PostGIS
 
 GitHub Pages: https://naamp.github.io/4230_FootballMap/
 
-Getestet mit Node version 20.11.1, 18.15.0, 16.19.0, openlayers 9.1.0, 7.3.0, 6.4.3
+Getestet mit Node version 21.7.1, openlayers 9.1.0
 
 ## Requirements
 
@@ -28,19 +28,6 @@ git clone https://github.com/314a/GDI_Project.git
 Öffne ein neues Visual Studio Code Fenster und wähle unter Start *Clone Git Repository*. Alternativ öffne die Command Palette in VS Code `CTRL+Shift+P` (*View / Command Palette*) und wähle `Git: clone`.
 Füge die Git web URL `https://github.com/314a/GDI_Project.git` ein und bestätige die Eingabe mit Enter. Wähle einen Ordner in welchen das Repository *geklont* werden soll.
 
-## Frontend installieren
-Öffne ein Terminal (Command Prompt in VS Code) und wechsle in den *client* Ordner in diesem Projekt
-
-``` shell
-cd client
-# aktiviere node.js (falls nvm genutzt wird)
-# nvm use 20.11.1
-# install all the node.js dependencies
-npm install
-# node Projekt ausführen
-# npm start ist in package.json definiert
-npm start
-```
 
 ## Backend installieren
 Öffne ein Terminal und wechsle in den *server* Ordner.
@@ -65,5 +52,49 @@ uvicorn app.main:app --reload
 # Öffne die angegebene URL im Browser und verifiziere, ob das Backend läuft.
 ```
 
-## API Dokumentation
-Fast API kommt mit vorinstallierter Swagger UI. Wenn der Fast API Backen Server läuft, kann auf die Dokumentation der API über Swagger UI auf http://localhost:8000/docs verfügbar.
+3. Daten in lokale Datenbank importieren
+- Schritt 1: Räumliches Dataenbankmanagementsystem (GeoDBMS) installieren, z.B. PostgreSQL (https://www.postgresql.org/download/) mit Postgis und pgAdmin (https://postgis.net/)
+
+- Schritt 2: Datenbank "footballmap" erstellen mit SQL-Statement:
+CREATE DATABASE footballmap
+
+- Schritt 3: Datenbankschema und Daten importieren:
+SQL-Statement von der [Datei "footballmap_v4_database-dump.sql"](preprocessing\Database\footballmap_v4_database-dump.sql) kopieren und ausführen. Bei Fehlermeldungen zu Gott beten oder ein Kaffe trinken und von vorne beginnen.
+
+4. Daten mittels Geoserver freigeben
+- Schritt 1: Geoserver installieren (https://geoserver.org/)
+Der GeoServer basiert auf Java und benötigt eine funktionierende Java 11 Umgebung, z.B. von hier: https://adoptium.net/de/temurin/releases/
+
+Bei der Datei unter dem Windows-Pfad C:\GeoServer\webapps\geoserver\WEB-INF\web.xml zwei Abschnitte gemäss folgendem Bild auskommentieren
+![Bild](docs/Bilder/geoserver-xml.png/)
+
+- Schritt 2: Geoserver einrichten:
+Webumgebung öffnen: http://localhost:8080/geoserver/web/
+    - Arbeitsbereich "footballmap" mit URI "http://geoserver.org/footballmap" eröffnen
+    - Datenspeicher "footballmap" eröffnen und Verbindung zu PostGIS aufbauen
+    - folgende Layer freigeben, dabei EPSG:4326 wählen und Boundingbox (Aus den Grenzen des Koordinatenreferenzsystems berechnen) definieren, auch wenn die Daten teilweise keine Geodaten enthalten. Dabei die nahmen genau wie folgt übernehmen:
+        - land
+        - vw_club_all
+        - vw_spieler_geburtsland
+        - vw_spielerdaten
+        - vw_transferlinien
+
+
+## Frontend installieren
+Öffne ein Terminal (Command Prompt in VS Code) und wechsle in den *client* Ordner in diesem Projekt
+
+``` shell
+cd client
+# aktiviere node.js (falls nvm genutzt wird)
+# nvm use 20.11.1
+# install all the node.js dependencies
+npm install
+# node Projekt ausführen
+# npm start ist in package.json definiert
+npm start
+```
+
+
+
+Viel Gelduld, Glück und ausreichend Nervenvermögen bei der Installation. 
+Ist es geschafft, wünschen wir dir viel Spass beim Entdecken der coolen footballmap.
