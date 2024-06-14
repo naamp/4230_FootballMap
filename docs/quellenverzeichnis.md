@@ -5,6 +5,8 @@
 
 Folgend sind in alle Quellen für diese Arbeit in mehrere Kategorien unterteilt und aufgelistet.
 
+In dieser Arbeit wurde künstliche Intelligenz (KI), namentlich ChatGPT, zur Generierung einzelner Programmier-Codes sowie zur Überarbeitung von einzelnen Textabschnitten verwendet. Keine Sätze oder Abschnitte in der GitHub-Page wurden jedoch eins zu eins von der KI geschrieben und kopiert.
+
 ### Internetquellen und Literatur
 <div id="literatur"></div>
 
